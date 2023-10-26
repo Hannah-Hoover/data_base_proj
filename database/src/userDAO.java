@@ -395,7 +395,39 @@ public class userDAO
                         		    	    "('999', '9991-9992'),"+
                         		    	    "('112', '1112-1113');"
                         		    	};
-
+        String[] treeINITIAL= {
+    			"drop database if exists testdb; ",
+    						"create database testdb; ",
+    						"use testdb; ",
+    						"drop table if exists Tree; ",
+    						("CREATE TABLE Tree (" +
+    								"clientID INTEGER, " +
+    								"location VARCHAR(70), " +
+    								"height VARCHAR(20), " +
+    								"proximity VARCHAR(20), " +
+    								"sizeDiameter VARCHAR(20), " +
+    								"photoID INTEGER, " +
+    								"photodata1 BLOB, " +
+    								"photodata2 BLOB, " +
+    								"photodata3 BLOB, " +
+    								"PRIMARY KEY (photoID), " +
+    								"FOREIGN KEY (clientID) REFERENCES Client(clientID), "+ ");")
+        							};
+        String[] treeTUPLES = {
+                "INSERT INTO Tree (clientID) " +
+                		  "VALUES " +
+                		  				"('000', 'default', 'default', 'default','default', '11100', '0x000000', '0x000000', '0x000000'),"+
+                		  				"('111', 'backyard-east', '2.0 meters', '1 meter','60 millimeters', '11101', '0xFFD856382', '0xFFD830386', '0xFFD998450'),"+
+                		  				"('222', 'backyard-south', '1.75 meters', '2 meters','50 millimeters', '11102', '0xFFD546721', '0xFFD223421', '0xFFD450897'),"+
+                		  				"('333', 'backyard-northeast', '3.0 meters', '.5 meters','90 millimeters', '11103', '0xFFD675867', '0xFFD890798', '0xFFD707908'),"+
+                		  				"('444', 'backyard-northwest', '2.5 meters', '2.2 meters','70 millimeters', '11104', '0xFFD124514', '0xFFD123511', '0xFFD109281'),"+
+                		  				"('555', 'backyard-north', '2.75 meters', '1.5 meters','80 millimeters', '11105', '0xFFD105690', '0xFFD119938', '0xFFD343567'),"+
+                		  				"('666', 'backyard-west', '4.5 meters', '3.2 meters','130 millimeters', '11106', '0xFFD097749', '0xFFD085591', '0xFFD134239'),"+
+                		  				"('777', 'frontyard-southeast', '4.0 meters', '6 meters','120 millimeters', '11107', '0xFFD195872', '0xFFD294851', '0xFFD219191'),"+
+                		  				"('888', 'frontyard-northeast', '3.5 meters', '2.1 meters','1100 millimeters', '11108', '0xFFD103885', '0xFFD390568', '0xFFD457683'),"+
+                		  				"('999', 'frontyard-northwest', '3.75 meters', '9 meters','115 millimeters', '11109', '0xFFD301938', '0xFFD285920', '0xFFD193852'),"+
+                		  				"('112', 'frontyard-southwest', '3.25 meters', '4.5 meters','100 millimeters', '22200', '0xFFD333876', '0xFFD784713', '0xFFD029344');"
+                		    			};
 
                             //Bill table
         String[] billINITIAL = {
