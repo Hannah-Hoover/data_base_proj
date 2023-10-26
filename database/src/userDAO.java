@@ -286,7 +286,7 @@ public class userDAO
 					            "cash_bal DECIMAL(13,2) DEFAULT 1000,"+ 
 					            "PPS_bal DECIMAL(13,2) DEFAULT 0,"+
 					            "PRIMARY KEY (email) "+"); ")
-        					};
+
         String[] TUPLES = {("insert into User(email, firstName, lastName, password, birthday, adress_street_num, adress_street, adress_city, adress_state, adress_zip_code, cash_bal, PPS_bal)"+
         			"values ('susie@gmail.com', 'Susie ', 'Guzman', 'susie1234', '2000-06-27', '1234', 'whatever street', 'detroit', 'MI', '48202','1000', '0'),"+
 			    		 	"('don@gmail.com', 'Don', 'Cummings','don123', '1969-03-20', '1000', 'hi street', 'mama', 'MO', '12345','1000', '0'),"+
@@ -300,6 +300,87 @@ public class userDAO
 			    			"('jeannette@gmail.com', 'Jeannette ', 'Stone','jeannette1234', '2001-04-24', '0981', 'snoop street', 'kojik', 'HW', '87654','1000', '0'),"+
 			    			"('root', 'default', 'default','pass1234', '0000-00-00', '0000', 'Default', 'Default', '0', '00000','1000','1000000000');")
 			    			};
+
+                            //client table
+        String[] INITIAL = {"drop database if exists testdb; ",
+					        "create database testdb; ",
+					        "use testdb; ",
+					        "drop table if exists Client; ",
+                            ("CREATE TABLE Client if not exists Client( " +
+	                            "clientID INTEGER, NOT NULL, " + 
+	                            "clientEmail VarChar(50) NOT NULL, " +
+	                            "clientPassword VarChar(20) NOT NULL, " + 
+	                            "clientFirstName VarChar(20) NOT NULL, " +
+	                            "clientLastname VarChar(20) NOT NULL, " +
+	                            "clientAddress VarChar(50) NOT NULL, " +
+	                            "clientPayment VarChar(50), NOT NULL, " +
+	                            "clientPhone VarChar(10), NOT NULL, " +
+                                "PRIMARY KEY (clientID), "+"); ")
+
+
+                                //client examples
+
+                            };
+
+                            //contractor table
+        String[] INITIAL = {"drop database if exists testdb; ",
+					        "create database testdb; ",
+					        "use testdb; ",
+					        "drop table if exists Contractor; ",
+                            ("CREATE TABLE Contractor if not exists Contractor( " +
+                                "clientID INTEGER NOT NULL, " +
+                                "FOREIGN KEY clientID REFERENCES Client(clientID), "+");")
+
+
+                            //contractor examples
+
+                             };
+
+        String[] INITIAL = {"drop database if exists testdb; ",
+					        "create database testdb; ",
+					        "use testdb; ",
+					        "drop table if exists Order; ",
+                            ("CREATE TABLE Order if not exists Order( " + 
+	                            "contractID VARCHAR(20) NOT NULL, " +
+                                "clientID INTEGER NOT NULL, " +
+                                "FOREIGN KEY clientID REFERENCES Client(clientID), "+");")
+
+                            //order examples 
+
+                             };
+
+
+                            //Bill table
+        String[] INITIAL = {"drop database if exists testdb; ",
+					        "create database testdb; ",
+					        "use testdb; ",
+					        "drop table if exists Bill; ",
+                            ("CREATE TABLE Bill( " +
+	                            "amount INTEGER NOT NULL, " + 
+                                "status BIT DEFAULT False, " + 
+                                "clientID INTEGER NOT NULL, " + 
+                                "FORGEIGN KEY clientID REFERENCES Client(clientID), "+");")
+
+                            //bill examples
+
+                             };
+ 
+        String[] INITIAL = {"drop database if exists testdb; ",
+					        "create database testdb; ",
+					        "use testdb; ",
+					        "drop table if exists Quote; ",                           
+                            ("CREATE TABLE Quote( " +
+                                "intprice DOUBLE NOT NULL, " + 
+                                "Timeframe VARCHAR() NOT NULL, " + 
+                                "clientID INTEGER NOT NULL, " + 
+                                "FOREIGN KEY clientID REFERENCES Client(clientID), "+");")
+
+
+                            //quote examples
+
+                            }; 
+
+        					
         
         //for loop to put these in database
         for (int i = 0; i < INITIAL.length; i++)
