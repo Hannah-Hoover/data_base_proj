@@ -30,8 +30,9 @@
                 <th>Birthday</th>
                 <th>cash_bal($)</th>
                 <th>PPS_bal</th>
+              
             </tr>
-            <c:forEach var="users" items="${listUser}">
+            <c:forEach var="users" items="${listuser}">
                 <tr style="text-align:center">
                     <td><c:out value="${users.email}" /></td>
                     <td><c:out value="${users.firstName}" /></td>

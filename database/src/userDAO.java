@@ -53,7 +53,7 @@ public class userDAO
     public boolean database_login(String email, String password) throws SQLException{
     	try {
     		connect_func("root","pass1234");
-    		String sql = "select * from user where email = ?";
+    		String sql = "select * from Client where email = ?";
     		preparedStatement = connect.prepareStatement(sql);
     		preparedStatement.setString(1, email);
     		ResultSet rs = preparedStatement.executeQuery();
@@ -268,136 +268,229 @@ public class userDAO
     	connect_func();
         statement =  (Statement) connect.createStatement();
         
-        String[] INITIAL = {"drop database if exists testdb; ",
-					        "create database testdb; ",
-					        "use testdb; ",
-					        "drop table if exists User; ",
-					        ("CREATE TABLE if not exists User( " +
-					            "email VARCHAR(50) NOT NULL, " + 
-					            "firstName VARCHAR(10) NOT NULL, " +
-					            "lastName VARCHAR(10) NOT NULL, " +
-					            "password VARCHAR(20) NOT NULL, " +
-					            "birthday DATE NOT NULL, " +
-					            "adress_street_num VARCHAR(4) , "+ 
-					            "adress_street VARCHAR(30) , "+ 
-					            "adress_city VARCHAR(20)," + 
-					            "adress_state VARCHAR(2),"+ 
-					            "adress_zip_code VARCHAR(5),"+ 
-					            "cash_bal DECIMAL(13,2) DEFAULT 1000,"+ 
-					            "PPS_bal DECIMAL(13,2) DEFAULT 0,"+
-					            "PRIMARY KEY (email) "+"); ")
+       String[] userINITIAL = {
+    		   	"drop database if exists testdb; ",
+    		   			"create database testdb; ",
+    		   			"use testdb; ",
+    		   			"drop table if exists User; ",
+    		   			("CREATE TABLE IF NOT EXISTS User ( " +
+    		   					"email VARCHAR(50) NOT NULL, " + 
+    		   					"firstName VARCHAR(10) NOT NULL, " +
+    		   					"lastName VARCHAR(10) NOT NULL, " +
+    		   					"password VARCHAR(20) NOT NULL, " +
+    		   					"birthday DATE NOT NULL, " +
+    		   					"adress_street_num VARCHAR(4), " + 
+    		   					"adress_street VARCHAR(30), " + 
+    		   					"adress_city VARCHAR(20), " +
+    		   					"adress_state VARCHAR(2), " + 
+    		   					"adress_zip_code VARCHAR(5), " + 
+    		   					"cash_bal DECIMAL(13,2) DEFAULT 1000, " + 
+    		   					"PPS_bal DECIMAL(13,2) DEFAULT 0, " +
+    		   					"PRIMARY KEY (email) "+"); ")
+       						};
+    
+       String[] userTUPLES = {
+    		    "INSERT INTO User (email, firstName, lastName, password, birthday, adress_street_num, adress_street, adress_city, adress_state, adress_zip_code, cash_bal, PPS_bal) " +
+    		    	    "VALUES " +
+    		    	    		"('susie@gmail.com', 'Susie', 'Guzman', 'susie1234', '2000-06-27', '1234', 'whatever street', 'detroit', 'MI', '48202', 1000, 0), " +
+    		    	    		"('don@gmail.com', 'Don', 'Cummings', 'don123', '1969-03-20', '1000', 'hi street', 'mama', 'MO', '12345', 1000, 0), " +
+    		    	    		"('margarita@gmail.com', 'Margarita', 'Lawson', 'margarita1234', '1980-02-02', '1234', 'ivan street', 'tata', 'CO', '12561', 1000, 0), " +
+    		    	    		"('jo@gmail.com', 'Jo', 'Brady', 'jo1234', '2002-02-02', '3214', 'marko street', 'brat', 'DU', '54321', 1000, 0), " +
+    		    	    		"('wallace@gmail.com', 'Wallace', 'Moore', 'wallace1234', '1971-06-15', '4500', 'frey street', 'sestra', 'MI', '48202', 1000, 0), " +
+    		    	    		"('amelia@gmail.com', 'Amelia', 'Phillips', 'amelia1234', '2000-03-14', '1245', 'm8s street', 'baka', 'IL', '48000', 1000, 0), " +
+    		    	    		"('sophie@gmail.com', 'Sophie', 'Pierce', 'sophie1234', '1999-06-15', '2468', 'yolos street', 'ides', 'CM', '24680', 1000, 0), " +
+    		    	    		"('angelo@gmail.com', 'Angelo', 'Francis', 'angelo1234', '2021-06-14', '4680', 'egypt street', 'lolas', 'DT', '13579', 1000, 0), " +
+    		    	    		"('rudy@gmail.com', 'Rudy', 'Smith', 'rudy1234', '1706-06-05', '1234', 'sign street', 'samo ne tu', 'MH', '09876', 1000, 0), " +
+    		    	    		"('jeannette@gmail.com', 'Jeannette', 'Stone', 'jeannette1234', '2001-04-24', '0981', 'snoop street', 'kojik', 'HW', '87654', 1000, 0), " +
+    		    	    		"('root', 'default', 'default', 'pass1234', '0000-00-00', '0000', 'Default', 'Default', '0', '00000', 1000, 1000000000);"
+    		    			};
+    		    
+    		   
+    		    //client 
+    	String[] clientINITIAL = {
+    			"drop database if exists testdb; ",
+						"create database testdb; ",
+						"use testdb; ",
+						"drop table if exists Client; ",
+						("CREATE TABLE Client if not exists Client( " +
+								"clientID INTEGER NOT NULL, " + 
+								"clientEmail VarChar(50) NOT NULL, " +
+								"clientPassword VarChar(20) NOT NULL, " + 
+								"clientFirstName VarChar(20) NOT NULL, " +
+								"clientLastname VarChar(20) NOT NULL, " +
+								"clientAddress VarChar(50) NOT NULL, " +
+								"clientPayment VarChar(50), NOT NULL, " +
+								"clientPhone VarChar(10), NOT NULL, " +
+								"PRIMARY KEY (clientID), "+"); ")
+							};
 
-        String[] TUPLES = {("insert into User(email, firstName, lastName, password, birthday, adress_street_num, adress_street, adress_city, adress_state, adress_zip_code, cash_bal, PPS_bal)"+
-        			"values ('susie@gmail.com', 'Susie ', 'Guzman', 'susie1234', '2000-06-27', '1234', 'whatever street', 'detroit', 'MI', '48202','1000', '0'),"+
-			    		 	"('don@gmail.com', 'Don', 'Cummings','don123', '1969-03-20', '1000', 'hi street', 'mama', 'MO', '12345','1000', '0'),"+
-			    	 	 	"('margarita@gmail.com', 'Margarita', 'Lawson','margarita1234', '1980-02-02', '1234', 'ivan street', 'tata','CO','12561','1000', '0'),"+
-			    		 	"('jo@gmail.com', 'Jo', 'Brady','jo1234', '2002-02-02', '3214','marko street', 'brat', 'DU', '54321','1000', '0'),"+
-			    		 	"('wallace@gmail.com', 'Wallace', 'Moore','wallace1234', '1971-06-15', '4500', 'frey street', 'sestra', 'MI', '48202','1000', '0'),"+
-			    		 	"('amelia@gmail.com', 'Amelia', 'Phillips','amelia1234', '2000-03-14', '1245', 'm8s street', 'baka', 'IL', '48000','1000', '0'),"+
-			    			"('sophie@gmail.com', 'Sophie', 'Pierce','sophie1234', '1999-06-15', '2468', 'yolos street', 'ides', 'CM', '24680','1000', '0'),"+
-			    			"('angelo@gmail.com', 'Angelo', 'Francis','angelo1234', '2021-06-14', '4680', 'egypt street', 'lolas', 'DT', '13579','1000', '0'),"+
-			    			"('rudy@gmail.com', 'Rudy', 'Smith','rudy1234', '1706-06-05', '1234', 'sign street', 'samo ne tu','MH', '09876','1000', '0'),"+
-			    			"('jeannette@gmail.com', 'Jeannette ', 'Stone','jeannette1234', '2001-04-24', '0981', 'snoop street', 'kojik', 'HW', '87654','1000', '0'),"+
-			    			"('root', 'default', 'default','pass1234', '0000-00-00', '0000', 'Default', 'Default', '0', '00000','1000','1000000000');")
-			    			};
-
-                            //client table
-        String[] INITIAL = {"drop database if exists testdb; ",
-					        "create database testdb; ",
-					        "use testdb; ",
-					        "drop table if exists Client; ",
-                            ("CREATE TABLE Client if not exists Client( " +
-	                            "clientID INTEGER, NOT NULL, " + 
-	                            "clientEmail VarChar(50) NOT NULL, " +
-	                            "clientPassword VarChar(20) NOT NULL, " + 
-	                            "clientFirstName VarChar(20) NOT NULL, " +
-	                            "clientLastname VarChar(20) NOT NULL, " +
-	                            "clientAddress VarChar(50) NOT NULL, " +
-	                            "clientPayment VarChar(50), NOT NULL, " +
-	                            "clientPhone VarChar(10), NOT NULL, " +
-                                "PRIMARY KEY (clientID), "+"); ")
-
-
-                                //client examples
-
-                            };
-
-                            //contractor table
-        String[] INITIAL = {"drop database if exists testdb; ",
+    	String[] clientTUPLES = {
+    		     "INSERT INTO Client (clientID, clientEmail, clientPassword, clientFirstName, clientLastname, clientAddress, clientPayment, clientPhone) " +
+    		    	   "VALUES " +
+    		    	    		"('000', 'root', 'pass1234', 'default', 'default', 'default', '0000 0000 0000 0000', '000-000-0000'), " +
+    		    	    		"('111', 'john@gmail.com', 'john1234', 'John', 'Smith', '1273 success road, Detroit, MI 49202', '1112 1113 1114 1115', '248-454-7892'), " +
+    		    	    		"('222', 'breanna@gmail.com', 'breanna1234', 'Breanna', 'Walts', '1923 briggs street, Warren, MI 49502', '2222 2223 2224 2225', '517-724-0192'), " +
+    		    	    		"('333', 'logan@gmail.com', 'logan1234', 'Logan', 'Baker', '6413 greene sqaure, Troy, MI 48915', '3332 3333 3334 3335', '248-970-1137'), " +
+    		    	    		"('444', 'calire@gmail.com', 'claire1234', 'Claire', 'Fields', '1342 prime road, Detroit, MI 49203', '4442 4443 4444 4445', '586-431-3801'), " +
+    		    	    		"('555', 'alexa@gmail.com', 'alexa1234', 'Alexa', 'Ferguson', '3951 kohler street, Rochester, MI 48323', '5552 5553 5554 5555', '248-115-4328'), " +
+    		    	    		"('666', 'nathan@gmail.com', 'nathan1234', 'Nathan', 'Long', '8439 rennings road, New Baltimore, MI 49222', '6662 6663 6664 6665', '248-554-4182'), " +
+    		    	    		"('777', 'craig@gmail.com', 'craig1234', 'Craig', 'mcdaniel', '1233 tribune road, Flint, MI 43202', '7772 7773 7774 7775', '818-904-6122'), " +
+    		    	    		"('888', 'anna@gmail.com', 'anna1234', 'Anna', 'Hector', '1593 liberty circle, Commerce, MI 48312', '8882 8883 8884 8885', '248-144-2830'), " +
+    		    	    		"('999', 'justin@gmail.com', 'justin1234', 'Justin', 'Novil', '1963 peace road, Woxom, MI 48320', '9992 9993 9994 9995', '248-108-3349'), " +
+    		    	    		"('112', 'marie@gmail.com', 'marie1234', 'Marie', 'palmer', '1123 croten road, Dearborn, MI 433202', '2222 1113 1114 1115', '808-998-1274');"
+	    		    		};
+    		
+                           
+                            //contractor
+        String[] contractorINITIAL = {
+        		"drop database if exists testdb; ",
 					        "create database testdb; ",
 					        "use testdb; ",
 					        "drop table if exists Contractor; ",
                             ("CREATE TABLE Contractor if not exists Contractor( " +
                                 "clientID INTEGER NOT NULL, " +
                                 "FOREIGN KEY clientID REFERENCES Client(clientID), "+");")
+        					};
+        
+        String[] contractorTUPLES = {
+                "INSERT INTO Contractor (clientID) " +
+                		  "VALUES " +
+                		  				"('000'),"+
+                		  				"('111'),"+
+                		  				"('222'),"+
+                		  				"('333'),"+
+                		  				"('444'),"+
+                		  				"('555'),"+
+                		  				"('666'),"+
+                		  				"('777'),"+
+                		  				"('888'),"+
+                		  				"('999'),"+
+                		  				"('112');"
+                		    			};
 
-
-                            //contractor examples
-
-                             };
-
-        String[] INITIAL = {"drop database if exists testdb; ",
+                			//order
+        String[] orderinfoINITIAL = {
+        		"drop database if exists testdb; ",
 					        "create database testdb; ",
 					        "use testdb; ",
-					        "drop table if exists Order; ",
-                            ("CREATE TABLE Order if not exists Order( " + 
+					        "drop table if exists OrderInfo; ",
+                            ("CREATE TABLE OrderInfo if not exists Order( " + 
 	                            "contractID VARCHAR(20) NOT NULL, " +
                                 "clientID INTEGER NOT NULL, " +
                                 "FOREIGN KEY clientID REFERENCES Client(clientID), "+");")
-
-                            //order examples 
-
-                             };
+        					};
+                            
+        String[] orderinfoTUPLES = {
+                    "INSERT INTO Contractor (clientID) " +
+                               "VALUES " +
+                                    	    "('000', '0001-0001'),"+
+                        		    	    "('111', '1111-1112'),"+
+                        		    	    "('222', '2221-2222'),"+
+                        		    	    "('333', '3331-3332'),"+
+                        		    	    "('444', '4441-4442'),"+
+                        		    	    "('555', '5551-5552'),"+
+                        		    	    "('666', '6661-6662'),"+
+                        		    	    "('777', '7771-7772'),"+
+                        		    	    "('888', '8881-8882'),"+
+                        		    	    "('999', '9991-9992'),"+
+                        		    	    "('112', '1112-1113');"
+                        		    	};
 
 
                             //Bill table
-        String[] INITIAL = {"drop database if exists testdb; ",
+        String[] billINITIAL = {
+        		"drop database if exists testdb; ",
 					        "create database testdb; ",
 					        "use testdb; ",
 					        "drop table if exists Bill; ",
                             ("CREATE TABLE Bill( " +
+                                "clientID INTEGER NOT NULL, " + 
 	                            "amount INTEGER NOT NULL, " + 
                                 "status BIT DEFAULT False, " + 
-                                "clientID INTEGER NOT NULL, " + 
                                 "FORGEIGN KEY clientID REFERENCES Client(clientID), "+");")
-
-                            //bill examples
-
-                             };
- 
-        String[] INITIAL = {"drop database if exists testdb; ",
+        					};
+        
+        String[] billTUPLES = {
+        		"INSERT INTO Bill (clientID) " +
+        				"VALUES " +
+                    	    "('000', '000.00', '0'),"+
+        		    	    "('111', '1000.00', '1'),"+
+        		    	    "('222', '1200.00', '1'),"+
+        		    	    "('333', '800.00', '0'),"+
+        		    	    "('444', '300.00', '1'),"+
+        		    	    "('555', '900.00', '1'),"+
+        		    	    "('666', '400.00', '0'),"+
+        		    	    "('777', '850.00', '1'),"+
+        		    	    "('888', '700.00', '0'),"+
+        		    	    "('999', '300.00', '0'),"+
+        		    	    "('112', '1100.00', '0');"
+        		    	};
+                           
+        
+        			//Quote
+        String[] quoteINITIAL = {
+        		"drop database if exists testdb; ",
 					        "create database testdb; ",
 					        "use testdb; ",
 					        "drop table if exists Quote; ",                           
                             ("CREATE TABLE Quote( " +
+                                "clientID INTEGER NOT NULL, " + 
                                 "intprice DOUBLE NOT NULL, " + 
                                 "Timeframe VARCHAR() NOT NULL, " + 
-                                "clientID INTEGER NOT NULL, " + 
                                 "FOREIGN KEY clientID REFERENCES Client(clientID), "+");")
+        					};
+        
+       String[] quoteTUPLES = {
+                 "INSERT INTO Quote (clientID) " +
+                            "VALUES " +
+                                  "('000', '000.00', 'default'),"+
+                                  "('111', '1000.00', '1 week'),"+
+                                  "('222', '1200.00', '3 days'),"+
+                                  "('333', '800.00', '2 weeks'),"+
+                                  "('444', '300.00', '1 week'),"+
+                                  "('555', '900.00', '3 weeks'),"+
+                                  "('666', '400.00', '1 month'),"+
+                                  "('777', '850.00', '5 days'),"+
+                                  "('888', '700.00', '4 days'),"+
+                                  "('999', '300.00', '2 weeks'),"+
+                                  "('112', '1100.00', '1 week');"
+                            	};
 
 
-                            //quote examples
-
-                            }; 
-
-        					
+                        
+       					
         
         //for loop to put these in database
-        for (int i = 0; i < INITIAL.length; i++)
-        	statement.execute(INITIAL[i]);
-        for (int i = 0; i < TUPLES.length; i++)	
-        	statement.execute(TUPLES[i]);
+        for (int i = 0; i < userINITIAL.length; i++)
+        	statement.execute(userINITIAL[i]);
+        for (int i = 0; i < userTUPLES.length; i++)	
+        	statement.execute(userTUPLES[i]);
+        
+        for (int i = 0; i < clientINITIAL.length; i++)
+        	statement.execute(clientINITIAL[i]);
+        for (int i = 0; i < clientTUPLES.length; i++)	
+        	statement.execute(clientTUPLES[i]);
+        
+        for (int i = 0; i < contractorINITIAL.length; i++)
+        	statement.execute(contractorINITIAL[i]);
+        for (int i = 0; i < contractorTUPLES.length; i++)	
+        	statement.execute(contractorTUPLES[i]);
+        
+        for (int i = 0; i < orderinfoINITIAL.length; i++)
+        	statement.execute(orderinfoINITIAL[i]);
+        for (int i = 0; i < orderinfoTUPLES.length; i++)	
+        	statement.execute(orderinfoTUPLES[i]);
+        
+        for (int i = 0; i < billINITIAL.length; i++)
+        	statement.execute(billINITIAL[i]);
+        for (int i = 0; i < billTUPLES.length; i++)	
+        	statement.execute(billTUPLES[i]);
+        
+        for (int i = 0; i < quoteINITIAL.length; i++)
+        	statement.execute(quoteINITIAL[i]);
+        for (int i = 0; i < quoteTUPLES.length; i++)	
+        	statement.execute(quoteTUPLES[i]);
+        
         disconnect();
-    }
-    
-    
-   
-    
-    
-    
-    
-    
-	
-	
-
+}
 }
