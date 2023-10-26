@@ -513,6 +513,11 @@ public class userDAO
         for (int i = 0; i < orderinfoTUPLES.length; i++)	
         	statement.execute(orderinfoTUPLES[i]);
         
+        for (int i = 0; i < treeINITIAL.length; i++)
+        	statement.execute(treeINITIAL[i]);
+        for (int i = 0; i < treeTUPLES.length; i++)	
+        	statement.execute(treeTUPLES[i]);
+        
         for (int i = 0; i < billINITIAL.length; i++)
         	statement.execute(billINITIAL[i]);
         for (int i = 0; i < billTUPLES.length; i++)	
