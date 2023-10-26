@@ -15,7 +15,7 @@
 						<input type="text" name="email" size="45"  value="example@gmail.com" onfocus="this.value=''">
 					</td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<th>First Name: </th>
 					<td align="center" colspan="3">
 						<input type="text" name="firstName" size="45" value="FirstName" onfocus="this.value=''">
@@ -33,7 +33,7 @@
 						<input type="text" name="birthday" size="45" value="YYYY-MM-DD" onfocus="this.value=''">
 					</td>
 	
-				</tr>
+				</tr> -->
 				<tr>
 					<th>Password: </th>
 					<td align="center" colspan="3"> 
@@ -46,6 +46,12 @@
 						<input type="password" name="confirmation" size="45" value="password" onfocus="this.value=''">
 					</td>
 				
+				</tr>
+				 <tr>
+					<th>Role: </th>
+					<td align="center" colspan="3">
+						<input type="text" name="role" size="45" value="role" onfocus="this.value=''">
+					</td>
 				</tr>
 				<tr>
 					<td align="center" colspan="5">
