@@ -269,8 +269,8 @@ public class userDAO
         statement =  (Statement) connect.createStatement();
         
        String[] userINITIAL = {
-    		   	"drop database if exists testdb; ",
-    		   			"create database testdb; ",
+    		   	//"drop database if exists testdb; ",
+    		   			//"create database testdb; ",
     		   			"use testdb; ",
     		   			"drop table if exists User; ",
     		   			("CREATE TABLE IF NOT EXISTS User ( " +
@@ -302,25 +302,25 @@ public class userDAO
     		    	    		"('angelo@gmail.com', 'Angelo', 'Francis', 'angelo1234', '2021-06-14', '4680', 'egypt street', 'lolas', 'DT', '13579', 1000, 0), " +
     		    	    		"('rudy@gmail.com', 'Rudy', 'Smith', 'rudy1234', '1706-06-05', '1234', 'sign street', 'samo ne tu', 'MH', '09876', 1000, 0), " +
     		    	    		"('jeannette@gmail.com', 'Jeannette', 'Stone', 'jeannette1234', '2001-04-24', '0981', 'snoop street', 'kojik', 'HW', '87654', 1000, 0), " +
-    		    	    		"('root', 'default', 'default', 'pass1234', '0001-01-01', '0000', 'Default', 'Default', '0', '00000', 1000, 1000000000);"
+    		    	    		"('root', 'default', 'default', 'pass1234', '2021-01-01', '0000', 'Default', 'Default', '0', '00000', 1000, 1000000000);"
     		    			};
-    /*		    
-    		   
+    	    
+  		   
     		    //client 
     	String[] clientINITIAL = {
-    			"drop database if exists testdb; ",
-						"create database testdb; ",
+    			//"drop database if exists testdb; ",
+					//	"create database testdb; ",
 						"use testdb; ",
 						"drop table if exists Client; ",
-						("CREATE TABLE Client if not exists Client( " +
-								"clientID INTEGER NOT NULL, " + 
-								"clientEmail VarChar(50) NOT NULL, " +
+						("CREATE TABLE if not exists Client( " +
+								"clientID INTEGER, " + 
+								"clientEmail VARCHAR(50) NOT NULL, " +
 								"clientPassword VarChar(20) NOT NULL, " + 
 								"clientFirstName VarChar(20) NOT NULL, " +
 								"clientLastname VarChar(20) NOT NULL, " +
 								"clientAddress VarChar(50) NOT NULL, " +
 								"clientPayment VarChar(50), NOT NULL, " +
-								"clientPhone VarChar(10), NOT NULL, " +
+								"clientPhone VarChar(20), NOT NULL, " +
 								"PRIMARY KEY (clientID), "+"); ")
 							};
 
@@ -340,11 +340,11 @@ public class userDAO
     		    	    		"('112', 'marie@gmail.com', 'marie1234', 'Marie', 'palmer', '1123 croten road, Dearborn, MI 433202', '2222 1113 1114 1115', '808-998-1274');"
 	    		    		};
     		
-                           
+                       /*    
                             //contractor
         String[] contractorINITIAL = {
-        		"drop database if exists testdb; ",
-					        "create database testdb; ",
+        		//"drop database if exists testdb; ",
+					        //"create database testdb; ",
 					        "use testdb; ",
 					        "drop table if exists Contractor; ",
                             ("CREATE TABLE Contractor if not exists Contractor( " +
@@ -488,8 +488,8 @@ public class userDAO
                                   "('112', '1100.00', '1 week');"
                             	};
 
-
-         */               
+*/
+                      
        					
         
         //for loop to put these in database
@@ -497,12 +497,12 @@ public class userDAO
         	statement.execute(userINITIAL[i]);
         for (int i = 0; i < userTUPLES.length; i++)	
         	statement.execute(userTUPLES[i]);
-        /*
+       
         for (int i = 0; i < clientINITIAL.length; i++)
         	statement.execute(clientINITIAL[i]);
         for (int i = 0; i < clientTUPLES.length; i++)	
         	statement.execute(clientTUPLES[i]);
-        
+        /*
         for (int i = 0; i < contractorINITIAL.length; i++)
         	statement.execute(contractorINITIAL[i]);
         for (int i = 0; i < contractorTUPLES.length; i++)	
