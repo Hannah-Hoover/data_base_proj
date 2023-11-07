@@ -6,10 +6,10 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Contractor Activity page</title>
+<title>Client Activity page</title>
 </head>
 
-<center><h1>Welcome David! You have been successfully logged in</h1> </center>
+<center><h1>Welcome Client! You have been successfully logged in</h1> </center>
 
  
 	<body>
