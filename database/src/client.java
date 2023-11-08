@@ -1,4 +1,4 @@
-public class clients {
+public class client {
 	protected String password;
  	protected String email;
   protected String firstName;
@@ -10,22 +10,22 @@ public class clients {
 	
  
     //constructors
-    public clients() {
+    public client() {
     }
  
-    public clients(int clientID) 
+    public client(int clientID) 
     {
         this.clientID = clientID;
     }
     
-    public clients(int clientID, String email,String firstName, String lastName, String password, String address, String phone, String creditcard) 
+    public client(int clientID, String email,String firstName, String lastName, String password, String address, String phone, String creditcard) 
     {
     	this(email, firstName, lastName, password, address, phone, creditcard);
     	this.clientID = clientID; 
     }
  
 
-    public clients(String firstName, String lastName, String password, String address, String phone, String creditcard, String creditcard2) 
+    public client(String firstName, String lastName, String password, String address, String phone, String creditcard, String creditcard2) 
     {
     	this.firstName = firstName;
     	this.lastName = lastName;

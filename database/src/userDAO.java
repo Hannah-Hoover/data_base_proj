@@ -31,6 +31,7 @@ public class userDAO
 	private Statement statement = null;
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
+	private ResultSet treeCount= null;
 	
 	public userDAO(){}
 	
@@ -109,9 +110,34 @@ public class userDAO
         return listUser;
             
         }
-  
-  
-       
+    public List<tree> listAllTrees() throws SQLException {
+        List<tree> listTree = new ArrayList<tree>();        
+        String sql = "SELECT * FROM Tree";      
+        connect_func();      
+        statement = (Statement) connect.createStatement();
+        ResultSet treeCount = statement.executeQuery(sql);
+         
+        while (treeCount.next()){
+        	String location = treeCount.getString("location");
+            String height = treeCount.getString("height");
+            String proximity = treeCount.getString("proximity");
+            String sizeDiameter = treeCount.getString("diameter");
+        	String location = treeCount.getString("location");
+            String height = treeCount.getString("height");
+            String proximity = treeCount.getString("proximity");
+            String sizeDiameter = treeCount.getString("diameter");
+           
+            
+           
+            
+            tree trees = new tree(location,height,proximity,sizeDiameter,photodata1,photodata2,photodata3);
+            listTree.add(tree);
+            }
+        treeCount.close();
+        disconnect();        
+        return listTree;
+            
+        }
     
     protected void disconnect() throws SQLException {
         if (connect != null && !connect.isClosed()) {

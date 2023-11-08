@@ -1,63 +1,87 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Quote Request form</title>
+<title>Quote request form</title>
 </head>
 <body>
-    <h2>Each tree will have it's own form</h2>
-    <label for="formCount">Number of trees in request:</label>
-    <input type="number" id="formCount" name="formCount" min="1" required>
-    <button onclick="generateForms()">Generate Forms</button>
-    <div id="formContainer"></div>
-    
-    <script>
-        function generateForms() {
-            const formCount = document.getElementById('formCount').value;
-            const formContainer = document.getElementById('formContainer');
-            formContainer.innerHTML = ''; // Clear previous forms
-
-            for (let i = 1; i <= formCount; i++) {
-                const form = document.createElement('form');
-                form.action = '/submit';
-                form.method = 'post';
-                form.enctype = 'multipart/form-data';
-
-                form.innerHTML = `
-                    <label for="location${i}">Location of tree:</label>
-                    <input type="text" id="location${i}" name="location${i}" required><br><br>
-                    
-                    
-                    <label for="height${i}">Tree height (m):</label>
-                    <input type="number" id="height${i}" name="height${i}" required><br><br>
-
-                    <label for="proximity${i}">Proximity to house (m):</label>
-                    <input type="number" id="proximity${i}" name="proximity${i}" required><br><br>
-
-                    <label for="diameter${i}">Tree diameter (m):</label>
-                    <input type="number" id="diameter${i}" name="diameter${i}" required><br><br>
-                    
-          
-                    <label for="note${i}">Note:</label>
-                    <textarea id="note${i}" name="note${i}" rows="4" cols="50" required></textarea><br><br>
-                    
-          
-                    <label for="photo${i}_1">Photo 1:</label>
-                    <input type="file" id="photo${i}_1" name="photo${i}_1" accept="image/*" required><br><br>
-                    
-                    <label for="photo${i}_2">Photo 2:</label>
-                    <input type="file" id="photo${i}_2" name="photo${i}_2" accept="image/*" required><br><br>
-                    
-              
-                    
-                    <hr>
-                `;
-                formContainer.appendChild(form);
-            }
-        }
-    </script>
+ <center>	<h1> Welcome to quote request page </h1> </center>
+	<div align="center">
+		<form action="request" method="post">
+			<table border="1" cellpadding="5">
+				<tr>
+					<th>
+						<label for="treeCount">Number of trees in the request:</label>
+   			    		<input type="number" id="treeCount" name="treeCount" min="1" required>
+   			    		<input type="submit" value="Generate tree forms">
+   			    	</th>
+				</tr>
+			</table>
+			<a href="clientactivitypage.jsp" target="_self">Client dashboard</a>
+		</form>
+	</div>
 </body>
 </html>
+
+<div align="center" id="formContainer">
+    <c:forEach begin="1" end="${treeCount}" var="i">
+        <form action="request" method="post">
+            <table border="1" cellpadding="5">
+                <tr>
+                    <th>Location of Tree:</th>
+                    <td colspan="3">
+                        <input type="text" name="location${i}" size="45" placeholder="Location of Tree" required>
+                    </td>
+                </tr>
+                 <tr>
+                    <th>Height of Tree:</th>
+                    <td colspan="3">
+                        <input type="text" name="height${i}" size="45" placeholder="Height of Tree" required>
+                    </td>
+                </tr>
+                 <tr>
+                    <th>Proximity to house:</th>
+                    <td colspan="3">
+                        <input type="text" name="proximity${i}" size="45" placeholder="Proximity" required>
+                    </td>
+                </tr>
+                 <tr>
+                    <th>Tree Photo 1:</th>
+                    <td colspan="3">
+                        <input type="text" name="photodata1${i}" size="45" placeholder="Tree photo 1" required>
+                    </td>
+                </tr>
+                   <tr>
+                    <th>Tree Photo 2:</th>
+                    <td colspan="3">
+                        <input type="text" name="photodata2${i}" size="45" placeholder="Tree photo 2" required>
+                    </td>
+                </tr>
+                   <tr>
+                    <th>Tree Photo 3:</th>
+                    <td colspan="3">
+                        <input type="text" name="photodata3${i}" size="45" placeholder="Tree photo 3" required>
+                    </td>
+                </tr>
+                   <tr>
+                    <th>Diameter of Tree:</th>
+                    <td colspan="3">
+                        <input type="text" name="diameter${i}" size="45" placeholder="Diameter of Tree" required>
+                    </td>
+                </tr>
+                 <tr>
+                    <th>Note:</th>
+                    <td colspan="3">
+                        <input type="text" name="note${i}" size="45" placeholder="note" required>
+                    </td>
+                </tr>
+            </table>
+            <hr>
+        </form>
+    </c:forEach>
+</div>
+
+
+

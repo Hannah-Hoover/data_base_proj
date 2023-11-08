@@ -68,6 +68,10 @@ public class ControlServlet extends HttpServlet {
                  System.out.println("The action is: list");
                  listUser(request, response);           	
                  break;
+        	 case "/request":
+        		 System.out.println("The action is: request");
+        		 requestQuote(request, response);
+        		 break;
 	    	}
 	    }
 	    catch(Exception ex) {
@@ -87,6 +91,20 @@ public class ControlServlet extends HttpServlet {
 	     
 	        System.out.println("listPeople finished: 111111111111111111111111111111111111");
 	    }
+	    
+	    private void listRequest(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("listRequest started: 00000000000000000000000000000000000");
+
+	     
+	        List<request> listRequest = userDAO.listAllRequests();
+	        request.setAttribute("listRequest", listRequest);       
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("clientquote.jsp");       
+	        dispatcher.forward(request, response);
+	     
+	        System.out.println("listRequest finished: 111111111111111111111111111111111111");
+	    }
+	    	   
 	    	        
 	    private void rootPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
 	    	System.out.println("root view");
@@ -150,7 +168,46 @@ public class ControlServlet extends HttpServlet {
 	   		 request.setAttribute("errorTwo","Registration failed: Password and Password Confirmation do not match.");
 	   		 request.getRequestDispatcher("register.jsp").forward(request, response);
 	   	 	}
-	    }    
+	    }  
+	    
+	    private void request(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+	        int treeCount = Integer.parseInt(request.getParameter("treeCount"));
+	        
+	        // List to store error messages
+	        List<String> errorMessages = new ArrayList<>();
+
+	        for (int i = 1; i <= treeCount; i++) {
+	            // Process each tree's data
+	            String location = request.getParameter("location" + i);
+	            String height = request.getParameter("height" + i);
+	            String proximity = request.getParameter("proximity" + i);
+	            String sizeDiameter = request.getParameter("diameter" + i);
+	        	String photodata1 = request.getParameter("Photo 1");
+	            String photodata2 = request.getParameter("Photo 2");
+	            String photodata3 = request.getParameter("Photo 3");
+	            String note = request.getParameter("note" + i);
+	           
+
+	            // Validate and process the data for each tree
+	            // You can add error messages to the errorMessages list if needed
+
+	            // You can also perform database operations to store the data for each tree
+
+	            // For example, you might want to add error messages if validation fails
+	            if (location == null || location.isEmpty()) {
+	                errorMessages.add("Location for tree " + i + " is required.");
+	            }
+
+	            // Add more validation and database operations as needed for each tree
+	            else {
+	            // Display error messages
+	            request.setAttribute("treeCount", treeCount);
+	            request.getRequestDispatcher("clientquote.jsp").forward(request, response);
+	            }
+	        }
+	    }     
+
+	    
 	    private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 	    	currentUser = "";
         		response.sendRedirect("login.jsp");
