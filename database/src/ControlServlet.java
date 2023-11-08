@@ -70,7 +70,7 @@ public class ControlServlet extends HttpServlet {
                  break;
         	 case "/request":
         		 System.out.println("The action is: request");
-        		 requestQuote(request, response);
+        		 request(request, response);
         		 break;
 	    	}
 	    }
@@ -194,12 +194,12 @@ public class ControlServlet extends HttpServlet {
 	            // You can also perform database operations to store the data for each tree
 
 	            // For example, you might want to add error messages if validation fails
-	            if (location == null || location.isEmpty()) {
-	                errorMessages.add("Location for tree " + i + " is required.");
-	            }
+	           // if (location == null || location.isEmpty()) {
+	           //     errorMessages.add("Location for tree " + i + " is required.");
+	           // }
 
 	            // Add more validation and database operations as needed for each tree
-	            else {
+	           // else {
 	            // Display error messages
 	            request.setAttribute("treeCount", treeCount);
 	            request.getRequestDispatcher("clientquote.jsp").forward(request, response);
