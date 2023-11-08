@@ -14,6 +14,7 @@
  
 	<body>
 	 <center>
+	 	 <a href="clientquote.jsp"target ="_self" > Quote Request</a><br><br> 
 		 <a href="login.jsp"target ="_self" > logout</a><br><br> 
 		 <p> You can show all the transactions or other attributes here like balance, name of the user and others.</p>
 		 </center>

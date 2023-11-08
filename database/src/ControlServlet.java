@@ -99,7 +99,7 @@ public class ControlServlet extends HttpServlet {
 	     
 	        List<request> listRequest = userDAO.listAllRequests();
 	        request.setAttribute("listRequest", listRequest);       
-	        RequestDispatcher dispatcher = request.getRequestDispatcher("clientquote.jsp");       
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("RequestList.jsp");       
 	        dispatcher.forward(request, response);
 	     
 	        System.out.println("listRequest finished: 111111111111111111111111111111111111");
@@ -111,49 +111,68 @@ public class ControlServlet extends HttpServlet {
 			request.setAttribute("listUser", userDAO.listAllUsers());
 	    	request.getRequestDispatcher("rootView.jsp").forward(request, response);
 	    }
+	    private void contractorPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
+	    	System.out.println("contractor view");
+			request.setAttribute("listUser", userDAO.listAllUsers());
+	    	request.getRequestDispatcher("activitypage.jsp").forward(request, response);
+	    }
 	    
-	    
-	    protected void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+	    private void clientPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
+	    	System.out.println("client view");
+			request.setAttribute("listUser", userDAO.listAllUsers());
+	    	request.getRequestDispatcher("clientactivitypage.jsp").forward(request, response);
+	    }
+	   
+	   protected void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	 String email = request.getParameter("email");
 	    	 String password = request.getParameter("password");
 	    	 
-	    	 if (email.equals("root") && password.equals("pass1234")) {
-				 System.out.println("Login Successful! Redirecting to root");
-				 session = request.getSession();
-				 session.setAttribute("username", email);
-				 rootPage(request, response, "");
-	    	 }
-	    	 else if(userDAO.isValid(email, password)) 
-	    	 {
-			 	 
-			 	 currentUser = email;
-				 System.out.println("Login Successful! Redirecting");
-				 request.getRequestDispatcher("activitypage.jsp").forward(request, response);
-			 			 			 			 
-	    	 }
-	    	 else {
-	    		 request.setAttribute("loginStr","Login Failed: Please check your credentials.");
-	    		 request.getRequestDispatcher("login.jsp").forward(request, response);
-	    	 }
-	    }
-	           
+	    	 user user= userDAO.getUser(email);
+	    
+	    	 
+	    	 if (user != null && user.getPassword().equals(password)) {
+	    	        // Valid user, set session attributes
+	    	        session = request.getSession();
+	    	        session.setAttribute("username", email);
+	    	        session.setAttribute("role", user.getRole());
+
+	    	        // Redirect based on the user's role
+	    	        if ("root".equals(email) && "admin".equals(user.getRole())) {
+	    	            System.out.println("Login Successful! Redirecting to root");
+	    	            rootPage(request, response, "");
+	    	        } else if ("david@gmail.com".equals(email) && "contractor".equals(user.getRole())) {
+	    	            System.out.println("Login Successful! Redirecting to contractor page");
+	    	            contractorPage(request, response, "");
+	    	        } else {
+	    	            System.out.println("Login Successful! Redirecting to client page");
+	    	            clientPage(request, response, "");
+	    	        }
+	    	    } else {
+	    	        request.setAttribute("loginStr", "Login Failed: Please check your credentials.");
+	    	        request.getRequestDispatcher("login.jsp").forward(request, response);
+	    	    }
+	    	}
+	          
 	    private void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	String email = request.getParameter("email");
 	   	 	String firstName = request.getParameter("firstName");
 	   	 	String lastName = request.getParameter("lastName");
 	   	 	String password = request.getParameter("password");
 	   	 	String birthday = request.getParameter("birthday");
+	   	 	String role = request.getParameter("role");
+	   	 	//role = (role != null && role.equals("")) ? role : "client";
 	   	 	String adress_street_num = request.getParameter("adress_street_num"); 
 	   	 	String adress_street = request.getParameter("adress_street"); 
 	   	 	String adress_city = request.getParameter("adress_city"); 
 	   	 	String adress_state = request.getParameter("adress_state"); 
 	   	 	String adress_zip_code = request.getParameter("adress_zip_code"); 	   	 	
 	   	 	String confirm = request.getParameter("confirmation");
+	   	 
 	   	 	
 	   	 	if (password.equals(confirm)) {
 	   	 		if (!userDAO.checkEmail(email)) {
 		   	 		System.out.println("Registration Successful! Added to database");
-		            user users = new user(email,firstName, lastName, password, birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, 1000,0);
+		            user users = new user(email,firstName, lastName, password, birthday, role, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, 1000,0);
 		   	 		userDAO.insert(users);
 		   	 		response.sendRedirect("login.jsp");
 	   	 		}
@@ -186,26 +205,13 @@ public class ControlServlet extends HttpServlet {
 	            String photodata2 = request.getParameter("Photo 2");
 	            String photodata3 = request.getParameter("Photo 3");
 	            String note = request.getParameter("note" + i);
-	           
-
-	            // Validate and process the data for each tree
-	            // You can add error messages to the errorMessages list if needed
-
-	            // You can also perform database operations to store the data for each tree
-
-	            // For example, you might want to add error messages if validation fails
-	           // if (location == null || location.isEmpty()) {
-	           //     errorMessages.add("Location for tree " + i + " is required.");
-	           // }
-
-	            // Add more validation and database operations as needed for each tree
-	           // else {
-	            // Display error messages
+	        
 	            request.setAttribute("treeCount", treeCount);
 	            request.getRequestDispatcher("clientquote.jsp").forward(request, response);
-	            }
 	        }
-	    }     
+	    }
+	       
+	        
 
 	    
 	    private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {

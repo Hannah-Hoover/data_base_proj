@@ -110,9 +110,9 @@ public class userDAO
         return listUser;
             
         }
-    public List<tree> listAllTrees() throws SQLException {
-        List<tree> listTree = new ArrayList<tree>();        
-        String sql = "SELECT * FROM Tree";      
+    public List<request> listAllRequests() throws SQLException {
+        List<request> listRequest = new ArrayList<request>();        
+        String sql = "SELECT * FROM Request";      
         connect_func();      
         statement = (Statement) connect.createStatement();
         ResultSet treeCount = statement.executeQuery(sql);
@@ -122,25 +122,25 @@ public class userDAO
             String height = treeCount.getString("height");
             String proximity = treeCount.getString("proximity");
             String sizeDiameter = treeCount.getString("diameter");
-        	String location = treeCount.getString("location");
-            String height = treeCount.getString("height");
-            String proximity = treeCount.getString("proximity");
-            String sizeDiameter = treeCount.getString("diameter");
+        	String photodata1= treeCount.getString("photodata1");
+            String photodata2 = treeCount.getString("photodata2");
+            String photodata3 = treeCount.getString("photodata3");
            
             
-           
-            
-            tree trees = new tree(location,height,proximity,sizeDiameter,photodata1,photodata2,photodata3);
-            listTree.add(tree);
+            request request = new request(location,height,proximity,sizeDiameter,photodata1,photodata2,photodata3);
+            listRequest.add(request);
             }
         treeCount.close();
         disconnect();        
-        return listTree;
+        return listRequest;
             
         }
     
     protected void disconnect() throws SQLException {
         if (connect != null && !connect.isClosed()) {
+        	if (statement != null) {
+        	statement.close();
+        	}
         	connect.close();
         }
     }
@@ -206,6 +206,8 @@ public class userDAO
         String sql = "SELECT * FROM User WHERE email = ?";
          
         connect_func();
+        
+        try {
          
         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
         preparedStatement.setString(1, email);
@@ -217,6 +219,7 @@ public class userDAO
             String lastName = resultSet.getString("lastName");
             String password = resultSet.getString("password");
             String birthday = resultSet.getString("birthday");
+            String role= resultSet.getString("role");
             String adress_street_num = resultSet.getString("adress_street_num"); 
             String adress_street = resultSet.getString("adress_street"); 
             String adress_city = resultSet.getString("adress_city"); 
@@ -224,11 +227,18 @@ public class userDAO
             String adress_zip_code = resultSet.getString("adress_zip_code"); 
             int cash_bal = resultSet.getInt("cash_bal");
             int PPS_bal = resultSet.getInt("PPS_bal");
-            user = new user(email, firstName, lastName, password, birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code,cash_bal,PPS_bal);
+            user = new user(email, firstName, lastName, password, birthday, role, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code,cash_bal,PPS_bal);
         }
+    
+    }finally {
+    	if (preparedStatement != null) {
+    		preparedStatement.close();
+    	}
+    	disconnect();
+    }
          
-        resultSet.close();
-        statement.close();
+        //resultSet.close();
+      //  statement.close();
          
         return user;
     }

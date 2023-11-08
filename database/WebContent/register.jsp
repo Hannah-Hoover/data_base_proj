@@ -49,10 +49,8 @@
 				</tr>
 				 <tr>
 					<th>Role: </th>
-					<td>
-						<label><input type="radio" name="role" size="45" value="client">Client</label>
-						<label><input type="radio" name="role" size="45" value="contractor">Contractor</label>
-						<label><input type="radio" name="role" size="45" value="admin">Admin</label>
+					<td>align="center" colspan="3">
+						<input type="text" name="role" size="45" value="role" onfocus="this.value=''">
 					</td>
 				</tr>
 				<tr>

@@ -19,13 +19,9 @@
    			    	</th>
 				</tr>
 			</table>
-			<a href="clientactivitypage.jsp" target="_self">Client dashboard</a>
 		</form>
 	</div>
-</body>
-</html>
-
-<div align="center" id="formContainer">
+	<div align="center" id="formContainer">
     <c:forEach begin="1" end="${treeCount}" var="i">
         <form action="request" method="post">
             <table border="1" cellpadding="5">
@@ -77,11 +73,16 @@
                         <input type="text" name="note${i}" size="45" placeholder="note" required>
                     </td>
                 </tr>
+                <a href="clientactivitypage.jsp" target="_self">Client dashboard</a>
+                <a href="login.jsp"target ="_self" > logout</a><br><br> 
             </table>
             <hr>
         </form>
     </c:forEach>
 </div>
+</body>
+</html>
+
 
 
 
