@@ -110,7 +110,7 @@ public class userDAO
         return listUser;
             
         }
-    public List<request> listAllRequests() throws SQLException {
+ /*   public List<request> listAllRequests() throws SQLException {
         List<request> listRequest = new ArrayList<request>();        
         String sql = "SELECT * FROM Request";      
         connect_func();      
@@ -135,7 +135,7 @@ public class userDAO
         return listRequest;
             
         }
-    
+    */
     protected void disconnect() throws SQLException {
         if (connect != null && !connect.isClosed()) {
         	if (statement != null) {
