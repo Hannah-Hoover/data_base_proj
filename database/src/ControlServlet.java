@@ -23,13 +23,12 @@ import java.sql.PreparedStatement;
 public class ControlServlet extends HttpServlet {
 	    private static final long serialVersionUID = 1L;
 	    private userDAO userDAO = new userDAO();
+	    private quotesDAO quotesDAO = new quotesDAO();
+	    private clientDAO clientDAO = new clientDAO();
 	    private String currentUser;
 	    private HttpSession session=null;
 	    
-	    public ControlServlet()
-	    {
-	    	
-	    }
+	    public ControlServlet(){}
 	    
 	    public void init()
 	    {
@@ -87,6 +86,19 @@ public class ControlServlet extends HttpServlet {
 	        List<user> listUser = userDAO.listAllUsers();
 	        request.setAttribute("listUser", listUser);       
 	        RequestDispatcher dispatcher = request.getRequestDispatcher("UserList.jsp");       
+	        dispatcher.forward(request, response);
+	     
+	        System.out.println("listPeople finished: 111111111111111111111111111111111111");
+	    }
+	    
+	    private void listQuotes(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("listUser started: 00000000000000000000000000000000000");
+
+	     
+	        List<quotes> listQuotes = quotesDAO.listQuotes();
+	        request.setAttribute("listQuotes", listQuotes);       
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
 	        dispatcher.forward(request, response);
 	     
 	        System.out.println("listPeople finished: 111111111111111111111111111111111111");
@@ -187,49 +199,29 @@ public class ControlServlet extends HttpServlet {
 	    }  
 	    
 	    private void request(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-	    		int id= Integer.parseInt(request.getParameter("id"));
-	            String location = request.getParameter("location");
-	            String height = request.getParameter("height");
-	            String proximity = request.getParameter("proximity");
-	            String sizeDiameter = request.getParameter("diameter");
+	        int treeCount = Integer.parseInt(request.getParameter("treeCount"));
+	        
+	        // List to store error messages
+	        List<String> errorMessages = new ArrayList<>();
+
+	        for (int i = 1; i <= treeCount; i++) {
+	            // Process each tree's data
+	            String location = request.getParameter("location" + i);
+	            String height = request.getParameter("height" + i);
+	            String proximity = request.getParameter("proximity" + i);
+	            String sizeDiameter = request.getParameter("diameter" + i);
 	        	String photodata1 = request.getParameter("Photo 1");
 	            String photodata2 = request.getParameter("Photo 2");
 	            String photodata3 = request.getParameter("Photo 3");
-	            String note = request.getParameter("note");
-	            
-	            request requests = new request(id,location,height,proximity,sizeDiameter,photodata1,photodata2,photodata3,note);
-	            userDAO.insert(requests);
-	            System.out.println("Request Successful! Added to database");
+	            String note = request.getParameter("note" + i);
 	        
-	            request.setAttribute("errorOne", "Request failed: try again");
+	            request.setAttribute("treeCount", treeCount);
 	            request.getRequestDispatcher("clientquote.jsp").forward(request, response);
-	        
+	        }
 	    }
-	       
-	        
-
 	    
 	    private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 	    	currentUser = "";
         		response.sendRedirect("login.jsp");
-        	}
-	
-	    
-
-	     
-        
-	    
-	    
-	    
-	    
-	    
+        	}    
 }
-	        
-	        
-	    
-	        
-	        
-	        
-	    
-
-
