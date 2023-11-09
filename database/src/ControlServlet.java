@@ -25,6 +25,7 @@ public class ControlServlet extends HttpServlet {
 	    private userDAO userDAO = new userDAO();
 	    private quotesDAO quotesDAO = new quotesDAO();
 	    private clientDAO clientDAO = new clientDAO();
+	    private contractorDAO contractorDAO = new contractorDAO();
 	    private String currentUser;
 	    private HttpSession session=null;
 	    
@@ -139,6 +140,22 @@ public class ControlServlet extends HttpServlet {
 	    	 String email = request.getParameter("email");
 	    	 String password = request.getParameter("password");
 	    	 
+	    	 if(email.equals("david@gmail.com")) {
+	    		 contractor contractor = contractorDAO.getContractor(email);
+	    		 if (contractor != null && contractor.getPassword().equals(password)) {
+		    	        // Valid user, set session attributes
+		    	        session = request.getSession();
+		    	        session.setAttribute("username", email);
+		    	        System.out.println("Login Successful! Redirecting to contractor page");
+		    	        contractorPage(request, response, "");}
+		    	 }
+	    	 else{
+		    	        request.setAttribute("loginStr", "Login Failed: Please check your credentials.");
+		    	        request.getRequestDispatcher("login.jsp").forward(request, response);
+		    	 }
+	    	 
+	    	 /*}else{
+	    	 
 	    	 client client= clientDAO.getClient(email);
 	    
 	    	 
@@ -162,6 +179,8 @@ public class ControlServlet extends HttpServlet {
 	    	        request.setAttribute("loginStr", "Login Failed: Please check your credentials.");
 	    	        request.getRequestDispatcher("login.jsp").forward(request, response);
 	    	    }
+	    	 }
+	    	 */
 	    	}
 	          
 	    private void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
@@ -181,6 +200,25 @@ public class ControlServlet extends HttpServlet {
 	   	 				System.out.println("Registration Successful! Added to database");
 	   	 				client clients = new client(email,firstName, lastName, password, address, creditcard, phone);
 	   	 				clientDAO.insertClient(clients);
+	   	 				response.sendRedirect("login.jsp"); 
+	   	 			}
+	   	 			else {
+	   	 				System.out.println("Username taken, please enter new username");
+		   	 			request.setAttribute("errorOne","Registration failed: Username taken, please enter a new username.");
+		   	 			request.getRequestDispatcher("register.jsp").forward(request, response);
+	   	 			}
+	   	 		}
+	   	 		else {
+	   	 		System.out.println("Password and Password Confirmation do not match");
+	   	 		request.setAttribute("errorTwo","Registration failed: Password and Password Confirmation do not match.");
+	   	 		request.getRequestDispatcher("register.jsp").forward(request, response);
+	   	 		} 
+	   	 	}else if(role.equals("contractor")) {
+	   	 		if (password.equals(confirm)) {
+	   	 			if (!contractorDAO.checkContractorEmail(email)) {
+	   	 				System.out.println("Registration Successful! Added to database");
+	   	 				contractor contractors = new contractor(email,firstName, lastName, password) ;
+	   	 				contractorDAO.insertContractor(contractors);
 	   	 				response.sendRedirect("login.jsp"); 
 	   	 			}
 	   	 			else {
