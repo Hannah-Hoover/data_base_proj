@@ -127,7 +127,42 @@ public class clientDAO {
 			preparedStatement.executeUpdate();
 	        preparedStatement.close();
 	    }
+
+		    public client getClient(String email) throws SQLException {
+	    	client client = null;
+	        String sql = "SELECT * FROM Client WHERE email = ?";
+	         
+	        connect_func();
+	        
+	        try {
+	         
+	        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+	        preparedStatement.setString(1, email);
+	         
+	        ResultSet resultSet = preparedStatement.executeQuery();
+	         
+	        if (resultSet.next()) {
+	            String firstName = resultSet.getString("firstName");
+	            String lastName = resultSet.getString("lastName");
+	            String password = resultSet.getString("password");
+	            String address = resultSet.getString("address"); 
+	            String creditcard = resultSet.getString("creditcard"); 
+	            String phone = resultSet.getString("phone"); 
+	            client = new client(email, firstName, lastName, password, address,  creditcard,  phone);
+	        }
 	    
+	    }finally {
+	    	if (preparedStatement != null) {
+	    		preparedStatement.close();
+	    	}
+	    	disconnect();
+	    }
+	         
+	        //resultSet.close();
+	      //  statement.close();
+	         
+	        return client;
+	    }
 	    public boolean checkClientEmail(String email) throws SQLException {
 	    	boolean checks = false;
 	    	String sql = "SELECT * FROM Client WHERE email = ?";
