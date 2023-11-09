@@ -110,34 +110,7 @@ public class userDAO
         return listUser;
             
         }
-    public List<request> listAllRequests() throws SQLException {
-    	System.out.println("\n \n userDAO.listAllRequests() is called.");
-        List<request> listRequest = new ArrayList<request>();        
-        String sql = "SELECT * FROM Request";      
-        connect_func();      
-        statement = (Statement) connect.createStatement();
-        ResultSet treeCount = statement.executeQuery(sql);
-         
-        while (treeCount.next()){
-        	int id= treeCount.getInt("id");
-        	String location = treeCount.getString("location");
-            String height = treeCount.getString("height");
-            String proximity = treeCount.getString("proximity");
-            String sizeDiameter = treeCount.getString("diameter");
-        	String photodata1= treeCount.getString("photodata1");
-            String photodata2 = treeCount.getString("photodata2");
-            String photodata3 = treeCount.getString("photodata3");
-            String note= treeCount.getString("note");
-           
-            
-            request requests = new request(id,location,height,proximity,sizeDiameter,photodata1,photodata2,photodata3,note);
-            listRequest.add(requests);
-            }
-        treeCount.close();
-        disconnect();        
-        return listRequest;
-            
-        }
+    
     
     protected void disconnect() throws SQLException {
         if (connect != null && !connect.isClosed()) {
@@ -170,23 +143,7 @@ public class userDAO
     }
     
     
-    public void insert(request requests) throws SQLException {
-    	connect_func("root","pass1234");         
-		String sql = "insert into Request(id,location,height,proximity,sizeDiameter,photodata1,photodata2,photodata3,note) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-			preparedStatement.setInt(1, requests.getId());
-			preparedStatement.setString(2, requests.getLocation());
-			preparedStatement.setString(3, requests.getHeight());
-			preparedStatement.setString(4, requests.getProximity());
-			preparedStatement.setString(5, requests.getSizeDiameter());
-			preparedStatement.setString(6, requests.getPhotodata1());		
-			preparedStatement.setString(7, requests.getPhotodata2());		
-			preparedStatement.setString(8, requests.getPhotodata3());		
-			preparedStatement.setString(9, requests.getNote());			
-
-		preparedStatement.executeUpdate();
-        preparedStatement.close();
-    }
+   
     
     public boolean delete(String email) throws SQLException {
         String sql = "DELETE FROM User WHERE email = ?";        
@@ -351,7 +308,7 @@ public class userDAO
 			            "); ",
 					"drop table if exists Client; ",
 					"CREATE TABLE if not exists Client( " +
-							"clientID INTEGER AUTO_INCREMENT PRIMARY KEY, " + 
+							"clientID INT AUTO_INCREMENT PRIMARY KEY, " + 
 							"email VarChar(50) NOT NULL, " +
 							"password VarChar(20) NOT NULL, " + 
 							"firstName VarChar(20) NOT NULL, " +
@@ -406,17 +363,17 @@ String[] TUPLES = {"insert into User(email, firstName, lastName, password, birth
 	    			"('root', 'default', 'default','pass1234', '2021-01-01', '0000', 'Default', 'Default', '0', '00000','1000','1000000000');",
 			"INSERT INTO Client (clientID, email, password, firstName, lastName, address, creditcard, phone) " +
  		    	   "VALUES " +
- 		    	    		"('000', 'root', 'pass1234', 'default', 'default', 'default', '0000 0000 0000 0000', '000-000-0000'), " +
- 		    	    		"('111', 'john@gmail.com', 'john1234', 'John', 'Smith', '1273 success road, Detroit, MI 49202', '1112 1113 1114 1115', '248-454-7892'), " +
- 		    	    		"('222', 'breanna@gmail.com', 'breanna1234', 'Breanna', 'Walts', '1923 briggs street, Warren, MI 49502', '2222 2223 2224 2225', '517-724-0192'), " +
- 		    	    		"('333', 'logan@gmail.com', 'logan1234', 'Logan', 'Baker', '6413 greene sqaure, Troy, MI 48915', '3332 3333 3334 3335', '248-970-1137'), " +
- 		    	    		"('444', 'calire@gmail.com', 'claire1234', 'Claire', 'Fields', '1342 prime road, Detroit, MI 49203', '4442 4443 4444 4445', '586-431-3801'), " +
- 		    	    		"('555', 'alexa@gmail.com', 'alexa1234', 'Alexa', 'Ferguson', '3951 kohler street, Rochester, MI 48323', '5552 5553 5554 5555', '248-115-4328'), " +
- 		    	    		"('666', 'nathan@gmail.com', 'nathan1234', 'Nathan', 'Long', '8439 rennings road, New Baltimore, MI 49222', '6662 6663 6664 6665', '248-554-4182'), " +
- 		    	    		"('777', 'craig@gmail.com', 'craig1234', 'Craig', 'mcdaniel', '1233 tribune road, Flint, MI 43202', '7772 7773 7774 7775', '818-904-6122'), " +
- 		    	    		"('888', 'anna@gmail.com', 'anna1234', 'Anna', 'Hector', '1593 liberty circle, Commerce, MI 48312', '8882 8883 8884 8885', '248-144-2830'), " +
- 		    	    		"('999', 'justin@gmail.com', 'justin1234', 'Justin', 'Novil', '1963 peace road, Woxom, MI 48320', '9992 9993 9994 9995', '248-108-3349'), " +
- 		    	    		"('112', 'marie@gmail.com', 'marie1234', 'Marie', 'palmer', '1123 croten road, Dearborn, MI 433202', '2222 1113 1114 1115', '808-998-1274');",
+ 		    	    		"('root', 'pass1234', 'default', 'default', 'default', '0000 0000 0000 0000', '000-000-0000'), " +
+ 		    	    		"('john@gmail.com', 'john1234', 'John', 'Smith', '1273 success road, Detroit, MI 49202', '1112 1113 1114 1115', '248-454-7892'), " +
+ 		    	    		"('breanna@gmail.com', 'breanna1234', 'Breanna', 'Walts', '1923 briggs street, Warren, MI 49502', '2222 2223 2224 2225', '517-724-0192'), " +
+ 		    	    		"('logan@gmail.com', 'logan1234', 'Logan', 'Baker', '6413 greene sqaure, Troy, MI 48915', '3332 3333 3334 3335', '248-970-1137'), " +
+ 		    	    		"('calire@gmail.com', 'claire1234', 'Claire', 'Fields', '1342 prime road, Detroit, MI 49203', '4442 4443 4444 4445', '586-431-3801'), " +
+ 		    	    		"('alexa@gmail.com', 'alexa1234', 'Alexa', 'Ferguson', '3951 kohler street, Rochester, MI 48323', '5552 5553 5554 5555', '248-115-4328'), " +
+ 		    	    		"('nathan@gmail.com', 'nathan1234', 'Nathan', 'Long', '8439 rennings road, New Baltimore, MI 49222', '6662 6663 6664 6665', '248-554-4182'), " +
+ 		    	    		"('craig@gmail.com', 'craig1234', 'Craig', 'mcdaniel', '1233 tribune road, Flint, MI 43202', '7772 7773 7774 7775', '818-904-6122'), " +
+ 		    	    		"('anna@gmail.com', 'anna1234', 'Anna', 'Hector', '1593 liberty circle, Commerce, MI 48312', '8882 8883 8884 8885', '248-144-2830'), " +
+ 		    	    		"('justin@gmail.com', 'justin1234', 'Justin', 'Novil', '1963 peace road, Woxom, MI 48320', '9992 9993 9994 9995', '248-108-3349'), " +
+ 		    	    		"('marie@gmail.com', 'marie1234', 'Marie', 'palmer', '1123 croten road, Dearborn, MI 433202', '2222 1113 1114 1115', '808-998-1274');",
  		    "INSERT INTO Contractor (clientID) " +
             "VALUES " +
     		  				"('000'),"+

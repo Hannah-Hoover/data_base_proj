@@ -121,7 +121,9 @@ public class clientDAO {
 				preparedStatement.setString(3, clients.getLastName());
 				preparedStatement.setString(4, clients.getPassword());		
 				preparedStatement.setString(5, clients.getAddress());		
-				preparedStatement.setString(6, clients.getPhone());		
+				System.out.println("Phone value: " + clients.getPhone());
+				preparedStatement.setString(6, clients.getPhone() != null ? clients.getPhone() : "");
+	
 				preparedStatement.setString(7, clients.getCreditcard());			
 
 			preparedStatement.executeUpdate();

@@ -28,13 +28,6 @@
 					</td>
 				</tr>
 				<tr>
-					<th>Birthday: </th>
-					<td align="center" colspan="3">
-						<input type="text" name="birthday" size="45" value="YYYY-MM-DD" onfocus="this.value=''">
-					</td>
-	
-				</tr>
-				<tr>
 					<th>Password: </th>
 					<td align="center" colspan="3"> 
 						<input type="password" name="password" size="45" value="password" onfocus="this.value=''">

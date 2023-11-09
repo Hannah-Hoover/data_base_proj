@@ -25,6 +25,7 @@ public class ControlServlet extends HttpServlet {
 	    private userDAO userDAO = new userDAO();
 	    private quotesDAO quotesDAO = new quotesDAO();
 	    private clientDAO clientDAO = new clientDAO();
+	    private requestDAO requestDAO = new requestDAO();
 	    private String currentUser;
 	    private HttpSession session=null;
 	    
@@ -63,9 +64,13 @@ public class ControlServlet extends HttpServlet {
         	case "/logout":
         		logout(request,response);
         		break;
-        	 case "/list": 
-                 System.out.println("The action is: list");
+        	 case "/listUser": 
+                 System.out.println("The action is: listUser");
                  listUser(request, response);           	
+                 break;
+        	 case "/listRequest": 
+                 System.out.println("The action is: listRequest");
+                 listRequest(request, response);           	
                  break;
         	 case "/request":
         		 System.out.println("The action is: request");
@@ -96,7 +101,7 @@ public class ControlServlet extends HttpServlet {
 	        System.out.println("listUser started: 00000000000000000000000000000000000");
 
 	     
-	        List<quotes> listQuotes = quotesDAO.listQuotes();
+	        List<quote> listQuotes = quotesDAO.listQuotes();
 	        request.setAttribute("listQuotes", listQuotes);       
 	        RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
 	        dispatcher.forward(request, response);
@@ -109,7 +114,7 @@ public class ControlServlet extends HttpServlet {
 	        System.out.println("listRequest started: 00000000000000000000000000000000000");
 
 	     
-	        List<request> listRequest = userDAO.listAllRequests();
+	        List<request> listRequest = requestDAO.listAllRequests();
 	        request.setAttribute("listRequest", listRequest);       
 	        RequestDispatcher dispatcher = request.getRequestDispatcher("RequestList.jsp");       
 	        dispatcher.forward(request, response);
@@ -131,7 +136,7 @@ public class ControlServlet extends HttpServlet {
 	    
 	    private void clientPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
 	    	System.out.println("client view");
-			request.setAttribute("listUser", userDAO.listAllUsers());
+			request.setAttribute("listRequest", requestDAO.listAllRequests());
 	    	request.getRequestDispatcher("clientactivitypage.jsp").forward(request, response);
 	    }
 	   
@@ -199,25 +204,21 @@ public class ControlServlet extends HttpServlet {
 	    }  
 	    
 	    private void request(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-	        int treeCount = Integer.parseInt(request.getParameter("treeCount"));
-	        
-	        // List to store error messages
-	        List<String> errorMessages = new ArrayList<>();
-
-	        for (int i = 1; i <= treeCount; i++) {
-	            // Process each tree's data
-	            String location = request.getParameter("location" + i);
-	            String height = request.getParameter("height" + i);
-	            String proximity = request.getParameter("proximity" + i);
-	            String sizeDiameter = request.getParameter("diameter" + i);
+	            String location = request.getParameter("location");
+	            String height = request.getParameter("height");
+	            String proximity = request.getParameter("proximity");
+	            String sizeDiameter = request.getParameter("diameter");
 	        	String photodata1 = request.getParameter("Photo 1");
 	            String photodata2 = request.getParameter("Photo 2");
 	            String photodata3 = request.getParameter("Photo 3");
-	            String note = request.getParameter("note" + i);
+	            String note = request.getParameter("note");
+	            
+	            request requests = new request(location, height, proximity, sizeDiameter, photodata1, photodata2, photodata3, note);
+	            requestDAO.insert(requests);
+	            response.sendRedirect("listRequest");
+	            //request.setAttribute("treeCount", treeCount);
+	            //request.getRequestDispatcher("clientquote.jsp").forward(request, response);
 	        
-	            request.setAttribute("treeCount", treeCount);
-	            request.getRequestDispatcher("clientquote.jsp").forward(request, response);
-	        }
 	    }
 	    
 	    private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
