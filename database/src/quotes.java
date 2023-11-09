@@ -1,4 +1,4 @@
-public class quote{
+public class quotes{
 	protected int clientID;
 	protected double price;
 	protected String timeFrame;
@@ -6,21 +6,21 @@ public class quote{
 	
  
     //constructors
-    public quote() {
+    public quotes() {
     }
  
-    public quote(int clientID) 
+    public quotes(int clientID) 
     {
         this.clientID = clientID;
     }
     
-    public quote(int clientID, double price, String timeFrame, String status){
+    public quotes(int clientID, double price, String timeFrame, String status){
     	this(price, timeFrame, status);
     	this.clientID = clientID; 
     }
  
 
-    public quote(double price, String timeFrame, String status)
+    public quotes(double price, String timeFrame, String status)
     {
     	this.price = price;
     	this.timeFrame = timeFrame;
