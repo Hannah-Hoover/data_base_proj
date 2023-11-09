@@ -330,7 +330,7 @@ public class userDAO
     	connect_func();
         statement=this.connect.createStatement();
     	
-    	  String[] INITIAL = {"drop database if exists testdb; ",
+     String[] INITIAL = {"drop database if exists testdb; ",
 			        "create database testdb; ",
 			        "use testdb;",
 			        "drop table if exists User; ",
@@ -351,25 +351,22 @@ public class userDAO
 			            "); ",
 					"drop table if exists Client; ",
 					"CREATE TABLE if not exists Client( " +
-							"clientID INTEGER, " + 
+							"clientID INTEGER AUTO_INCREMENT PRIMARY KEY, " + 
 							"email VarChar(50) NOT NULL, " +
 							"password VarChar(20) NOT NULL, " + 
 							"firstName VarChar(20) NOT NULL, " +
 							"lastname VarChar(20) NOT NULL, " +
 							"address VarChar(50), " +
 							"creditCard VarChar(50), " +
-							"phone VarChar(15) NOT NULL, " +
-							"PRIMARY KEY (clientID) "
+							"phone VarChar(15)" 
 							+"); ",
 					"drop table if exists Contractor; ",
                     "CREATE TABLE if not exists Contractor( " +
-                    		"clientID INTEGER NOT NULL, " +
-                    		"FOREIGN KEY (clientID) REFERENCES Client(clientID) "+"); ",
+                    		"clientID INTEGER NOT NULL " +"); ",
                    "drop table if exists OrderInfo; ",
                    "CREATE TABLE if not exists OrderInfo( " + 
                 			"clientID INTEGER NOT NULL, " +
-                		   	"contractID VARCHAR(20) NOT NULL, " +
-                		   	"FOREIGN KEY (clientID) REFERENCES Client(clientID) "+");",
+                		   	"contractID VARCHAR(20) NOT NULL " +");",
                 	"drop table if exists Tree; ",
                 	"CREATE TABLE if not exists Tree (" +
 							"clientID INTEGER, " +
@@ -381,34 +378,18 @@ public class userDAO
 							"photodata1 BLOB, " +
 							"photodata2 BLOB, " +
 							"photodata3 BLOB, " +
-							"PRIMARY KEY (photoID), " +
-							"FOREIGN KEY (clientID) REFERENCES Client(clientID) "+");",
-					"drop table if exists Request;",
-					"CREATE TABLE if not exists Request(" +
-							"id INTEGER, " +
-							"location VARCHAR(70), " +
-							"height VARCHAR(20), " +
-							"proximity VARCHAR(20), " +
-							"sizeDiameter VARCHAR(20), " +
-							"photodata1 BLOB, " +
-							"photodata2 BLOB, " +
-							"photodata3 BLOB, " +
-							"note VARCHAR(100), " +
-							"PRIMARY KEY (id) " +
-							");",
+							"PRIMARY KEY (photoID) " +");",
 					"drop table if exists Bill; ",
 					"CREATE TABLE if not exists Bill( " +
 			                "clientID INTEGER NOT NULL, " + 
 			                "amount INTEGER NOT NULL, " + 
-			                "status BIT DEFAULT False, " + 
-			                "FOREIGN KEY (clientID) REFERENCES Client(clientID) "+");",
+			                "status BIT DEFAULT False " +");",
 			        "drop table if exists Quote; ",                           
 			        "CREATE TABLE if not exists Quote( " +
 				            "clientID INTEGER NOT NULL, " + 
 				            "intprice DOUBLE NOT NULL, " + 
 				            "Timeframe VARCHAR(20) NOT NULL, " + 
-				            "Status VARCHAR(10), " +
-				            "FOREIGN KEY (clientID) REFERENCES Client(clientID) "+");"
+				            "Status VARCHAR(10) " +");"
 					};
     	  
 String[] TUPLES = {"insert into User(email, firstName, lastName, password, birthday, adress_street_num, adress_street, adress_city, adress_state, adress_zip_code, cash_bal, PPS_bal)"+
