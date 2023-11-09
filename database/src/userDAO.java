@@ -372,6 +372,7 @@ public class userDAO
 				            "clientID INTEGER NOT NULL, " + 
 				            "intprice DOUBLE NOT NULL, " + 
 				            "Timeframe VARCHAR(20) NOT NULL, " + 
+				            "Status VARCHAR(10), " +
 				            "FOREIGN KEY (clientID) REFERENCES Client(clientID) "+");"
 					};
     	  
