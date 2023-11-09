@@ -127,20 +127,19 @@ public class ControlServlet extends HttpServlet {
 	    	 String email = request.getParameter("email");
 	    	 String password = request.getParameter("password");
 	    	 
-	    	 user user= userDAO.getUser(email);
+	    	 client client= clientDAO.getClient(email);
 	    
 	    	 
-	    	 if (user != null && user.getPassword().equals(password)) {
+	    	 if (client != null && client.getPassword().equals(password)) {
 	    	        // Valid user, set session attributes
 	    	        session = request.getSession();
 	    	        session.setAttribute("username", email);
-	    	        session.setAttribute("role", user.getRole());
 
 	    	        // Redirect based on the user's role
-	    	        if ("root".equals(email) && "admin".equals(user.getRole())) {
+	    	        if ("root".equals(email)) {
 	    	            System.out.println("Login Successful! Redirecting to root");
 	    	            rootPage(request, response, "");
-	    	        } else if ("david@gmail.com".equals(email) && "contractor".equals(user.getRole())) {
+	    	        } else if ("david@gmail.com".equals(email)) {
 	    	            System.out.println("Login Successful! Redirecting to contractor page");
 	    	            contractorPage(request, response, "");
 	    	        } else {
