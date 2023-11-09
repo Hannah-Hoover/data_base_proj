@@ -140,7 +140,6 @@ public class contractorDAO {
 	            String firstName = resultSet.getString("firstName");
 	            String lastName = resultSet.getString("lastName");
 	            String password = resultSet.getString("password");
-	            String address = resultSet.getString("address");  
 	            contractor = new contractor(email, firstName, lastName, password);
 	        }
 	    
