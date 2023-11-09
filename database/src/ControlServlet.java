@@ -69,6 +69,10 @@ public class ControlServlet extends HttpServlet {
                  System.out.println("The action is: list");
                  listUser(request, response);           	
                  break;
+        	 case "/listRequest": 
+                 System.out.println("The action is: listRequest");
+                 listRequest(request, response);           	
+                 break;
         	 case "/request":
         		 System.out.println("The action is: request");
         		 request(request, response);
@@ -123,7 +127,7 @@ public class ControlServlet extends HttpServlet {
 	    private void rootPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
 	    	System.out.println("root view");
 			request.setAttribute("listUser", userDAO.listAllUsers());
-			request.setAttribute("listRequest", requestDAO.listAllRequests());
+			//request.setAttribute("listRequest", requestDAO.listAllRequests());
 	    	request.getRequestDispatcher("rootView.jsp").forward(request, response);
 	    }
 	    private void contractorPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
@@ -135,6 +139,7 @@ public class ControlServlet extends HttpServlet {
 	    private void clientPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
 	    	System.out.println("client view");
 			request.setAttribute("listUser", userDAO.listAllUsers());
+			request.setAttribute("listRequest", requestDAO.listAllRequests());
 	    	request.getRequestDispatcher("clientactivitypage.jsp").forward(request, response);
 	    }
 	   
@@ -252,7 +257,7 @@ public class ControlServlet extends HttpServlet {
             request requests = new request(location, height, proximity, sizeDiameter, photodata1, photodata2, photodata3, note);
             requestDAO.insert(requests);
         	System.out.println("Request Successful! Added to database");
-            response.sendRedirect("listRequest");
+           // response.sendRedirect("listRequest");
             //request.setAttribute("treeCount", treeCount);
             //request.getRequestDispatcher("clientquote.jsp").forward(request, response);
         

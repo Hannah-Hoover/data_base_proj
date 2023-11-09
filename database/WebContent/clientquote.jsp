@@ -11,74 +11,64 @@
 	<div align="center">
 		<form action="request" method="post">
 			<table border="1" cellpadding="5">
-				<tr>
-					<th>
-						<label for="treeCount">Number of trees in the request:</label>
-   			    		<input type="number" id="treeCount" name="treeCount" min="1" required>
-   			    		<input type="submit" value="Generate tree forms">
-   			    	</th>
-				</tr>
-			</table>
-		</form>
-	</div>
-	<div align="center" id="formContainer">
-    <c:forEach begin="1" end="${treeCount}" var="i">
-        <form action="request" method="post">
-            <table border="1" cellpadding="5">
                 <tr>
                     <th>Location of Tree:</th>
                     <td colspan="3">
-                        <input type="text" name="location${i}" size="45" placeholder="Location of Tree" required>
+                        <input type="text" name="location" size="45" placeholder="Location of Tree" required>
                     </td>
                 </tr>
                  <tr>
                     <th>Height of Tree:</th>
                     <td colspan="3">
-                        <input type="text" name="height${i}" size="45" placeholder="Height of Tree" required>
+                        <input type="text" name="height" size="45" placeholder="Height of Tree" required>
                     </td>
                 </tr>
                  <tr>
                     <th>Proximity to house:</th>
                     <td colspan="3">
-                        <input type="text" name="proximity${i}" size="45" placeholder="Proximity" required>
+                        <input type="text" name="proximity" size="45" placeholder="Proximity" required>
                     </td>
                 </tr>
+                  <tr>
+                    <th>Diameter of Tree:</th>
+                    <td colspan="3">
+                        <input type="text" name="sizeDiameter${i}" size="45" placeholder="Diameter of Tree" required>
+                    </td>
                  <tr>
                     <th>Tree Photo 1:</th>
                     <td colspan="3">
-                        <input type="text" name="photodata1${i}" size="45" placeholder="Tree photo 1" required>
+                        <input type="text" name="photodata1" size="45" placeholder="Tree photo 1" required>
                     </td>
                 </tr>
                    <tr>
                     <th>Tree Photo 2:</th>
                     <td colspan="3">
-                        <input type="text" name="photodata2${i}" size="45" placeholder="Tree photo 2" required>
+                        <input type="text" name="photodata2" size="45" placeholder="Tree photo 2" required>
                     </td>
                 </tr>
                    <tr>
                     <th>Tree Photo 3:</th>
                     <td colspan="3">
-                        <input type="text" name="photodata3${i}" size="45" placeholder="Tree photo 3" required>
+                        <input type="text" name="photodata3" size="45" placeholder="Tree photo 3" required>
                     </td>
                 </tr>
-                   <tr>
-                    <th>Diameter of Tree:</th>
-                    <td colspan="3">
-                        <input type="text" name="diameter${i}" size="45" placeholder="Diameter of Tree" required>
-                    </td>
                 </tr>
                  <tr>
                     <th>Note:</th>
                     <td colspan="3">
-                        <input type="text" name="note${i}" size="45" placeholder="note" required>
+                        <input type="text" name="note" size="45" placeholder="note" required>
                     </td>
                 </tr>
-                <a href="clientactivitypage.jsp" target="_self">Client dashboard</a>
-                <a href="login.jsp"target ="_self" > logout</a><br><br> 
+                <tr>
+					<td align="center" colspan="5">
+						<input type="submit" value="Submit quote request"/>
+					</td>
+				</tr>
             </table>
             <hr>
         </form>
-    </c:forEach>
+         <a href="clientactivitypage.jsp" target="_self">Client dashboard</a>
+         <a href="login.jsp"target ="_self" > logout</a><br><br> 
 </div>
 </body>
 </html>

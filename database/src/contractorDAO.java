@@ -175,7 +175,7 @@ public class contractorDAO {
 	    }
 	    public boolean isValid(String email, String password) throws SQLException
 	    {
-	    	String sql = "SELECT * FROM Client";
+	    	String sql = "SELECT * FROM Contractor";
 	    	connect_func();
 	    	statement = (Statement) connect.createStatement();
 	    	ResultSet resultSet = statement.executeQuery(sql);
