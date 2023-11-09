@@ -111,7 +111,6 @@ public class userDAO
             
         }
     public List<request> listAllRequests() throws SQLException {
-    	System.out.println("\n \n userDAO.listAllRequests() is called.");
         List<request> listRequest = new ArrayList<request>();        
         String sql = "SELECT * FROM Request";      
         connect_func();      
@@ -119,7 +118,6 @@ public class userDAO
         ResultSet treeCount = statement.executeQuery(sql);
          
         while (treeCount.next()){
-        	int id= treeCount.getInt("id");
         	String location = treeCount.getString("location");
             String height = treeCount.getString("height");
             String proximity = treeCount.getString("proximity");
@@ -127,11 +125,10 @@ public class userDAO
         	String photodata1= treeCount.getString("photodata1");
             String photodata2 = treeCount.getString("photodata2");
             String photodata3 = treeCount.getString("photodata3");
-            String note= treeCount.getString("note");
            
             
-            request requests = new request(id,location,height,proximity,sizeDiameter,photodata1,photodata2,photodata3,note);
-            listRequest.add(requests);
+            request request = new request(location,height,proximity,sizeDiameter,photodata1,photodata2,photodata3);
+            listRequest.add(request);
             }
         treeCount.close();
         disconnect();        
@@ -164,25 +161,6 @@ public class userDAO
 			preparedStatement.setString(10, users.getAdress_zip_code());		
 			preparedStatement.setInt(11, users.getCash_bal());		
 			preparedStatement.setInt(12, users.getPPS_bal());		
-
-		preparedStatement.executeUpdate();
-        preparedStatement.close();
-    }
-    
-    
-    public void insert(request requests) throws SQLException {
-    	connect_func("root","pass1234");         
-		String sql = "insert into Request(id,location,height,proximity,sizeDiameter,photodata1,photodata2,photodata3,note) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-			preparedStatement.setInt(1, requests.getId());
-			preparedStatement.setString(2, requests.getLocation());
-			preparedStatement.setString(3, requests.getHeight());
-			preparedStatement.setString(4, requests.getProximity());
-			preparedStatement.setString(5, requests.getSizeDiameter());
-			preparedStatement.setString(6, requests.getPhotodata1());		
-			preparedStatement.setString(7, requests.getPhotodata2());		
-			preparedStatement.setString(8, requests.getPhotodata3());		
-			preparedStatement.setString(9, requests.getNote());			
 
 		preparedStatement.executeUpdate();
         preparedStatement.close();
@@ -330,7 +308,7 @@ public class userDAO
     	connect_func();
         statement=this.connect.createStatement();
     	
-     String[] INITIAL = {"drop database if exists testdb; ",
+    	  String[] INITIAL = {"drop database if exists testdb; ",
 			        "create database testdb; ",
 			        "use testdb;",
 			        "drop table if exists User; ",
@@ -358,11 +336,14 @@ public class userDAO
 							"lastname VarChar(20) NOT NULL, " +
 							"address VarChar(50), " +
 							"creditCard VarChar(50), " +
-							"phone VarChar(15)" 
-							+"); ",
+							"phone VarChar(15)" +"); ",
 					"drop table if exists Contractor; ",
-                    "CREATE TABLE if not exists Contractor( " +
-                    		"clientID INTEGER NOT NULL " +"); ",
+                 	"CREATE TABLE if not exists Contractor( " +
+                    		"clientID INTEGER, "+
+                    		"email VARCHAR(50) NOT NULL, " + 
+			            	"firstName VARCHAR(10) NOT NULL, " +
+			            	"lastName VARCHAR(10) NOT NULL, " +
+			            	"password VARCHAR(20) NOT NULL " + " );",
                    "drop table if exists OrderInfo; ",
                    "CREATE TABLE if not exists OrderInfo( " + 
                 			"clientID INTEGER NOT NULL, " +
@@ -417,19 +398,9 @@ String[] TUPLES = {"insert into User(email, firstName, lastName, password, birth
  		    	    		"( 'anna@gmail.com', 'anna1234', 'Anna', 'Hector', '1593 liberty circle, Commerce, MI 48312', '8882 8883 8884 8885', '248-144-2830'), " +
  		    	    		"( 'justin@gmail.com', 'justin1234', 'Justin', 'Novil', '1963 peace road, Woxom, MI 48320', '9992 9993 9994 9995', '248-108-3349'), " +
  		    	    		"( 'marie@gmail.com', 'marie1234', 'Marie', 'palmer', '1123 croten road, Dearborn, MI 433202', '2222 1113 1114 1115', '808-998-1274');",
- 		    "INSERT INTO Contractor (clientID) " +
-            "VALUES " +
-    		  				"('000'),"+
-    		  				"('111'),"+
-    		  				"('222'),"+
-    		  				"('333'),"+
-    		  				"('444'),"+
-    		  				"('555'),"+
-    		  				"('666'),"+
-    		  				"('777'),"+
-    		  				"('888'),"+
-    		  				"('999'),"+
-    		  				"('112');",
+ 		    		"INSERT INTO Contractor (clientID, email, password, firstName, lastName) " +
+  		    	   "VALUES " +
+  		    	    		"('000', 'david@gmail.com', 'pass1234', 'david', 'smith');",
 			"INSERT INTO OrderInfo (clientID, contractID) " +
 			"VALUES " +
                     	    "('000', '0001-0001'),"+
@@ -456,19 +427,6 @@ String[] TUPLES = {"insert into User(email, firstName, lastName, password, birth
   		  				"('888', 'frontyard-northeast', '3.5 meters', '2.1 meters','1100 millimeters', '11108', '0xFFD103885', '0xFFD390568', '0xFFD457683'),"+
   		  				"('999', 'frontyard-northwest', '3.75 meters', '9 meters','115 millimeters', '11109', '0xFFD301938', '0xFFD285920', '0xFFD193852'),"+
   		  				"('112', 'frontyard-southwest', '3.25 meters', '4.5 meters','100 millimeters', '22200', '0xFFD333876', '0xFFD784713', '0xFFD029344');",
-  		  	"INSERT INTO Request(id,location,height,proximity,sizeDiameter,photodata1,photodata2,photodata3,note)" +
-  		  		"VALUES" + 
-  		  				"('000', 'default', 'default', 'default','default', '0x000000', '0x000000', '0x000000', 'note'),"+
-  		  			    "('111', 'backyard-east', '2.0 meters', '1 meter','60 millimeters', '0xFFD939588', '0xFFD856382', '0xFFD830386', 'note'),"+
-  		  				"('222', 'backyard-south', '1.75 meters', '2 meters','50 millimeters', '0xFFD758438', '0xFFD546721', '0xFFD223421', 'note'),"+
-  		  				"('333', 'backyard-northeast', '3.0 meters', '.5 meters','90 millimeters', '0xFFD009879', '0xFFD675867', '0xFFD890798', 'note'),"+
-  		  				"('444', 'backyard-northwest', '2.5 meters', '2.2 meters','70 millimeters', '0xFFD435908', '0xFFD124514', '0xFFD123511', 'note'),"+
-  		  				"('555', 'backyard-north', '2.75 meters', '1.5 meters','80 millimeters', '0xFFD675754', '0xFFD105690', '0xFFD119938', 'note'),"+
-  		  				"('666', 'backyard-west', '4.5 meters', '3.2 meters','130 millimeters', '0xFFD122334', '0xFFD097749', '0xFFD085591', 'note'),"+
-  		  				"('777', 'frontyard-southeast', '4.0 meters', '6 meters','120 millimeters', '0xFFD849222', '0xFFD195872', '0xFFD294851', 'note'),"+
-  		  				"('888', 'frontyard-northeast', '3.5 meters', '2.1 meters','1100 millimeters', '0xFFD457683', '0xFFD103885', '0xFFD390568', 'note'),"+
-  		  				"('999', 'frontyard-northwest', '3.75 meters', '9 meters','115 millimeters', '0xFFD193852', '0xFFD301938', '0xFFD285920', 'note'),"+
-  		  				"('112', 'frontyard-southwest', '3.25 meters', '4.5 meters','100 millimeters', '0xFFD029344', '0xFFD333876', '0xFFD784713', 'note');",
 			"INSERT INTO Bill (clientID, amount, status) " +
 			"VALUES " +
                 	    "('000', '000.00', 0),"+
