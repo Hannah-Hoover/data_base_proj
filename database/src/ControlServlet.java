@@ -123,6 +123,7 @@ public class ControlServlet extends HttpServlet {
 	    private void rootPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
 	    	System.out.println("root view");
 			request.setAttribute("listUser", userDAO.listAllUsers());
+			request.setAttribute("listRequest", requestDAO.listAllRequests());
 	    	request.getRequestDispatcher("rootView.jsp").forward(request, response);
 	    }
 	    private void contractorPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
@@ -242,14 +243,15 @@ public class ControlServlet extends HttpServlet {
             String location = request.getParameter("location");
             String height = request.getParameter("height");
             String proximity = request.getParameter("proximity");
-            String sizeDiameter = request.getParameter("diameter");
-        	String photodata1 = request.getParameter("Photo 1");
-            String photodata2 = request.getParameter("Photo 2");
-            String photodata3 = request.getParameter("Photo 3");
+            String sizeDiameter = request.getParameter("sizeDiameter");
+        	String photodata1 = request.getParameter("photodata1");
+            String photodata2 = request.getParameter("photodata2");
+            String photodata3 = request.getParameter("photodata3");
             String note = request.getParameter("note");
             
             request requests = new request(location, height, proximity, sizeDiameter, photodata1, photodata2, photodata3, note);
             requestDAO.insert(requests);
+        	System.out.println("Request Successful! Added to database");
             response.sendRedirect("listRequest");
             //request.setAttribute("treeCount", treeCount);
             //request.getRequestDispatcher("clientquote.jsp").forward(request, response);

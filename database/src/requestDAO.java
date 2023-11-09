@@ -77,7 +77,7 @@ public class requestDAO {
 	        	String location = treeCount.getString("location");
 	            String height = treeCount.getString("height");
 	            String proximity = treeCount.getString("proximity");
-	            String sizeDiameter = treeCount.getString("diameter");
+	            String sizeDiameter = treeCount.getString("sizeDiameter");
 	        	String photodata1= treeCount.getString("photodata1");
 	            String photodata2 = treeCount.getString("photodata2");
 	            String photodata3 = treeCount.getString("photodata3");
