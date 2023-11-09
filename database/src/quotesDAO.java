@@ -77,8 +77,9 @@ public class quotesDAO {
 		        }
 		    }
 		
-		    public List<quote> listQuotes() throws SQLException {
-		        List<quote> listQuote = new ArrayList<quote>();        
+		    public List<quotes> listQuotes() throws SQLException {
+		    	System.out.print("In the list function");
+		        List<quotes> listQuote = new ArrayList<quotes>();        
 		        String sql = "SELECT * FROM Quote";      
 		        connect_func();   
 		        statement = (Statement) connect.createStatement();
@@ -91,7 +92,7 @@ public class quotesDAO {
 		            String timeFrame = quoteset.getString("timeFrame");
 		            String status = quoteset.getString("status");
 		             
-		            quote quote = new quote(clientID, price, timeFrame, status );
+		            quotes quote = new quotes(clientID, price, timeFrame, status );
 		            listQuote.add(quote);
 		        }
 		        
@@ -106,7 +107,7 @@ public class quotesDAO {
 		        }
 		    }
 		    
-		    public void insertQuote(quote quotes) throws SQLException {
+		    public void insertQuote(quotes quotes) throws SQLException {
 		    	connect_func("root","pass1234");         
 				String sql = "insert into Quote(clientID, price, timeFrame, status) values (?, ?, ?, ?)";
 				preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
