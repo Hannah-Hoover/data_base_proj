@@ -149,13 +149,12 @@ public class ControlServlet extends HttpServlet {
 		    	        session.setAttribute("username", email);
 		    	        System.out.println("Login Successful! Redirecting to contractor page");
 		    	        contractorPage(request, response, "");}
-		    	 }
 	    	 else{
 		    	        request.setAttribute("loginStr", "Login Failed: Please check your credentials.");
 		    	        request.getRequestDispatcher("login.jsp").forward(request, response);
 		    	 }
 	    	 
-	    	 /*}else{
+	    	 }else{
 	    	 
 	    	 client client= clientDAO.getClient(email);
 	    
@@ -179,10 +178,12 @@ public class ControlServlet extends HttpServlet {
 	    	    } else {
 	    	        request.setAttribute("loginStr", "Login Failed: Please check your credentials.");
 	    	        request.getRequestDispatcher("login.jsp").forward(request, response);
-	    	    }
+	    	       }
 	    	 }
-	    	 */
-	    	}
+	   }
+	    	 
+	    	 
+	    	
 	          
 	    private void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	String email = request.getParameter("email");
