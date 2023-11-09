@@ -2,6 +2,7 @@ public class quote{
 	protected int clientID;
 	protected double price;
 	protected String timeFrame;
+	protected String status;
 	
  
     //constructors
@@ -13,16 +14,17 @@ public class quote{
         this.clientID = clientID;
     }
     
-    public quote(int clientID, double price, String timeFrame){
-    	this(price, timeFrame);
+    public quote(int clientID, double price, String timeFrame, String status){
+    	this(price, timeFrame, status);
     	this.clientID = clientID; 
     }
  
 
-    public quote(double price, String timeFrame)
+    public quote(double price, String timeFrame, String status)
     {
     	this.price = price;
     	this.timeFrame = timeFrame;
+    	this.status = status;
     }
     
    //getter and setter methods
@@ -38,11 +40,16 @@ public class quote{
     public void setPrice(double price) {
         this.price = price;
     }
-    
     public String getTimeFrame() {
         return timeFrame;
     }
     public void setTimeFrame(String timeFrame) {
         this.timeFrame = timeFrame;
+    }
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
