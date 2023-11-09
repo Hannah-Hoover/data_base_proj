@@ -9,9 +9,22 @@
 <body>
  <center>	<h1> Welcome to quote request page </h1> </center>
 	<div align="center">
-		<p> ${errorOne } </p>
 		<form action="request" method="post">
 			<table border="1" cellpadding="5">
+				<tr>
+					<th>
+						<label for="treeCount">Number of trees in the request:</label>
+   			    		<input type="number" id="treeCount" name="treeCount" min="1" required>
+   			    		<input type="submit" value="Generate tree forms">
+   			    	</th>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div align="center" id="formContainer">
+    <c:forEach begin="1" end="${treeCount}" var="i">
+        <form action="request" method="post">
+            <table border="1" cellpadding="5">
                 <tr>
                     <th>Location of Tree:</th>
                     <td colspan="3">
@@ -60,16 +73,16 @@
                         <input type="text" name="note${i}" size="45" placeholder="note" required>
                     </td>
                 </tr>
-                <tr>
-               		<td align="center" colspan="5">
-               		<input type="submit" value="Submit Quote Request">
-               		</td>
-               		</tr>
-              </table>
-        	  <a href="clientactivitypage.jsp">Client dashboard</a>
-              <a href="login.jsp">Logout</a>
-              </form>
-              </div>
-              </body>
-              </html>
+                <a href="clientactivitypage.jsp" target="_self">Client dashboard</a>
+                <a href="login.jsp"target ="_self" > logout</a><br><br> 
+            </table>
+            <hr>
+        </form>
+    </c:forEach>
+</div>
+</body>
+</html>
+
+
+
 

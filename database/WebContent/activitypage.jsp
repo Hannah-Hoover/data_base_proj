@@ -42,6 +42,7 @@
             </c:forEach>
             --%>
             
+            
 		     <table border="1" cellpadding="5">
             <caption><h2>List of Quotes</h2></caption>
             <tr>
