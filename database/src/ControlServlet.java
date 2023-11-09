@@ -160,7 +160,6 @@ public class ControlServlet extends HttpServlet {
 	   	 	String password = request.getParameter("password");
 	   	 	String birthday = request.getParameter("birthday");
 	   	 	String role = request.getParameter("role");
-	   	 	//role = (role != null && role.equals("")) ? role : "client";
 	   	 	String adress_street_num = request.getParameter("adress_street_num"); 
 	   	 	String adress_street = request.getParameter("adress_street"); 
 	   	 	String adress_city = request.getParameter("adress_city"); 
@@ -190,25 +189,23 @@ public class ControlServlet extends HttpServlet {
 	    }  
 	    
 	    private void request(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-	        int treeCount = Integer.parseInt(request.getParameter("treeCount"));
-	        
-	        // List to store error messages
-	        List<String> errorMessages = new ArrayList<>();
-
-	        for (int i = 1; i <= treeCount; i++) {
-	            // Process each tree's data
-	            String location = request.getParameter("location" + i);
-	            String height = request.getParameter("height" + i);
-	            String proximity = request.getParameter("proximity" + i);
-	            String sizeDiameter = request.getParameter("diameter" + i);
+	    		int id= Integer.parseInt(request.getParameter("id"));
+	            String location = request.getParameter("location");
+	            String height = request.getParameter("height");
+	            String proximity = request.getParameter("proximity");
+	            String sizeDiameter = request.getParameter("diameter");
 	        	String photodata1 = request.getParameter("Photo 1");
 	            String photodata2 = request.getParameter("Photo 2");
 	            String photodata3 = request.getParameter("Photo 3");
-	            String note = request.getParameter("note" + i);
+	            String note = request.getParameter("note");
+	            
+	            request requests = new request(id,location,height,proximity,sizeDiameter,photodata1,photodata2,photodata3,note);
+	            userDAO.insert(requests);
+	            System.out.println("Request Successful! Added to database");
 	        
-	            request.setAttribute("treeCount", treeCount);
+	            request.setAttribute("errorOne", "Request failed: try again");
 	            request.getRequestDispatcher("clientquote.jsp").forward(request, response);
-	        }
+	        
 	    }
 	       
 	        
