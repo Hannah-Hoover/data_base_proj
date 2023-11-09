@@ -158,34 +158,33 @@ public class ControlServlet extends HttpServlet {
 	   	 	String firstName = request.getParameter("firstName");
 	   	 	String lastName = request.getParameter("lastName");
 	   	 	String password = request.getParameter("password");
-	   	 	String birthday = request.getParameter("birthday");
 	   	 	String role = request.getParameter("role");
-	   	 	String adress_street_num = request.getParameter("adress_street_num"); 
-	   	 	String adress_street = request.getParameter("adress_street"); 
-	   	 	String adress_city = request.getParameter("adress_city"); 
-	   	 	String adress_state = request.getParameter("adress_state"); 
-	   	 	String adress_zip_code = request.getParameter("adress_zip_code"); 	   	 	
+	   	 	String address = request.getParameter("address");
+	   	 	String creditcard = request.getParameter("creditcard");
+	   	 	String phone = request.getParameter("phone");
 	   	 	String confirm = request.getParameter("confirmation");
-	   	 
 	   	 	
-	   	 	if (password.equals(confirm)) {
-	   	 		if (!userDAO.checkEmail(email)) {
-		   	 		System.out.println("Registration Successful! Added to database");
-		            user users = new user(email,firstName, lastName, password, birthday, role, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, 1000,0);
-		   	 		userDAO.insert(users);
-		   	 		response.sendRedirect("login.jsp");
+	   	 	if(role.equals("client")) {
+	   	 		if (password.equals(confirm)) {
+	   	 			if (!clientDAO.checkClientEmail(email)) {
+	   	 				System.out.println("Registration Successful! Added to database");
+	   	 				client clients = new client(email,firstName, lastName, password, address, creditcard, phone);
+	   	 				clientDAO.insertClient(clients);
+	   	 				response.sendRedirect("login.jsp"); 
+	   	 			}
+	   	 			else {
+	   	 				System.out.println("Username taken, please enter new username");
+		   	 			request.setAttribute("errorOne","Registration failed: Username taken, please enter a new username.");
+		   	 			request.getRequestDispatcher("register.jsp").forward(request, response);
+	   	 			}
 	   	 		}
-		   	 	else {
-		   	 		System.out.println("Username taken, please enter new username");
-		    		 request.setAttribute("errorOne","Registration failed: Username taken, please enter a new username.");
-		    		 request.getRequestDispatcher("register.jsp").forward(request, response);
-		   	 	}
-	   	 	}
-	   	 	else {
+	   	 		else {
 	   	 		System.out.println("Password and Password Confirmation do not match");
-	   		 request.setAttribute("errorTwo","Registration failed: Password and Password Confirmation do not match.");
-	   		 request.getRequestDispatcher("register.jsp").forward(request, response);
+	   	 		request.setAttribute("errorTwo","Registration failed: Password and Password Confirmation do not match.");
+	   	 		request.getRequestDispatcher("register.jsp").forward(request, response);
+	   	 		} 
 	   	 	}
+	   	 	
 	    }  
 	    
 	    private void request(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
