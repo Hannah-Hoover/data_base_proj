@@ -25,7 +25,7 @@
                 <th>Email</th>
                 <th>First name</th>
                 <th>Last name</th>
-                <th>Adress</th>
+                <th>Address</th>
                 <th>Password</th>
                 <th>Birthday</th>
                 <th>cash_bal($)</th>
@@ -41,6 +41,33 @@
                     <td><c:out value="${users.birthday}" /></td>
                     <td><c:out value="${users.cash_bal}"/></td>
                     <td><c:out value="${users.PPS_bal}" /></td>
+            </c:forEach>
+        </table>
+	</div>
+	<h1>List all clients</h1>
+    <div align="center">
+        <table border="1" cellpadding="6">
+            <caption><h2>List of Clients</h2></caption>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Address</th>
+                <th>Credit Card</th>
+				<th>Phone</th>
+            </tr>
+            <c:forEach var="client" items="${listClient}">
+                <tr style="text-align:center">
+                	<td><c:out value="${client.clientID}"/></td>
+                    <td><c:out value="${client.email}" /></td>
+                    <td><c:out value="${client.password}" /></td>
+                    <td><c:out value="${client.firstName}" /></td>
+                    <td><c:out value="${client.lastName}" /></td>
+                    <td><c:out value= "${client.address}"/></td>
+                    <td><c:out value="${client.creditCard}" /></td>
+                    <td><c:out value="${client.phone}" /></td>
             </c:forEach>
         </table>
 	</div>

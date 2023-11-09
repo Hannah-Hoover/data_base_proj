@@ -23,13 +23,14 @@ import java.sql.PreparedStatement;
 public class ControlServlet extends HttpServlet {
 	    private static final long serialVersionUID = 1L;
 	    private userDAO userDAO = new userDAO();
+	    private quotesDAO quotesDAO = new quotesDAO();
+	    private clientDAO clientDAO = new clientDAO();
+	    private contractorDAO contractorDAO = new contractorDAO();
+	    private requestDAO requestDAO = new requestDAO();
 	    private String currentUser;
 	    private HttpSession session=null;
 	    
-	    public ControlServlet()
-	    {
-	    	
-	    }
+	    public ControlServlet(){}
 	    
 	    public void init()
 	    {
@@ -92,12 +93,25 @@ public class ControlServlet extends HttpServlet {
 	        System.out.println("listPeople finished: 111111111111111111111111111111111111");
 	    }
 	    
+	    private void listQuotes(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("listUser started: 00000000000000000000000000000000000");
+
+	     
+	        List<quotes> listQuotes = quotesDAO.listQuotes();
+	        request.setAttribute("listQuotes", listQuotes);       
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
+	        dispatcher.forward(request, response);
+	     
+	        System.out.println("listPeople finished: 111111111111111111111111111111111111");
+	    }
+	    
 	    private void listRequest(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
 	        System.out.println("listRequest started: 00000000000000000000000000000000000");
 
 	     
-	        List<request> listRequest = userDAO.listAllRequests();
+	        List<request> listRequest = requestDAO.listAllRequests();
 	        request.setAttribute("listRequest", listRequest);       
 	        RequestDispatcher dispatcher = request.getRequestDispatcher("RequestList.jsp");       
 	        dispatcher.forward(request, response);
@@ -127,20 +141,35 @@ public class ControlServlet extends HttpServlet {
 	    	 String email = request.getParameter("email");
 	    	 String password = request.getParameter("password");
 	    	 
-	    	 user user= userDAO.getUser(email);
+	    	 if(email.equals("david@gmail.com")) {
+	    		 contractor contractor = contractorDAO.getContractor(email);
+	    		 if (contractor != null && contractor.getPassword().equals(password)) {
+		    	        // Valid user, set session attributes
+		    	        session = request.getSession();
+		    	        session.setAttribute("username", email);
+		    	        System.out.println("Login Successful! Redirecting to contractor page");
+		    	        contractorPage(request, response, "");}
+		    	 }
+	    	 else{
+		    	        request.setAttribute("loginStr", "Login Failed: Please check your credentials.");
+		    	        request.getRequestDispatcher("login.jsp").forward(request, response);
+		    	 }
+	    	 
+	    	 /*}else{
+	    	 
+	    	 client client= clientDAO.getClient(email);
 	    
 	    	 
-	    	 if (user != null && user.getPassword().equals(password)) {
+	    	 if (client != null && client.getPassword().equals(password)) {
 	    	        // Valid user, set session attributes
 	    	        session = request.getSession();
 	    	        session.setAttribute("username", email);
-	    	        session.setAttribute("role", user.getRole());
 
 	    	        // Redirect based on the user's role
-	    	        if ("root".equals(email) && "admin".equals(user.getRole())) {
+	    	        if ("root".equals(email)) {
 	    	            System.out.println("Login Successful! Redirecting to root");
 	    	            rootPage(request, response, "");
-	    	        } else if ("david@gmail.com".equals(email) && "contractor".equals(user.getRole())) {
+	    	        } else if ("david@gmail.com".equals(email)) {
 	    	            System.out.println("Login Successful! Redirecting to contractor page");
 	    	            contractorPage(request, response, "");
 	    	        } else {
@@ -151,6 +180,8 @@ public class ControlServlet extends HttpServlet {
 	    	        request.setAttribute("loginStr", "Login Failed: Please check your credentials.");
 	    	        request.getRequestDispatcher("login.jsp").forward(request, response);
 	    	    }
+	    	 }
+	    	 */
 	    	}
 	          
 	    private void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
@@ -158,83 +189,74 @@ public class ControlServlet extends HttpServlet {
 	   	 	String firstName = request.getParameter("firstName");
 	   	 	String lastName = request.getParameter("lastName");
 	   	 	String password = request.getParameter("password");
-	   	 	String birthday = request.getParameter("birthday");
 	   	 	String role = request.getParameter("role");
-	   	 	//role = (role != null && role.equals("")) ? role : "client";
-	   	 	String adress_street_num = request.getParameter("adress_street_num"); 
-	   	 	String adress_street = request.getParameter("adress_street"); 
-	   	 	String adress_city = request.getParameter("adress_city"); 
-	   	 	String adress_state = request.getParameter("adress_state"); 
-	   	 	String adress_zip_code = request.getParameter("adress_zip_code"); 	   	 	
+	   	 	String address = request.getParameter("address");
+	   	 	String creditcard = request.getParameter("creditcard");
+	   	 	String phone = request.getParameter("phone");
 	   	 	String confirm = request.getParameter("confirmation");
-	   	 
 	   	 	
-	   	 	if (password.equals(confirm)) {
-	   	 		if (!userDAO.checkEmail(email)) {
-		   	 		System.out.println("Registration Successful! Added to database");
-		            user users = new user(email,firstName, lastName, password, birthday, role, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, 1000,0);
-		   	 		userDAO.insert(users);
-		   	 		response.sendRedirect("login.jsp");
+	   	 	if(role.equals("client")) {
+	   	 		if (password.equals(confirm)) {
+	   	 			if (!clientDAO.checkClientEmail(email)) {
+	   	 				System.out.println("Registration Successful! Added to database");
+	   	 				client clients = new client(email,firstName, lastName, password, address, creditcard, phone);
+	   	 				clientDAO.insertClient(clients);
+	   	 				response.sendRedirect("login.jsp"); 
+	   	 			}
+	   	 			else {
+	   	 				System.out.println("Username taken, please enter new username");
+		   	 			request.setAttribute("errorOne","Registration failed: Username taken, please enter a new username.");
+		   	 			request.getRequestDispatcher("register.jsp").forward(request, response);
+	   	 			}
 	   	 		}
-		   	 	else {
-		   	 		System.out.println("Username taken, please enter new username");
-		    		 request.setAttribute("errorOne","Registration failed: Username taken, please enter a new username.");
-		    		 request.getRequestDispatcher("register.jsp").forward(request, response);
-		   	 	}
-	   	 	}
-	   	 	else {
+	   	 		else {
 	   	 		System.out.println("Password and Password Confirmation do not match");
-	   		 request.setAttribute("errorTwo","Registration failed: Password and Password Confirmation do not match.");
-	   		 request.getRequestDispatcher("register.jsp").forward(request, response);
+	   	 		request.setAttribute("errorTwo","Registration failed: Password and Password Confirmation do not match.");
+	   	 		request.getRequestDispatcher("register.jsp").forward(request, response);
+	   	 		} 
+	   	 	}else if(role.equals("contractor")) {
+	   	 		if (password.equals(confirm)) {
+	   	 			if (!contractorDAO.checkContractorEmail(email)) {
+	   	 				System.out.println("Registration Successful! Added to database");
+	   	 				contractor contractors = new contractor(email,firstName, lastName, password) ;
+	   	 				contractorDAO.insertContractor(contractors);
+	   	 				response.sendRedirect("login.jsp"); 
+	   	 			}
+	   	 			else {
+	   	 				System.out.println("Username taken, please enter new username");
+		   	 			request.setAttribute("errorOne","Registration failed: Username taken, please enter a new username.");
+		   	 			request.getRequestDispatcher("register.jsp").forward(request, response);
+	   	 			}
+	   	 		}
+	   	 		else {
+	   	 		System.out.println("Password and Password Confirmation do not match");
+	   	 		request.setAttribute("errorTwo","Registration failed: Password and Password Confirmation do not match.");
+	   	 		request.getRequestDispatcher("register.jsp").forward(request, response);
+	   	 		} 
 	   	 	}
+	   	 	
 	    }  
 	    
 	    private void request(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-	        int treeCount = Integer.parseInt(request.getParameter("treeCount"));
-	        
-	        // List to store error messages
-	        List<String> errorMessages = new ArrayList<>();
-
-	        for (int i = 1; i <= treeCount; i++) {
-	            // Process each tree's data
-	            String location = request.getParameter("location" + i);
-	            String height = request.getParameter("height" + i);
-	            String proximity = request.getParameter("proximity" + i);
-	            String sizeDiameter = request.getParameter("diameter" + i);
-	        	String photodata1 = request.getParameter("Photo 1");
-	            String photodata2 = request.getParameter("Photo 2");
-	            String photodata3 = request.getParameter("Photo 3");
-	            String note = request.getParameter("note" + i);
-	        
-	            request.setAttribute("treeCount", treeCount);
-	            request.getRequestDispatcher("clientquote.jsp").forward(request, response);
-	        }
-	    }
-	       
-	        
-
+            String location = request.getParameter("location");
+            String height = request.getParameter("height");
+            String proximity = request.getParameter("proximity");
+            String sizeDiameter = request.getParameter("diameter");
+        	String photodata1 = request.getParameter("Photo 1");
+            String photodata2 = request.getParameter("Photo 2");
+            String photodata3 = request.getParameter("Photo 3");
+            String note = request.getParameter("note");
+            
+            request requests = new request(location, height, proximity, sizeDiameter, photodata1, photodata2, photodata3, note);
+            requestDAO.insert(requests);
+            response.sendRedirect("listRequest");
+            //request.setAttribute("treeCount", treeCount);
+            //request.getRequestDispatcher("clientquote.jsp").forward(request, response);
+        
+    }
 	    
 	    private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 	    	currentUser = "";
         		response.sendRedirect("login.jsp");
-        	}
-	
-	    
-
-	     
-        
-	    
-	    
-	    
-	    
-	    
+        	}    
 }
-	        
-	        
-	    
-	        
-	        
-	        
-	    
-
-

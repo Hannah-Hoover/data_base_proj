@@ -23,15 +23,15 @@ import java.util.List;
 /**
  * Servlet implementation class Connect
  */
-@WebServlet("/clientDAO")
-public class clientDAO {
+@WebServlet("/contractorDAO")
+public class contractorDAO {
 	private static final long serialVersionUID = 1L;
 	private Connection connect = null;
 	private Statement statement = null;
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
 	
-	public clientDAO(){}
+	public contractorDAO(){}
 	
 	/** 
 	 * @see HttpServlet#HttpServlet()
@@ -77,32 +77,28 @@ public class clientDAO {
 	        }
 	    }
 	
-	    public List<client> listClients() throws SQLException {
-	        List<client> listClient = new ArrayList<client>();        
-	        String sql = "SELECT * FROM Client";      
+	    public List<contractor> listContractors() throws SQLException {
+	        List<contractor> listContractor = new ArrayList<contractor>();        
+	        String sql = "SELECT * FROM Contractor";      
 	        connect_func();   
 	        statement = (Statement) connect.createStatement();
-	        ResultSet clientset = statement.executeQuery(sql);
+	        ResultSet contractorset = statement.executeQuery(sql);
 	         
-	        while (clientset.next()) {
+	        while (contractorset.next()) {
 	        	System.out.print("122");
-	        	int clientID = clientset.getInt("clientID");
-	            String email = clientset.getString("email");
-	            String password = clientset.getString("password");
-	            String firstName = clientset.getString("firstName");
-	            String lastName = clientset.getString("lastName");
-	            String address = clientset.getString("address"); 
-	            String creditcard = clientset.getString("creditCard");  
-	            String phone = clientset.getString("phone");
-
-	             
-	            client client = new client(clientID, email,password, firstName, lastName,address, creditcard, phone);
-	            listClient.add(client);
+	        	int clientID = contractorset.getInt("clientID");
+	            String email = contractorset.getString("email");
+	            String password = contractorset.getString("password");
+	            String firstName = contractorset.getString("firstName");
+	            String lastName = contractorset.getString("lastName");
+	
+	            contractor contractors = new contractor(clientID, email,password, firstName, lastName);
+	            listContractor.add(contractors);
 	        }
 	        
-	    clientset.close();
+	    contractorset.close();
 	    disconnect();        
-	    return listClient;
+	    return listContractor;
 	    }
 	    
 	    protected void disconnect() throws SQLException {
@@ -111,28 +107,25 @@ public class clientDAO {
 	        }
 	    }
 	    
-	    public void insertClient(client clients) throws SQLException {
+	    public void insertContractor(contractor contractors) throws SQLException {
 	    	System.out.println("IN THE INSERT FUNCTION");
-	    	System.out.println(clients.getEmail());
+	    	System.out.println(contractors.getEmail());
 	    	
 	    	connect_func("root","pass1234");         
-			String sql = "insert into Client(email, firstName, lastName, password, address, phone, creditcard) values (?, ?, ?, ?, ?, ?, ?)";
+			String sql = "insert into Constructor(email, firstName, lastName, password, address, phone, creditcard) values (?, ?, ?, ?, ?, ?, ?)";
 			preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-				preparedStatement.setString(1, clients.getEmail());
-				preparedStatement.setString(2, clients.getFirstName());
-				preparedStatement.setString(3, clients.getLastName());
-				preparedStatement.setString(4, clients.getPassword());		
-				preparedStatement.setString(5, clients.getAddress());		
-				preparedStatement.setString(6, clients.getPhone());		
-				preparedStatement.setString(7, clients.getCreditcard());			
-
+				preparedStatement.setString(1, contractors.getEmail());
+				preparedStatement.setString(2, contractors.getFirstName());
+				preparedStatement.setString(3, contractors.getLastName());
+				preparedStatement.setString(4, contractors.getPassword());		
+			
 			preparedStatement.executeUpdate();
 	        preparedStatement.close();
 	    }
 	    
-	    public client getClient(String email) throws SQLException {
-	    	client client = null;
-	        String sql = "SELECT * FROM Client WHERE email = ?";
+	    public contractor getContractor(String email) throws SQLException {
+	    	contractor contractor = null;
+	        String sql = "SELECT * FROM Contractor WHERE email = ?";
 	         
 	        connect_func();
 	        
@@ -147,10 +140,7 @@ public class clientDAO {
 	            String firstName = resultSet.getString("firstName");
 	            String lastName = resultSet.getString("lastName");
 	            String password = resultSet.getString("password");
-	            String address = resultSet.getString("address"); 
-	            String creditcard = resultSet.getString("creditcard"); 
-	            String phone = resultSet.getString("phone"); 
-	            client = new client(email, firstName, lastName, password, address,  creditcard,  phone);
+	            contractor = new contractor(email, firstName, lastName, password);
 	        }
 	    
 	    }finally {
@@ -163,12 +153,12 @@ public class clientDAO {
 	        //resultSet.close();
 	      //  statement.close();
 	         
-	        return client;
+	        return contractor;
 	    }
 	    
-	    public boolean checkClientEmail(String email) throws SQLException {
+	    public boolean checkContractorEmail(String email) throws SQLException {
 	    	boolean checks = false;
-	    	String sql = "SELECT * FROM Client WHERE email = ?";
+	    	String sql = "SELECT * FROM Contractor WHERE email = ?";
 	    	connect_func();
 	    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 	        preparedStatement.setString(1, email);
@@ -209,33 +199,18 @@ public class clientDAO {
 	    	connect_func();
 	        statement=this.connect.createStatement();
 	    	
-	 String[] INITIAL = {"drop table if exists Client; ",
-						"CREATE TABLE if not exists Client( " +
-								"clientID INTEGER, " + 
-								"email VarChar(50) NOT NULL, " +
-								"password VarChar(20) NOT NULL, " + 
-								"firstName VarChar(20) NOT NULL, " +
-								"lastname VarChar(20) NOT NULL, " +
-								"address VarChar(50), " +
-								"creditCard VarChar(50), " +
-								"phone VarChar(15), " +
-								"PRIMARY KEY (clientID) "
-								+"); ",
+	 String[] INITIAL = {"drop table if exists Contractor; ",
+                    		"CREATE TABLE if not exists Contractor( " +
+                    		"clientID INTEGER NOT NULL " +"); ",
+                    		"email VARCHAR(50) NOT NULL, " + 
+			            	"firstName VARCHAR(10) NOT NULL, " +
+			            	"lastName VARCHAR(10) NOT NULL, " +
+			            	"password VARCHAR(20) NOT NULL, " +
 						};
 	    	  
-	String[] TUPLES = {"INSERT INTO Client (clientID, email, password, firstName, lastName, address, creditcard, phone) " +
-	 		    	   "VALUES " +
-	 		    	    		"('000', 'root', 'pass1234', 'default', 'default', 'default', '0000 0000 0000 0000', '000-000-0000'), " +
-	 		    	    		"('111', 'john@gmail.com', 'john1234', 'John', 'Smith', '1273 success road, Detroit, MI 49202', '1112 1113 1114 1115', '248-454-7892'), " +
-	 		    	    		"('222', 'breanna@gmail.com', 'breanna1234', 'Breanna', 'Walts', '1923 briggs street, Warren, MI 49502', '2222 2223 2224 2225', '517-724-0192'), " +
-	 		    	    		"('333', 'logan@gmail.com', 'logan1234', 'Logan', 'Baker', '6413 greene sqaure, Troy, MI 48915', '3332 3333 3334 3335', '248-970-1137'), " +
-	 		    	    		"('444', 'calire@gmail.com', 'claire1234', 'Claire', 'Fields', '1342 prime road, Detroit, MI 49203', '4442 4443 4444 4445', '586-431-3801'), " +
-	 		    	    		"('555', 'alexa@gmail.com', 'alexa1234', 'Alexa', 'Ferguson', '3951 kohler street, Rochester, MI 48323', '5552 5553 5554 5555', '248-115-4328'), " +
-	 		    	    		"('666', 'nathan@gmail.com', 'nathan1234', 'Nathan', 'Long', '8439 rennings road, New Baltimore, MI 49222', '6662 6663 6664 6665', '248-554-4182'), " +
-	 		    	    		"('777', 'craig@gmail.com', 'craig1234', 'Craig', 'mcdaniel', '1233 tribune road, Flint, MI 43202', '7772 7773 7774 7775', '818-904-6122'), " +
-	 		    	    		"('888', 'anna@gmail.com', 'anna1234', 'Anna', 'Hector', '1593 liberty circle, Commerce, MI 48312', '8882 8883 8884 8885', '248-144-2830'), " +
-	 		    	    		"('999', 'justin@gmail.com', 'justin1234', 'Justin', 'Novil', '1963 peace road, Woxom, MI 48320', '9992 9993 9994 9995', '248-108-3349'), " +
-	 		    	    		"('112', 'marie@gmail.com', 'marie1234', 'Marie', 'palmer', '1123 croten road, Dearborn, MI 433202', '2222 1113 1114 1115', '808-998-1274');",
+	String[] TUPLES = {"INSERT INTO Contractor (clientID, email, password, firstName, lastName) " +
+ 		    	   "VALUES " +
+ 		    	    		"('000', 'david@gmail.com', 'pass1234', 'david', 'smith');",
 		};
 
 	    		

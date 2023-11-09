@@ -7,6 +7,7 @@ public class request
 	    protected String photodata1;
 	    protected String photodata2;
 	    protected String photodata3;
+	    protected String note;
 	
 	 
 	    //constructors
@@ -18,14 +19,14 @@ public class request
 	        this.id = id;
 	    }
 	    
-	    public request(int id, String location, String height, String proximity, String sizeDiameter,String photodata1, String photodata2, String photodata3) 
+	    public request(int id, String location, String height, String proximity, String sizeDiameter,String photodata1, String photodata2, String photodata3, String note) 
 	    {
-	    	this(location, height, proximity, sizeDiameter, photodata1, photodata2, photodata3); 
+	    	this(location, height, proximity, sizeDiameter, photodata1, photodata2, photodata3, note); 
 	    	this.id = id;
 	    }
 	 
 	
-	    public request(String location, String height, String proximity,String sizeDiameter, String photodata1, String photodata2, String photodata3) 
+	    public request(String location, String height, String proximity,String sizeDiameter, String photodata1, String photodata2, String photodata3, String note) 
 	    {
 	    	this.location = location;
 	    	this.height = height;
@@ -34,6 +35,7 @@ public class request
 	        this.photodata1 = photodata1;
 	        this.photodata2 = photodata2;
 	        this.photodata3= photodata3;
+	        this.note = note;
 	    }
 	    
 	   //getter and setter methods
@@ -89,5 +91,11 @@ public class request
 	    }
 	    public void setPhotodata3(String photodata3) {
 	        this.photodata3 = photodata3;
+	    }
+	    public String getNote() {
+	        return note;
+	    }
+	    public void setNote(String note) {
+	        this.note = note;
 	    }
 	}

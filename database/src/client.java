@@ -1,9 +1,9 @@
 public class client {
 	protected String password;
  	protected String email;
-  protected String firstName;
-  protected String lastName;
-  protected String phone;
+    protected String firstName;
+    protected String lastName;
+    protected String phone;
 	protected String address;
 	protected String creditcard;
 	protected int clientID;
@@ -25,8 +25,9 @@ public class client {
     }
  
 
-    public client(String firstName, String lastName, String password, String address, String phone, String creditcard, String creditcard2) 
+    public client(String email, String firstName, String lastName, String password, String address, String phone, String creditcard) 
     {
+    	this.email = email;
     	this.firstName = firstName;
     	this.lastName = lastName;
     	this.password = password;
