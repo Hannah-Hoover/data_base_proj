@@ -112,7 +112,9 @@ public class clientDAO {
 	    }
 	    
 	    public void insertClient(client clients) throws SQLException {
-	    	System.out.print("IN THE INSERT FUNCTION");
+	    	System.out.println("IN THE INSERT FUNCTION");
+	    	System.out.println(clients.getEmail());
+	    	
 	    	connect_func("root","pass1234");         
 			String sql = "insert into Client(email, firstName, lastName, password, address, phone, creditcard) values (?, ?, ?, ?, ?, ?, ?)";
 			preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
@@ -127,8 +129,8 @@ public class clientDAO {
 			preparedStatement.executeUpdate();
 	        preparedStatement.close();
 	    }
-
-		    public client getClient(String email) throws SQLException {
+	    
+	    public client getClient(String email) throws SQLException {
 	    	client client = null;
 	        String sql = "SELECT * FROM Client WHERE email = ?";
 	         
@@ -163,6 +165,7 @@ public class clientDAO {
 	         
 	        return client;
 	    }
+	    
 	    public boolean checkClientEmail(String email) throws SQLException {
 	    	boolean checks = false;
 	    	String sql = "SELECT * FROM Client WHERE email = ?";
