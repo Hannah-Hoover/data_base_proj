@@ -29,7 +29,7 @@
             </tr>
             <c:forEach var="quotes" items="${listQuotes}">
                 <tr style="text-align:center">
-                	<td><c:out value="${quotes.}" /></td>
+                	<td><c:out value="${quotes.clientID}" /></td>
                     <td><c:out value="${quotes.price}" /></td>
                     <td><c:out value="${quotes.timeFrame}" /></td>
                     <td><c:out value="${quotes.status}" /></td>

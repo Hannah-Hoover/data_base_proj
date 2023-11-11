@@ -156,7 +156,7 @@ public class ControlServlet extends HttpServlet {
 	    
 	    private void clientPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
 	    	System.out.println("client view");
-			request.setAttribute("listUser", userDAO.listAllUsers());
+			request.setAttribute("listQuotes", quotesDAO.listAllQuotes());
 	    	request.getRequestDispatcher("clientactivitypage.jsp").forward(request, response);
 	    }
 	   

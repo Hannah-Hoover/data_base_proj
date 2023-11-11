@@ -103,6 +103,35 @@ public class quotesDAO {
 		    return listQuotes;
 		    }
 		    
+		    
+		/*    
+		    public List<quotes> listUserQuotes(int clientID) throws SQLException {
+		    	System.out.print("In the userlist function");
+		        List<quotes> listQuotes = new ArrayList<quotes>();        
+		        String sql = "SELECT * FROM Quotes where clientID= " +clientID;      
+		        connect_func();   
+		        statement = (Statement) connect.createStatement();
+		        ResultSet quoteset = statement.executeQuery(sql);
+		         
+		        while (quoteset.next()) {
+		        	System.out.print("122");
+		        	//int clientID = quoteset.getInt("clientID");
+		            double price = quoteset.getDouble("price");
+		            String timeFrame = quoteset.getString("timeFrame");
+		            String status = quoteset.getString("status");
+		            int requestID = quoteset.getInt("requestID");
+	
+		             
+		            quotes quote = new quotes(price, timeFrame, status, requestID, clientID);
+		            listQuotes.add(quote);
+		        }
+		        
+		    quoteset.close();
+		    disconnect();        
+		    return listUserQuotes;
+		    }
+		*/   
+		    
 		    protected void disconnect() throws SQLException {
 		        if (connect != null && !connect.isClosed()) {
 		        	connect.close();
