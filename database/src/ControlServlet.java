@@ -29,6 +29,7 @@ public class ControlServlet extends HttpServlet {
 	    private requestDAO requestDAO = new requestDAO();
 	    private String currentUser;
 	    private HttpSession session=null;
+	    String sessionID;
 	    
 	    public ControlServlet(){}
 	    
@@ -81,6 +82,10 @@ public class ControlServlet extends HttpServlet {
         		 System.out.println("The action is: list Quotes");
         		 listRequest(request, response);
         		 break;
+        	 /*case "/quote":
+                 System.out.println("The action is: update");
+             	 insertQuote(request, response);
+                 break; */
 	    	}
 	    }
 	    catch(Exception ex) {
@@ -104,8 +109,6 @@ public class ControlServlet extends HttpServlet {
 	    private void listQuotes(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
 	        System.out.println("listQuote started: 00000000000000000000000000000000000");
-
-	  
 	        List<quotes> listQuotes = quotesDAO.listAllQuotes();
 	        request.setAttribute("listQuotes", listQuotes);       
 	        RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
@@ -147,6 +150,7 @@ public class ControlServlet extends HttpServlet {
 		   protected void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 		    	 String email = request.getParameter("email");
 		    	 String password = request.getParameter("password");
+		    	 sessionID = request.getParameter("clientID");
 		    	 
 		    	 if(email.equals("david@gmail.com")) {
 		    		 contractor contractor = contractorDAO.getContractor(email);
@@ -154,6 +158,8 @@ public class ControlServlet extends HttpServlet {
 			    	        // Valid user, set session attributes
 			    	        session = request.getSession();
 			    	        session.setAttribute("username", email);
+			    	        session.setAttribute("id", sessionID);
+			    	        
 			    	        System.out.println("Login Successful! Redirecting to contractor page");
 			    	        contractorPage(request, response, "");}
 		    	 else{
@@ -170,6 +176,8 @@ public class ControlServlet extends HttpServlet {
 		    	        // Valid user, set session attributes
 		    	        session = request.getSession();
 		    	        session.setAttribute("username", email);
+		    	        System.out.println("authenticating with client "+client.getID());
+		    	        session.setAttribute("clientID", client.getID());
 
 		    	        // Redirect based on the user's role
 		    	        if ("root".equals(email)) {
@@ -244,6 +252,7 @@ public class ControlServlet extends HttpServlet {
 	    }  
 	    
 	    private void request(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+	    	System.out.println("in request");
             String location = request.getParameter("location");
             String height = request.getParameter("height");
             String proximity = request.getParameter("proximity");
@@ -251,17 +260,35 @@ public class ControlServlet extends HttpServlet {
         	String photodata1 = request.getParameter("photodata1");
             String photodata2 = request.getParameter("photodata2");
             String photodata3 = request.getParameter("photodata3");
-            String note = request.getParameter("note");
+            String note = request.getParameter("note");   
+            Integer clientID = (Integer)request.getSession().getAttribute("clientID");
+            System.out.println("client id is "+clientID);
             
-            request requests = new request(location, height, proximity, sizeDiameter, photodata1, photodata2, photodata3, note);
+            
+            request requests = new request(clientID, location, height, proximity, sizeDiameter, photodata1, photodata2, photodata3, note);
+            System.out.println(requests.toString());
             requestDAO.insert(requests);
+            
         	System.out.println("Request Successful! Added to database");
            // response.sendRedirect("listRequest");
             //request.setAttribute("treeCount", treeCount);
             //request.getRequestDispatcher("clientquote.jsp").forward(request, response);
         
     }
-	    
+	    private void Quote(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+            String price = request.getParameter("price");
+            String timeFrame = request.getParameter("timeFrame");
+            String status = request.getParameter("status");
+          
+            int id = (int) session.getAttribute(sessionID);
+            
+            quotes quote = new quotes(id, Double.parseDouble(price), timeFrame, status);
+            quotesDAO.insertQuote(quote);
+            
+        	System.out.println("Quote Successful! Added to database");
+            response.sendRedirect("activitypage.jsp");
+        
+    }
 	    private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 	    	currentUser = "";
         		response.sendRedirect("login.jsp");
