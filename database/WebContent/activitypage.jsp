@@ -20,6 +20,7 @@
 		     <table border="1" cellpadding="5">
             <caption><h2>List of Quotes</h2></caption>
             <tr>
+            	<th>ID</th>
 				<th>Price</th>
                 <th>TimeFrame</th>
                 <th>Status</th>
@@ -49,7 +50,6 @@
             </tr>
             <c:forEach var="requests" items="${listRequest}">
                 <tr style="text-align:center">
-                    <td><c:out value="${requests.id}" /></td>
                     <td><c:out value="${requests.location}" /></td>
                     <td><c:out value="${requests.height}" /></td>
                     <td><c:out value= "${requests.proximity}" /></td>
