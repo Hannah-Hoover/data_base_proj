@@ -13,7 +13,8 @@
 <center><h1>Welcome David! You have been successfully logged in</h1> </center>
 	<body>
 	 <center>
-		 <a href="login.jsp"target ="_self" > logout</a><br><br> 
+		 <a href="login.jsp"target ="_self" > logout</a><br><br>
+		 <a href="contractorquote.jsp">Create quote</a><br><br> 
 		  <a href="listquotes">List Quotes</a><br><br> 
 		  <a href="listrequests">List Quote Requests</a><br><br>
             
@@ -28,6 +29,7 @@
             </tr>
             <c:forEach var="quotes" items="${listQuotes}">
                 <tr style="text-align:center">
+                	<td><c:out value="${quotes.}" /></td>
                     <td><c:out value="${quotes.price}" /></td>
                     <td><c:out value="${quotes.timeFrame}" /></td>
                     <td><c:out value="${quotes.status}" /></td>
@@ -59,7 +61,7 @@
                      <td><c:out value="${requests.photodata3}"/></td>
                     <td><c:out value="${requests.note}" /></td>
                      <td>
-                        <a href="edit?id=<c:out value='${people.id}' />">Quote</a>
+                        <a href="newquote?id=<c:out value='${requests.requestID}' />">Quote</a>
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <a href="delete?id=<c:out value='${people.id}' />">Deny</a>                     
                     </td>

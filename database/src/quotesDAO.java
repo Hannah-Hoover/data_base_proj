@@ -79,8 +79,8 @@ public class quotesDAO {
 		
 		    public List<quotes> listAllQuotes() throws SQLException {
 		    	System.out.print("In the list function");
-		        List<quotes> listQuote = new ArrayList<quotes>();        
-		        String sql = "SELECT * FROM Quote";      
+		        List<quotes> listQuotes = new ArrayList<quotes>();        
+		        String sql = "SELECT * FROM Quotes";      
 		        connect_func();   
 		        statement = (Statement) connect.createStatement();
 		        ResultSet quoteset = statement.executeQuery(sql);
@@ -91,14 +91,16 @@ public class quotesDAO {
 		            double price = quoteset.getDouble("price");
 		            String timeFrame = quoteset.getString("timeFrame");
 		            String status = quoteset.getString("status");
+		            int requestID = quoteset.getInt("requestID");
+	
 		             
-		            quotes quote = new quotes(clientID, price, timeFrame, status );
-		            listQuote.add(quote);
+		            quotes quote = new quotes(price, timeFrame, status, requestID, clientID);
+		            listQuotes.add(quote);
 		        }
 		        
 		    quoteset.close();
 		    disconnect();        
-		    return listQuote;
+		    return listQuotes;
 		    }
 		    
 		    protected void disconnect() throws SQLException {
@@ -108,13 +110,14 @@ public class quotesDAO {
 		    }
 		    
 		    public void insertQuote(quotes quotes) throws SQLException {
-		    	connect_func("root","pass1234");         
-				String sql = "insert into Quote(clientID, price, timeFrame, status) values (?, ?, ?, ?)";
+		    	connect_func();         
+				String sql = "insert into Quotes(clientID, price, timeFrame, status, requestID) values (?, ?, ?, ?, ?)";
 				preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-					preparedStatement.setInt(1, quotes.getID());
+					preparedStatement.setInt(1, quotes.getClientID());
 					preparedStatement.setDouble(2, quotes.getPrice());
 					preparedStatement.setString(3, quotes.getTimeFrame());
-					preparedStatement.setString(4, quotes.getStatus());		
+					preparedStatement.setString(4, quotes.getStatus());	
+					preparedStatement.setInt(5, quotes.getRequestID());	
 				preparedStatement.executeUpdate();
 		        preparedStatement.close();
 		    }

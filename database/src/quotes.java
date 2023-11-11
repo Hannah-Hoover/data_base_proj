@@ -3,6 +3,8 @@ public class quotes{
 	protected double price;
 	protected String timeFrame;
 	protected String status;
+	protected int requestID;
+	
 	
  
     //constructors
@@ -14,24 +16,21 @@ public class quotes{
         this.clientID = clientID;
     }
     
-    public quotes(int clientID, double price, String timeFrame, String status){
-    	this(price, timeFrame, status);
-    	this.clientID = clientID; 
-    }
- 
 
-    public quotes(double price, String timeFrame, String status)
+    public quotes(double price, String timeFrame, String status, int requestID, int clientID)
     {
     	this.price = price;
     	this.timeFrame = timeFrame;
     	this.status = status;
+    	this.clientID= clientID;
+    	this.requestID=requestID;
     }
     
    //getter and setter methods
-    public int getID() {
+    public int getClientID() {
         return clientID;
     }
-    public void setID(int clientID) {
+    public void setClientID(int clientID) {
         this.clientID = clientID;
     }
     public double getPrice() {
@@ -51,5 +50,11 @@ public class quotes{
     }
     public void setStatus(String status) {
         this.status = status;
+    }
+    public int getRequestID() {
+        return requestID;
+    }
+    public void setRequestID(int requestID) {
+        this.requestID = requestID;
     }
 }

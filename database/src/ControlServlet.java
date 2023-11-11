@@ -75,17 +75,20 @@ public class ControlServlet extends HttpServlet {
         		 request(request, response);
         		 break;
         	 case "/listquotes":
-        		 System.out.println("The action is: list Quotes");
+        		 System.out.println("The action is: listQuotes");
         		 listQuotes(request, response);
         		 break;
         	 case "/listrequests":
-        		 System.out.println("The action is: list Quotes");
+        		 System.out.println("The action is: listRequest");
         		 listRequest(request, response);
         		 break;
-        	 /*case "/quote":
-                 System.out.println("The action is: update");
-             	 insertQuote(request, response);
-                 break; */
+        	 case "/quote":
+                 System.out.println("The action is: quote");
+             	 Quote(request, response);
+                 break;
+        	 case "/newquote":
+        		 System.out.println("New Quote");
+        		 newQuote(request, response);
 	    	}
 	    }
 	    catch(Exception ex) {
@@ -93,7 +96,16 @@ public class ControlServlet extends HttpServlet {
 	    	}
 	    }
         	
-	    private void listUser(HttpServletRequest request, HttpServletResponse response)
+	    private void newQuote(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+	    	int requestID=Integer.parseInt(request.getParameter("id"));
+			request req = requestDAO.getRequest(requestID);
+			request.setAttribute("req", req);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("contractorquote.jsp");       
+	        dispatcher.forward(request, response);
+			
+		}
+
+		private void listUser(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
 	        System.out.println("listUser started: 00000000000000000000000000000000000");
 
@@ -109,7 +121,7 @@ public class ControlServlet extends HttpServlet {
 	    private void listQuotes(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
 	        System.out.println("listQuote started: 00000000000000000000000000000000000");
-	        List<quotes> listQuotes = quotesDAO.listAllQuotes();
+	        	        List<quotes> listQuotes = quotesDAO.listAllQuotes();
 	        request.setAttribute("listQuotes", listQuotes);       
 	        RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
 	        dispatcher.forward(request, response);
@@ -137,7 +149,8 @@ public class ControlServlet extends HttpServlet {
 	    }
 	    private void contractorPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
 	    	System.out.println("contractor view");
-			request.setAttribute("listUser", userDAO.listAllUsers());
+	    	request.setAttribute("listRequest", requestDAO.listAllRequests());
+	    	request.setAttribute("listQuotes", quotesDAO.listAllQuotes());
 	    	request.getRequestDispatcher("activitypage.jsp").forward(request, response);
 	    }
 	    
@@ -260,7 +273,8 @@ public class ControlServlet extends HttpServlet {
         	String photodata1 = request.getParameter("photodata1");
             String photodata2 = request.getParameter("photodata2");
             String photodata3 = request.getParameter("photodata3");
-            String note = request.getParameter("note");   
+            String note = request.getParameter("note");
+            //Integer requestID = (Integer)request.getSession().getAttribute("requestID");
             Integer clientID = (Integer)request.getSession().getAttribute("clientID");
             System.out.println("client id is "+clientID);
             
@@ -276,17 +290,27 @@ public class ControlServlet extends HttpServlet {
         
     }
 	    private void Quote(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+	    	System.out.println("in quote");
             String price = request.getParameter("price");
             String timeFrame = request.getParameter("timeFrame");
             String status = request.getParameter("status");
-          
-            int id = (int) session.getAttribute(sessionID);
+            String requestID = request.getParameter("requestID");
+            String clientID = request.getParameter("clientID");
             
-            quotes quote = new quotes(id, Double.parseDouble(price), timeFrame, status);
+            session = request.getSession();
+	      //  session.setAttribute("clientID");
+            //sessionID = request.getParameter("clientID");
+       
+            //request.getAttribute("clientID")
+         // String name= (String)session.getAttribute("clientID");
+            
+            quotes quote = new quotes(Double.parseDouble(price), timeFrame, status, Integer.parseInt(requestID), Integer.parseInt(clientID));
             quotesDAO.insertQuote(quote);
             
+            
         	System.out.println("Quote Successful! Added to database");
-            response.sendRedirect("activitypage.jsp");
+        	contractorPage(request, response, "");
+            
         
     }
 	    private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {

@@ -385,7 +385,9 @@ public class userDAO
 				            "timeframe VARCHAR(20), " + 
 				            "status VARCHAR(10), " +
 				            "clientID INTEGER, " +
-				            "FOREIGN KEY(clientID) REFERENCES Client(clientID)" +");"
+				            "requestID INTEGER," +
+				            "FOREIGN KEY(clientID) REFERENCES Client(clientID),"+
+				            "FOREIGN KEY(requestID) REFERENCES Request(requestID)" +");",
 					};
     	  
 String[] TUPLES = {"insert into User(email, firstName, lastName, password, birthday, adress_street_num, adress_street, adress_city, adress_state, adress_zip_code, cash_bal, PPS_bal)"+
@@ -418,9 +420,9 @@ String[] TUPLES = {"insert into User(email, firstName, lastName, password, birth
  		     	    	    "('1', 'default', 'default', 'default','default', '0x000000', '0x000000', '0x000000', 'note'),"+
  		 		    	    "('2', 'backyard-east', '2.0 meters', '1 meter','60 millimeters', '0xFFD939588', '0xFFD856382', '0xFFD830386', 'note'),"+
  		 		         	"('3', 'backyard-south', '1.75 meters', '2 meters','50 millimeters', '0xFFD758438', '0xFFD546721', '0xFFD223421', 'note'),"+
- 		 		    	    "('4', 'backyard-northeast', '3.0 meters', '.5 meters','90 millimeters', '0xFFD009879', '0xFFD675867', '0xFFD890798', 'note'),"+
+ 		 		    	    "('4','backyard-northeast', '3.0 meters', '.5 meters','90 millimeters', '0xFFD009879', '0xFFD675867', '0xFFD890798', 'note'),"+
  		 		    	    "('5', 'backyard-northwest', '2.5 meters', '2.2 meters','70 millimeters', '0xFFD435908', '0xFFD124514', '0xFFD123511', 'note'),"+
- 		 		    	    "('6', 'backyard-north', '2.75 meters', '1.5 meters','80 millimeters', '0xFFD675754', '0xFFD105690', '0xFFD119938', 'note'),"+
+ 		 		    	    "('6','backyard-north', '2.75 meters', '1.5 meters','80 millimeters', '0xFFD675754', '0xFFD105690', '0xFFD119938', 'note'),"+
  		 		    	    "('7', 'backyard-west', '4.5 meters', '3.2 meters','130 millimeters', '0xFFD122334', '0xFFD097749', '0xFFD085591', 'note'),"+
  		 		    	    "('8', 'frontyard-southeast', '4.0 meters', '6 meters','120 millimeters', '0xFFD849222', '0xFFD195872', '0xFFD294851', 'note'),"+
  		 		    	    "('9', 'frontyard-northeast', '3.5 meters', '2.1 meters','1100 millimeters', '0xFFD457683', '0xFFD103885', '0xFFD390568', 'note'),"+
@@ -468,19 +470,19 @@ String[] TUPLES = {"insert into User(email, firstName, lastName, password, birth
     		    	    "('888', '700.00', 0),"+
     		    	    "('999', '300.00', 0),"+
     		    	    "('112', '1100.00', 0);",
-    	    "INSERT INTO Quotes (clientID, price, timeframe, status) " +
+    	    "INSERT INTO Quotes (clientID, price, timeframe, status, requestID) " +
             "VALUES " +
-	                      "('1', '000.00', 'default', 'pending'),"+
-	                      "('2', '1000.00', '1 week', 'pending'),"+
-	                      "('3', '1200.00', '3 days', 'accepted'),"+
-	                      "('4', '800.00', '2 weeks', 'canceled'),"+
-	                      "('5', '300.00', '1 week', 'canceled'),"+
-	                      "('6', '900.00', '3 weeks', 'accepted'),"+
-	                      "('7', '400.00', '1 month', 'accepted'),"+
-	                      "('8', '850.00', '5 days', 'pending'),"+
-	                      "('9', '700.00', '4 days', 'pending'),"+
-	                      "('10', '300.00', '2 weeks', 'pending'),"+
-	                      "('11', '1100.00', '1 week', 'pending');"
+	                      "('1', '000.00', 'default', 'pending', '1'),"+
+	                      "('2', '1000.00', '1 week', 'pending', '2'),"+
+	                      "('3', '1200.00', '3 days', 'accepted', '3'),"+
+	                      "('4', '800.00', '2 weeks', 'canceled', '4'),"+
+	                      "('5', '300.00', '1 week', 'canceled', '5'),"+
+	                      "('6', '900.00', '3 weeks', 'accepted', '6'),"+
+	                      "('7', '400.00', '1 month', 'accepted', '7'),"+
+	                      "('8', '850.00', '5 days', 'pending', '8'),"+
+	                      "('9', '700.00', '4 days', 'pending', '9'),"+
+	                      "('10', '300.00', '2 weeks', 'pending', '10'),"+
+	                      "('11', '1100.00', '1 week', 'pending', '11');"
 	    			};
 
     		

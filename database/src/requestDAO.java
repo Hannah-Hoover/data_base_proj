@@ -17,6 +17,7 @@ import java.sql.PreparedStatement;
 //import java.sql.Connection;
 //import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 //import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,9 +70,15 @@ public class requestDAO {
 	        connect_func();      
 	        statement = (Statement) connect.createStatement();
 	        ResultSet treeCount = statement.executeQuery(sql);
-	         
+	        
+	        ResultSetMetaData meta = treeCount.getMetaData();
+	        for(int i=1;i<=meta.getColumnCount();i++) {
+	        	System.out.println(meta.getColumnName(i));
+	        }
+	        
 	        while (treeCount.next()){
-	        	int id= treeCount.getInt("requestID");
+	        	int requestID = treeCount.getInt("requestID");
+	        	int clientID = treeCount.getInt("clientID");
 	        	String location = treeCount.getString("location");
 	            String height = treeCount.getString("height");
 	            String proximity = treeCount.getString("proximity");
@@ -82,7 +89,7 @@ public class requestDAO {
 	            String note= treeCount.getString("note");
 	           
 	            
-	            request request = new request(id,location,height,proximity,sizeDiameter,photodata1,photodata2,photodata3,note);
+	            request request = new request(requestID,clientID, location,height,proximity,sizeDiameter,photodata1,photodata2,photodata3,note);
 	            listRequest.add(request);
 	            }
 	        treeCount.close();
@@ -175,5 +182,20 @@ public class requestDAO {
 	        disconnect();
 		}
 	    */
+
+		public request getRequest(int requestID) throws SQLException {
+	    	System.out.println("\n \n requestDAO.getRequest() is called.");
+	        List<request> listRequest = new ArrayList<request>();        
+	        String sql = "SELECT * FROM Request where requestID = "+requestID;      
+	        connect_func();      
+	        PreparedStatement statement = connect.prepareStatement(sql);
+	        ResultSet rs = statement.executeQuery(sql);
+	        request request=null;
+	        if (rs.next()) {
+	            request = new request(rs.getInt("requestID"), rs.getInt("clientID"),rs.getString("location"), rs.getString("height"), rs.getString("proximity"),rs.getString("sizeDiameter"),rs.getString("photodata1"),rs.getString("photodata2"),rs.getString("photodata3"),rs.getString("note"));
+	        }
+	        disconnect();        
+	        return request;
+		}
 	   
 }

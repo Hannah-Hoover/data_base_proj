@@ -10,8 +10,10 @@
 <body>
  <center>	<h1> Welcome to quote creation page </h1> </center>
 	<div align="center">
-		<form action="request" method="post">
+		<form action="quote" method="post">
 			<table border="1" cellpadding="5">
+			<input type="hidden" name="requestID" value="${req.requestID}" />
+			<input type="hidden" name="clientID" value="${req.clientID}" />
                 <tr>
                     <th>Price:</th>
                     <td colspan="3">
