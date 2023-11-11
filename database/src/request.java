@@ -1,5 +1,6 @@
 public class request 
-{		protected int id;
+{		protected int requestID;
+		protected int clientID;
 		protected String location;
 	 	protected String height;
 	    protected String proximity;
@@ -14,20 +15,21 @@ public class request
 	    public request() {
 	    }
 	 
-	    public request(int id){
+	    public request(int requestID){
 	  
-	        this.id = id;
+	        this.requestID = requestID;
 	    }
 	    
-	    public request(int id, String location, String height, String proximity, String sizeDiameter,String photodata1, String photodata2, String photodata3, String note) 
+	    public request(int requestID,int clientID, String location, String height, String proximity, String sizeDiameter,String photodata1, String photodata2, String photodata3, String note) 
 	    {
-	    	this(location, height, proximity, sizeDiameter, photodata1, photodata2, photodata3, note); 
-	    	this.id = id;
+	    	this(clientID, location, height, proximity, sizeDiameter, photodata1, photodata2, photodata3, note); 
+	    	this.requestID = requestID;
 	    }
 	 
 	
-	    public request(String location, String height, String proximity,String sizeDiameter, String photodata1, String photodata2, String photodata3, String note) 
+	    public request(int clientID, String location, String height, String proximity,String sizeDiameter, String photodata1, String photodata2, String photodata3, String note) 
 	    {
+	    	this.clientID = clientID;
 	    	this.location = location;
 	    	this.height = height;
 	    	this.proximity = proximity;
@@ -39,12 +41,19 @@ public class request
 	    }
 	    
 	   //getter and setter methods
-	    public int getId() {
-	        return id;
+	    public int getRequestID() {
+	        return requestID;
 	    }
-	    public void setId(int id) {
-	        this.id = id;
+	    public void setRequestID(int requestID) {
+	        this.requestID = requestID;
 	    }
+	    public int getClientID() {
+	        return clientID;
+	    }
+	    public void setClientID(int clientID) {
+	        this.clientID = clientID;
+	    }
+	    
 	    
 	    public String getLocation() {
 	        return location;
@@ -97,5 +106,10 @@ public class request
 	    }
 	    public void setNote(String note) {
 	        this.note = note;
+	    }
+	    
+	    @Override
+	    public String toString() {
+	    	return String.format("Request(clientID=%s)", this.clientID);
 	    }
 	}
