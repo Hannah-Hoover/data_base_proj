@@ -77,7 +77,7 @@ public class clientDAO {
 	        }
 	    }
 	
-	    public List<client> listClients() throws SQLException {
+	    public List<client> listAllClients() throws SQLException {
 	        List<client> listClient = new ArrayList<client>();        
 	        String sql = "SELECT * FROM Client";      
 	        connect_func();   

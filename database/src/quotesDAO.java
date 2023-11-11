@@ -77,7 +77,7 @@ public class quotesDAO {
 		        }
 		    }
 		
-		    public List<quotes> listQuotes() throws SQLException {
+		    public List<quotes> listAllQuotes() throws SQLException {
 		    	System.out.print("In the list function");
 		        List<quotes> listQuote = new ArrayList<quotes>();        
 		        String sql = "SELECT * FROM Quote";      
