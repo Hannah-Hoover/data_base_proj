@@ -28,3 +28,17 @@ Part 1:
 5) Creation of PDF file 
 
 Time Working together (In person or Online): 19 HOURS 
+
+Hannah:
+1) Login function
+2) Print tables on activity page
+3) updating userDAO as needed
+4) creating quote class and DAO files
+6) Creating client class and dao files
+7) Update Control Servlet as needed
+
+Morgan:
+1)
+
+
+Time Working Together: 
