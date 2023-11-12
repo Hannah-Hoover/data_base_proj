@@ -27,7 +27,7 @@ Part 1:
 4) Contributions to SQL code
 5) Creation of PDF file 
 
-Time Working together (In person or Online): 19 HOURS 
+Time Working together (In person or Online) for part 1: 19 HOURS 
 
 Hannah:
 1) Login function
@@ -41,4 +41,4 @@ Morgan:
 1)
 
 
-Time Working Together: 
+Time Working Together (in person or online) for part 2: 23 HOURS
