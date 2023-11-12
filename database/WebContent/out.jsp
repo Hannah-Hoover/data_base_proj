@@ -8,5 +8,6 @@
 </head>
 <body>
 <center>	<h1> Your quote request has been submitted for review </h1> </center>
+ <a href="clientactivitypage.jsp" target="_self">Client dashboard</a>
 </body>
 </html>

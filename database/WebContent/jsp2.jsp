@@ -9,11 +9,11 @@
 <body>
     <h1>Received Data from First JSP</h1>
     <%
-        String input1 = request.getParameter("input1");
-        String gender = request.getParameter("gender");
+        String input1 = request.getParameter("response");
+      
     %>
     <p>Input 1: <%= input1 %></p>
-    <p>Gender: <%= gender %></p>
+  
     <!-- Display other form data here -->
 </body>
 </html>

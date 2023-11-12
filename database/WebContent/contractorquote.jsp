@@ -32,6 +32,12 @@
                         <input type="text" name="status" size="45" placeholder="Status" required>
                     </td>
                 </tr>
+                  <tr>
+                    <th>Note:</th>
+                    <td colspan="3">
+                        <input type="text" name="note" size="45" placeholder="Note" required>
+                    </td>
+                </tr>
   				<tr>
 					<td align="center" colspan="5">
 						<input type="submit" value="Submit quote"/>

@@ -9,7 +9,7 @@
 <meta charset="ISO-8859-1">
 <title>Contractor Activity page</title>
 </head>
-
+<input type="hidden" name="quoteID" value="${res.quoteID}" />
 <center><h1>Welcome David! You have been successfully logged in</h1> </center>
 	<body>
 	 <center>
@@ -25,6 +25,9 @@
 				<th>Price</th>
                 <th>TimeFrame</th>
                 <th>Status</th>
+                <th>Latest Note</th>
+                <th>Options</th>
+                
 
             </tr>
             <c:forEach var="quotes" items="${listQuotes}">
@@ -33,6 +36,13 @@
                     <td><c:out value="${quotes.price}" /></td>
                     <td><c:out value="${quotes.timeFrame}" /></td>
                     <td><c:out value="${quotes.status}" /></td>
+                    <td><c:out value="${quotes.note }"/></td>
+                     <td>
+                     <c:if test="${quotes.editable}">
+		               	 	<a href="contractorresponse?id=${quotes.quoteID}""target ="_self" > Respond</a><br/>  
+		                	<a href="updatequotecontractor?id=${quotes.quoteID}&status=quit" target="_self"> Quit</a>
+		                </c:if>
+               		</td>
                 </tr>
             </c:forEach>
             

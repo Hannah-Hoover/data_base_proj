@@ -144,13 +144,14 @@ public class clientDAO {
 	        ResultSet resultSet = preparedStatement.executeQuery();
 	         
 	        if (resultSet.next()) {
+	            int clientID = resultSet.getInt("clientID");
 	            String firstName = resultSet.getString("firstName");
 	            String lastName = resultSet.getString("lastName");
 	            String password = resultSet.getString("password");
 	            String address = resultSet.getString("address"); 
 	            String creditcard = resultSet.getString("creditcard"); 
 	            String phone = resultSet.getString("phone"); 
-	            client = new client(email, firstName, lastName, password, address,  creditcard,  phone);
+	            client = new client(clientID, email, firstName, lastName, password, address,  creditcard,  phone);
 	        }
 	    
 	    }finally {

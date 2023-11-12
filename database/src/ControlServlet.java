@@ -74,6 +74,14 @@ public class ControlServlet extends HttpServlet {
         		 System.out.println("The action is: request");
         		 request(request, response);
         		 break;
+        	 case "/clientupdate":
+        		 System.out.println("The action is: clientupdate");
+        		 updateQuotes(request, response);
+        		 break;
+        	 case "/contractorupdate":
+        		 System.out.println("The action is: contractorupdate");
+        		 contractorUpdateQuotes(request, response);
+        		 break;
         	 case "/listquotes":
         		 System.out.println("The action is: listQuotes");
         		 listQuotes(request, response);
@@ -86,9 +94,29 @@ public class ControlServlet extends HttpServlet {
                  System.out.println("The action is: quote");
              	 Quote(request, response);
                  break;
+        	 case "/clientresponse":
+                 System.out.println("The action is: clientrepsonse");
+             	 clientResponse(request, response);
+                 break;
+        	 case "/contractorresponse":
+                 System.out.println("The action is: contractorrepsonse");
+             	 contractorResponse(request, response);
+                 break;
         	 case "/newquote":
         		 System.out.println("New Quote");
         		 newQuote(request, response);
+        		 break;
+        	 case "/updatequotestatus":
+        		 System.out.println("Client quitting quote");
+        		 UpdateQuoteStatus(request, response);
+        		 break;
+        	 case "/updatequotecontractor":
+        		 System.out.println("Contractor quitting quote");
+        		 UpdateQuoteContractor(request, response);
+        		 break;
+        	 case "/contractorpage":
+        		 contractorPage(request, response, "");
+        		 break;
 	    	}
 	    }
 	    catch(Exception ex) {
@@ -105,6 +133,67 @@ public class ControlServlet extends HttpServlet {
 			
 		}
 
+	    private void clientResponse(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+	    	int quoteID=Integer.parseInt(request.getParameter("id"));
+			quotes res = quotesDAO.getQuote(quoteID);
+			request.setAttribute("res", res);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("ClientResponse.jsp");       
+	        dispatcher.forward(request, response);
+			
+		}
+	    
+	    private void contractorResponse(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+	    	int quoteID=Integer.parseInt(request.getParameter("id"));
+			quotes res = quotesDAO.getQuote(quoteID);
+			request.setAttribute("res", res);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("ContractorResponse.jsp");       
+	        dispatcher.forward(request, response);
+			
+		}
+	    
+	    private void contractorUpdateQuotes(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("contractorUpdateQuotes started: 000000000000000000000000000");
+	     
+	        double price = Double.parseDouble(request.getParameter("price"));
+	        String timeFrame = request.getParameter("timeFrame");
+	        String status = request.getParameter("status");
+	        String note = request.getParameter("note");
+	        int quoteID=Integer.parseInt(request.getParameter("quoteID"));
+	      //System.out.println("name:" + name + ", address: "+address + ", status:" + status);
+	        
+	        quotes quote = quotesDAO.getQuote(quoteID);//new quotes(price, timeFrame, status, requestID, clientID, note);
+	        quote.setPrice(price);
+	        quote.setTimeFrame(timeFrame);
+	        quote.setStatus(status);
+	        quote.setNote(note);
+	        System.out.print("after quot3e");
+	        quotesDAO.update(quote);
+	        System.out.println("Ask the browser to call the list action next automatically contractor");
+	        contractorPage(request, response, "");
+	     
+	        System.out.println("contractorUpdateQuotes finished: 1111111111111111111111111111111");
+	    }
+	 
+	    
+	    private void updateQuotes(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("updateQuotes started: 000000000000000000000000000");
+	     
+	        String note = request.getParameter("note");
+	        int quoteID=Integer.parseInt(request.getParameter("quoteID"));
+	      //System.out.println("name:" + name + ", address: "+address + ", status:" + status);
+	        
+	        quotes quote = quotesDAO.getQuote(quoteID);//new quotes(price, timeFrame, status, requestID, clientID, note);
+	        quote.setNote(note);
+	        System.out.print("after quot3e");
+	        quotesDAO.update(quote);
+	        System.out.println("Ask the browser to call the list action next automatically");
+	        clientPage(request, response, "");
+	     
+	        System.out.println("updateQuotes finished: 1111111111111111111111111111111");
+	    }
+	 
 		private void listUser(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
 	        System.out.println("listUser started: 00000000000000000000000000000000000");
@@ -128,6 +217,18 @@ public class ControlServlet extends HttpServlet {
 	     
 	        System.out.println("listQuote finished: 111111111111111111111111111111111111");
 	    }
+	    /*
+	    private void listUserQuotes(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("listUserQuote started: 00000000000000000000000000000000000");
+	        	        List<quotes> listUserQuotes = quotesDAO.listUserQuotes();
+	        request.setAttribute("listUserQuotes", listUserQuotes);       
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("clientactivitypage.jsp");       
+	        dispatcher.forward(request, response);
+	     
+	        System.out.println("listUserQuote finished: 111111111111111111111111111111111111");
+	    }*/
+	    
 	    private void listRequest(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
 	        System.out.println("listRequest started: 00000000000000000000000000000000000");
@@ -156,7 +257,8 @@ public class ControlServlet extends HttpServlet {
 	    
 	    private void clientPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
 	    	System.out.println("client view");
-			request.setAttribute("listQuotes", quotesDAO.listAllQuotes());
+	    	int clientID = Integer.parseInt(request.getSession().getAttribute("clientID").toString());
+			request.setAttribute("listQuotes", quotesDAO.getQuotesByClientID(clientID));
 	    	request.getRequestDispatcher("clientactivitypage.jsp").forward(request, response);
 	    }
 	   
@@ -164,12 +266,16 @@ public class ControlServlet extends HttpServlet {
 		    	 String email = request.getParameter("email");
 		    	 String password = request.getParameter("password");
 		    	 sessionID = request.getParameter("clientID");
+		    	 System.out.println("SESSION ID"+sessionID);
+		    	 
+		    	 session = request.getSession();
+		    	 System.out.println("SESSION ID"+sessionID);
 		    	 
 		    	 if(email.equals("david@gmail.com")) {
 		    		 contractor contractor = contractorDAO.getContractor(email);
 		    		 if (contractor != null && contractor.getPassword().equals(password)) {
 			    	        // Valid user, set session attributes
-			    	        session = request.getSession();
+			    	       // session = request.getSession();
 			    	        session.setAttribute("username", email);
 			    	        session.setAttribute("id", sessionID);
 			    	        
@@ -187,10 +293,12 @@ public class ControlServlet extends HttpServlet {
 		    	 
 		    	 if (client != null && client.getPassword().equals(password)) {
 		    	        // Valid user, set session attributes
-		    	        session = request.getSession();
+		    	       // session = request.getSession();
 		    	        session.setAttribute("username", email);
 		    	        System.out.println("authenticating with client "+client.getID());
 		    	        session.setAttribute("clientID", client.getID());
+		    	       // sessionID = request.getParameter("clientID");
+		    	        //System.out.println("SESSION ID"+sessionID);
 
 		    	        // Redirect based on the user's role
 		    	        if ("root".equals(email)) {
@@ -275,6 +383,7 @@ public class ControlServlet extends HttpServlet {
             String photodata3 = request.getParameter("photodata3");
             String note = request.getParameter("note");
             //Integer requestID = (Integer)request.getSession().getAttribute("requestID");
+           // session.setAttribute("clientID", client.getID());
             Integer clientID = (Integer)request.getSession().getAttribute("clientID");
             System.out.println("client id is "+clientID);
             
@@ -284,7 +393,7 @@ public class ControlServlet extends HttpServlet {
             requestDAO.insert(requests);
             
         	System.out.println("Request Successful! Added to database");
-           // response.sendRedirect("listRequest");
+        	response.sendRedirect("out.jsp");
             //request.setAttribute("treeCount", treeCount);
             //request.getRequestDispatcher("clientquote.jsp").forward(request, response);
         
@@ -296,6 +405,7 @@ public class ControlServlet extends HttpServlet {
             String status = request.getParameter("status");
             String requestID = request.getParameter("requestID");
             String clientID = request.getParameter("clientID");
+            String note = request.getParameter("note");
             
             session = request.getSession();
 	      //  session.setAttribute("clientID");
@@ -304,7 +414,7 @@ public class ControlServlet extends HttpServlet {
             //request.getAttribute("clientID")
          // String name= (String)session.getAttribute("clientID");
             
-            quotes quote = new quotes(Double.parseDouble(price), timeFrame, status, Integer.parseInt(requestID), Integer.parseInt(clientID));
+            quotes quote = new quotes(Double.parseDouble(price), timeFrame, status, Integer.parseInt(requestID), Integer.parseInt(clientID), note);
             quotesDAO.insertQuote(quote);
             
             
@@ -318,5 +428,46 @@ public class ControlServlet extends HttpServlet {
         		response.sendRedirect("login.jsp");
         	}    
 	    // to present an update form to update an  existing Student
+	    private void UpdateQuoteStatus(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("deleteclientQuote started: 000000000000000000000000000");
+
+	        // get the id of the people we want to delete from the parameter
+	        int id = Integer.parseInt(request.getParameter("id"));
+	        String status = request.getParameter("status");
+	        //People people = new People(id);
+
+	        // delete this people
+	        quotes quotes = quotesDAO.getQuote(id);
+	        quotes.setStatus(status);
+	        quotesDAO.update(quotes);
+	        //quotesDAO.delete(id);
+	        
+	        System.out.println("Ask the browser to call the list action next automatically");
+	        
+	        // instead rediret to another jsp, we redirect to another action, simulating that the user click a list link or button, benefit: save one click from the user    
+	        clientPage(request, response, "");
+	        
+	        System.out.println("deletePeople finished: 1111111111111111111111111111111");
+	    }
+	    private void UpdateQuoteContractor(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("updateQuotecontractor started: 000000000000000000000000000");
+	       
+	        // get the id of the people we want to delete from the parameter
+	        int id = Integer.parseInt(request.getParameter("id"));
+	        String status = request.getParameter("status");
+	        //People people = new People(id);
+	        // delete this people
+	        quotes quotes = quotesDAO.getQuote(id);
+	        quotes.setStatus(status);
+	        quotesDAO.update(quotes);
+	        System.out.println("Ask the browser to call the list action next automatically");
+	        
+	        // instead rediret to another jsp, we redirect to another action, simulating that the user click a list link or button, benefit: save one click from the user    
+	        contractorPage(request, response, "");
+	        
+	        System.out.println("deletePeople finished: 1111111111111111111111111111111");
+	    }
 
 }

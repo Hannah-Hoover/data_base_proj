@@ -386,6 +386,7 @@ public class userDAO
 				            "status VARCHAR(10), " +
 				            "clientID INTEGER, " +
 				            "requestID INTEGER," +
+				            "note VARCHAR(250),"+
 				            "FOREIGN KEY(clientID) REFERENCES Client(clientID),"+
 				            "FOREIGN KEY(requestID) REFERENCES Request(requestID)" +");",
 					};
@@ -470,19 +471,19 @@ String[] TUPLES = {"insert into User(email, firstName, lastName, password, birth
     		    	    "('888', '700.00', 0),"+
     		    	    "('999', '300.00', 0),"+
     		    	    "('112', '1100.00', 0);",
-    	    "INSERT INTO Quotes (clientID, price, timeframe, status, requestID) " +
+    	    "INSERT INTO Quotes (clientID, price, timeframe, status, requestID, note) " +
             "VALUES " +
-	                      "('1', '000.00', 'default', 'pending', '1'),"+
-	                      "('2', '1000.00', '1 week', 'pending', '2'),"+
-	                      "('3', '1200.00', '3 days', 'accepted', '3'),"+
-	                      "('4', '800.00', '2 weeks', 'canceled', '4'),"+
-	                      "('5', '300.00', '1 week', 'canceled', '5'),"+
-	                      "('6', '900.00', '3 weeks', 'accepted', '6'),"+
-	                      "('7', '400.00', '1 month', 'accepted', '7'),"+
-	                      "('8', '850.00', '5 days', 'pending', '8'),"+
-	                      "('9', '700.00', '4 days', 'pending', '9'),"+
-	                      "('10', '300.00', '2 weeks', 'pending', '10'),"+
-	                      "('11', '1100.00', '1 week', 'pending', '11');"
+	                      "('1', '000.00', 'default', 'pending', '1', 'note1' ),"+
+	                      "('2', '1000.00', '1 week', 'pending', '2', 'note2'),"+
+	                      "('3', '1200.00', '3 days', 'agree', '3', 'note3'),"+
+	                      "('4', '800.00', '2 weeks', 'quit', '4', 'note4'),"+
+	                      "('5', '300.00', '1 week', 'quit', '5', 'note5'),"+
+	                      "('6', '900.00', '3 weeks', 'agree', '6', 'note6'),"+
+	                      "('7', '400.00', '1 month', 'agree', '7', 'note7'),"+
+	                      "('8', '850.00', '5 days', 'pending', '8', 'note8'),"+
+	                      "('9', '700.00', '4 days', 'pending', '9', 'note9'),"+
+	                      "('10', '300.00', '2 weeks', 'pending', '10', 'note10'),"+
+	                      "('11', '1100.00', '1 week', 'pending', '11', 'note11');"
 	    			};
 
     		
