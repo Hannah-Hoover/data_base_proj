@@ -29,6 +29,7 @@ Part 1:
 
 Time Working together (In person or Online) for part 1: 19 HOURS 
 
+Part 2:
 Hannah:
 1) Login function
 2) Print tables on activity page
