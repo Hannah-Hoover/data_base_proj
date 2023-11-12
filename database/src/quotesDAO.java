@@ -216,7 +216,7 @@ public class quotesDAO {
 		         
 		        boolean rowDeleted = preparedStatement.executeUpdate() > 0;
 		        preparedStatement.close();
-//		        disconnect();
+		        disconnect();
 		        return rowDeleted;     
 		    }
 		     
