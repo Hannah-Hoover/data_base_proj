@@ -38,7 +38,12 @@ Hannah:
 7) Update Control Servlet as needed
 
 Morgan:
-1)
+1) Quote request interface
+2) Quote request functionality
+3) Creating request class, DAO file, and list file
+4) Created the interface files for contractor and client
+5) Updated control servlet for the responses
+6) Update Control Servlet as needed
 
 
 Time Working Together (in person or online) for part 2: 23 HOURS
