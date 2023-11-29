@@ -1,3 +1,14 @@
+# Temp
+Morgan: 
+QuoteMessageDAO
+BillMessageDAO
+OrderInfoDAO
+
+Hannah:
+TreeDAO
+BillDAO
+Any Servlet or JSP changes if time
+
 # data_base_proj
 
 To install the project:
