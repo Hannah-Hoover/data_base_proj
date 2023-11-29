@@ -23,7 +23,7 @@ public class tree{
     	this.treeID = treeID; 
     }
 
-    public quote(quoteID, location, height, proximity, diameter, photo1, photo2, photo3)
+    public tree(quoteID, location, height, proximity, diameter, photo1, photo2, photo3)
     {
     	this.quoteID = quoteID;
     	this.location = location;
