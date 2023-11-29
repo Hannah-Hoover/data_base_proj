@@ -12,7 +12,7 @@ public class quote{
     }    
 
     public quote(int quoteID){
-	    this.quoteId = quoteID;
+	    this.quoteID = quoteID;
     }
     public quote(int quoteID, int contractorID, int clientID, double price, String startTime, String endTime, String status){
 	this(contractorID, clientID, price, startTime, endTime, status);
