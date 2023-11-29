@@ -97,7 +97,7 @@ public class quoteDAO {
 	
 		             
 		            quote quotes = new quote(contractorID, clientID, price, startTime, endTime, status);
-		            quote.setQuoteID(quoteset.getInt("quoteID"));
+		            quotes.setQuoteID(quoteset.getInt("quoteID"));
 		            listQuote.add(quotes);
 		        }
 		        
@@ -147,26 +147,26 @@ public class quoteDAO {
 				preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 
 			    		preparedStatement.setInt(1, quotes.getContractorID());
-			    		prepardedStatement.setInt(2, clientID.getClientID()
-					preparedStatement.setDouble(3, quotes.getPrice());
-					preparedStatement.setString(4, quotes.getStartTime());
+			    		preparedStatement.setInt(2, quotes.getClientID());
+			    		preparedStatement.setDouble(3, quotes.getPrice());
+			    		preparedStatement.setString(4, quotes.getStartTime());
 			    		preparedStatement.setString(5, quotes.getEndTime());
-					preparedStatement.setString(6, quotes.getStatus());		
-				preparedStatement.executeUpdate();
-		        preparedStatement.close();
+			    		preparedStatement.setString(6, quotes.getStatus());		
+			    		preparedStatement.executeUpdate();
+			    		preparedStatement.close();
 		    }
 		    
-		    public boolean update(quote quote) throws SQLException {
+		    public boolean update(quote quotes) throws SQLException {
 		    	System.out.println("\n \n update in quoteDAO.");
 		        String sql = "update Quote set QuoteID=?, ContractorID=?, ClientID=?, Price=?, StartTime=?, EndTime=? Status = ?";
 		        connect_func();
-		        	    	preparedStatement.setInt(1, quotes.getContractorID());
-			    		prepardedStatement.setInt(2, clientID.getClientID()
-					preparedStatement.setDouble(3, quotes.getPrice());
-					preparedStatement.setString(4, quotes.getStartTime());
+		        	    preparedStatement.setInt(1, quotes.getContractorID());
+			    		preparedStatement.setInt(2, quotes.getClientID());
+			    		preparedStatement.setDouble(3, quotes.getPrice());
+			    		preparedStatement.setString(4, quotes.getStartTime());
 			    		preparedStatement.setString(5, quotes.getEndTime());
-					preparedStatement.setString(6, quotes.getStatus());
-		       	 preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+			    		preparedStatement.setString(6, quotes.getStatus());
+			    		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 		        boolean rowUpdated = preparedStatement.executeUpdate() > 0;
 		        preparedStatement.close();
 //		        disconnect();
@@ -180,7 +180,7 @@ public class quoteDAO {
 		        ResultSet rs = statement.executeQuery(sql);
 		        quote quote=null;
 		        if (rs.next()) {
-		            quote = new quotes(rs.getContractorID("contractorID"), rs.getClientID("clientID"), rs.getPrice("price"), rs.getStartTime("startTime"),rs.getEndTime("endTime"),rs.getStatus("status"));
+		            quote = new quote(rs.getInt("contractorID"), rs.getInt("clientID"), rs.getDouble("price"), rs.getString("startTime"),rs.getString("endTime"),rs.getString("status"));
 		            quote.setQuoteID(rs.getInt("quoteID"));
 		        }
 		        disconnect();        
