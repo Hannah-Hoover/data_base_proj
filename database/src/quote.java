@@ -36,6 +36,12 @@ public class quote{
     public void setQuoteID(int quoteID) {
         this.quoteID = quoteID;
     }
+    public int getContractorID() {
+        return contractorID;
+    }
+    public void setContractorID(int contractorID) {
+        this.contractorID = contractorID;
+    }
     public int getClientID() {
         return clientID;
     }
