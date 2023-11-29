@@ -28,13 +28,7 @@
             <c:forEach var="user" items="${get_user}">
                 <tr style="text-align:center">
                     <td>"${user.email}" </td>
-                    <td>"${user.firstName}"</td>
-                    <td>"${user.lastName}"</td>
-                    <td>"${user.adress_street_num} ${users.adress_street} ${users.adress_city} ${users.adress_state} ${users.adress_zip_code}"</td>
-                    <td>"${user.password}"</td>
-                    <td>"${user.birthday}"</td>
-                    <td>"${user.cash_bal}"</td>
-                    <td>"${user.PPS_bal}"</td>
+               
                  </tr>
             </c:forEach>
           </table>

@@ -313,177 +313,142 @@ public class userDAO
 			        "use testdb;",
 			        "drop table if exists User; ",
 			        "CREATE TABLE if not exists User( " +
-			            "email VARCHAR(50) NOT NULL, " + 
-			            "firstName VARCHAR(10) NOT NULL, " +
-			            "lastName VARCHAR(10) NOT NULL, " +
-			            "password VARCHAR(20) NOT NULL, " +
-			            "birthday DATE NOT NULL, " +
-			            "adress_street_num VARCHAR(4) , "+ 
-			            "adress_street VARCHAR(30) , "+ 
-			            "adress_city VARCHAR(20)," + 
-			            "adress_state VARCHAR(2),"+ 
-			            "adress_zip_code VARCHAR(5),"+ 
-			            "cash_bal DECIMAL(13,2) DEFAULT 1000,"+ 
-			            "PPS_bal DECIMAL(13,2) DEFAULT 0,"+
-			            "PRIMARY KEY (email) "+
-			            "); ",
-					"drop table if exists Client; ",
-					"CREATE TABLE if not exists Client( " +
-							"clientID INTEGER AUTO_INCREMENT PRIMARY KEY, " + 
-							"email VarChar(50) NOT NULL, " +
-							"password VarChar(20) NOT NULL, " + 
-							"firstName VarChar(20) NOT NULL, " +
-							"lastname VarChar(20) NOT NULL, " +
-							"address VarChar(50), " +
-							"creditCard VarChar(50), " +
-							"phone VarChar(15)" +"); ",
-					"drop table if exists Request; ",
-					"CREATE TABLE if not exists Request( "+
-							"requestID INT AUTO_INCREMENT PRIMARY KEY,"+
-							"location VARCHAR(70),"+
-							"height VARCHAR(20),"+
-							"proximity VARCHAR(20),"+
-							"sizeDiameter VARCHAR(20),"+
-							"photodata1 VARCHAR(20),"+
-							"photodata2 VARCHAR(20),"+
-							"photodata3 VARCHAR(20)," +
-							"note VARCHAR(100), " +
-							"clientID INTEGER, " +
-					        "FOREIGN KEY(clientID) REFERENCES Client(clientID)" + ");",
-					"drop table if exists Contractor; ",
-                 	"CREATE TABLE if not exists Contractor( " +
-                    		"clientID INTEGER, "+
-                    		"email VARCHAR(50) NOT NULL, " + 
-			            	"firstName VARCHAR(10) NOT NULL, " +
-			            	"lastName VARCHAR(10) NOT NULL, " +
-			            	"password VARCHAR(20) NOT NULL " + " );",
+			        		"userID INT AUTO_INCREMENT PRIMARY KEY,"+
+			        		"email	VARCHAR(50) NOT NULL,"+
+			        		"password VARCHAR(20) NOT NULL, "+
+			        		"firstName VARCHAR(20) NOT NULL, "+
+			        		"lastname VARCHAR(20) NOT NULL, "+
+			        	    "role VARCHAR(20) NOT NULL,"+
+			        		"address VARCHAR(50), "+
+			        		"creditCard VARCHAR(50)," +
+			        		"phone VARCHAR(15)" +"); ",
+			        		
+			        "drop table if exists Quote; ",                           
+					"CREATE TABLE if not exists Quote( " +
+						    "quoteID INT AUTO_INCREMENT PRIMARY KEY, " + 
+						    "contractorID INTEGER,"+
+						    "clientID INTEGER, "+
+						    "price DOUBLE, "+
+						    "schedulestart DATETIME,"+
+						    "scheduleend DATETIME,"+
+						    "FOREIGN KEY (contractorID) REFERENCES User(userID),"+
+						    "FOREIGN KEY (clientID) REFERENCES User(userID)"+"); ",
+					
+					
                    "drop table if exists OrderInfo; ",
                    "CREATE TABLE if not exists OrderInfo( " + 
-                			"clientID INTEGER NOT NULL, " +
-                		   	"contractID VARCHAR(20) NOT NULL " +");",
+                		   "orderID INT AUTO_INCREMENT PRIMARY KEY, "+
+                		   "quoteID INTEGER, "+
+                		   "price DOUBLE,"+
+                		   "schedulestart DATETIME,"+
+                		   "scheduleend DATETIME,"+
+                		   "FOREIGN KEY (quoteID) REFERENCES Quote(quoteID)" + ");  ",
+                		 
+                		   
+                		   
                 	"drop table if exists Tree; ",
                 	"CREATE TABLE if not exists Tree (" +
-							"clientID INTEGER, " +
+                			"treeID INT AUTO_INCREMENT PRIMARY KEY,"+
+                		    "quoteID INTEGER,"+
 							"location VARCHAR(70), " +
 							"height VARCHAR(20), " +
 							"proximity VARCHAR(20), " +
 							"sizeDiameter VARCHAR(20), " +
-							"photoID INTEGER, " +
 							"photodata1 BLOB, " +
 							"photodata2 BLOB, " +
 							"photodata3 BLOB, " +
-							"PRIMARY KEY (photoID) " +");",
+							"FOREIGN KEY (quoteID) REFERENCES Quote(quoteID)"+ "); ",
+							
+							
 					"drop table if exists Bill; ",
 					"CREATE TABLE if not exists Bill( " +
-			                "clientID INTEGER NOT NULL, " + 
-			                "amount INTEGER NOT NULL, " + 
-			                "status BIT DEFAULT False " +");",
-			        "drop table if exists Quotes; ",                           
-			        "CREATE TABLE if not exists Quotes( " +
-				            "quoteID INTEGER AUTO_INCREMENT PRIMARY KEY, " + 
-				            "price DOUBLE, " + 
-				            "timeframe VARCHAR(20), " + 
-				            "status VARCHAR(10), " +
-				            "clientID INTEGER, " +
-				            "requestID INTEGER," +
-				            "note VARCHAR(250),"+
-				            "FOREIGN KEY(clientID) REFERENCES Client(clientID),"+
-				            "FOREIGN KEY(requestID) REFERENCES Request(requestID)" +");",
+							"billID INT AUTO_INCREMENT PRIMARY KEY,"+
+						    "orderID INTEGER,"+
+							"price DOUBLE, "+
+						    "discount DOUBLE, "+
+						    "balance DOUBLE, "+
+							"status VARCHAR(20),"+
+							"FOREIGN KEY (orderID) REFERENCES OrderInfo(orderID)"+"); ",
+							
+							
+			        
+				        	
+				        	
+				        	
+				    "drop table if exists QuotesMessages; ",
+    	  			"CREATE TABLE if not exists QuotesMessages("+
+    	  					"quotemsgID INT AUTO_INCREMENT PRIMARY KEY, "+
+    	  					"userID INTEGER, "+
+    	  					"quoteID INTEGER,"+
+    	  					"msgtime DATETIME,"+
+    	  					"price DOUBLE,"+
+    	  					"schedulestart DATETIME,"+
+    	  					"scheduleend DATETIME,"+
+    	  					"note VARCHAR(200),"+
+    	  					"FOREIGN KEY(userID) REFERENCES User(userID),"+
+    	  					"FOREIGN KEY(quoteID) REFERENCES Quote(quoteID)"+"); ",
+    	  					
+    	  		    "drop table if exists BillsMessages;",
+    	  			"CREATE TABLE if not exists BillsMessages("+
+    	  					"billmsgID INT AUTO_INCREMENT PRIMARY KEY,"+
+    	  					"userID INTEGER,"+
+    	  					"billID INTEGER, "+
+    	  					"price DOUBLE,"+
+    	  					"schedulestart DATETIME,"+
+    	  					"scheduleend DATETIME,"+
+    	  					"note VARCHAR(200),"+
+    	  					"FOREIGN KEY(userID) REFERENCES User(userID), FOREIGN KEY(billID) REFERENCES Bill(billID)"+"); ",
+
 					};
     	  
-String[] TUPLES = {"insert into User(email, firstName, lastName, password, birthday, adress_street_num, adress_street, adress_city, adress_state, adress_zip_code, cash_bal, PPS_bal)"+
-			"values ('susie@gmail.com', 'Susie ', 'Guzman', 'susie1234', '2000-06-27', '1234', 'whatever street', 'detroit', 'MI', '48202','1000', '0'),"+
-	    		 	"('don@gmail.com', 'Don', 'Cummings','don123', '1969-03-20', '1000', 'hi street', 'mama', 'MO', '12345','1000', '0'),"+
-	    	 	 	"('margarita@gmail.com', 'Margarita', 'Lawson','margarita1234', '1980-02-02', '1234', 'ivan street', 'tata','CO','12561','1000', '0'),"+
-	    		 	"('jo@gmail.com', 'Jo', 'Brady','jo1234', '2002-02-02', '3214','marko street', 'brat', 'DU', '54321','1000', '0'),"+
-	    		 	"('wallace@gmail.com', 'Wallace', 'Moore','wallace1234', '1971-06-15', '4500', 'frey street', 'sestra', 'MI', '48202','1000', '0'),"+
-	    		 	"('amelia@gmail.com', 'Amelia', 'Phillips','amelia1234', '2000-03-14', '1245', 'm8s street', 'baka', 'IL', '48000','1000', '0'),"+
-	    			"('sophie@gmail.com', 'Sophie', 'Pierce','sophie1234', '1999-06-15', '2468', 'yolos street', 'ides', 'CM', '24680','1000', '0'),"+
-	    			"('angelo@gmail.com', 'Angelo', 'Francis','angelo1234', '2021-06-14', '4680', 'egypt street', 'lolas', 'DT', '13579','1000', '0'),"+
-	    			"('rudy@gmail.com', 'Rudy', 'Smith','rudy1234', '1706-06-05', '1234', 'sign street', 'samo ne tu','MH', '09876','1000', '0'),"+
-	    			"('jeannette@gmail.com', 'Jeannette ', 'Stone','jeannette1234', '2001-04-24', '0981', 'snoop street', 'kojik', 'HW', '87654','1000', '0'),"+
-	    			"('root', 'default', 'default','pass1234', '2021-01-01', '0000', 'Default', 'Default', '0', '00000','1000','1000000000');",
-			"INSERT INTO Client ( email, password, firstName, lastName, address, creditcard, phone) " +
- 		    	   "VALUES " +
- 		    	    		"( 'root', 'pass1234', 'default', 'default', 'default', '0000 0000 0000 0000', '000-000-0000'), " +
- 		    	    		"( 'john@gmail.com', 'john1234', 'John', 'Smith', '1273 success road, Detroit, MI 49202', '1112 1113 1114 1115', '248-454-7892'), " +
- 		    	    		"( 'breanna@gmail.com', 'breanna1234', 'Breanna', 'Walts', '1923 briggs street, Warren, MI 49502', '2222 2223 2224 2225', '517-724-0192'), " +
- 		    	    		"( 'logan@gmail.com', 'logan1234', 'Logan', 'Baker', '6413 greene sqaure, Troy, MI 48915', '3332 3333 3334 3335', '248-970-1137'), " +
- 		    	    		"( 'calire@gmail.com', 'claire1234', 'Claire', 'Fields', '1342 prime road, Detroit, MI 49203', '4442 4443 4444 4445', '586-431-3801'), " +
- 		    	    		"( 'alexa@gmail.com', 'alexa1234', 'Alexa', 'Ferguson', '3951 kohler street, Rochester, MI 48323', '5552 5553 5554 5555', '248-115-4328'), " +
- 		    	    		"( 'nathan@gmail.com', 'nathan1234', 'Nathan', 'Long', '8439 rennings road, New Baltimore, MI 49222', '6662 6663 6664 6665', '248-554-4182'), " +
- 		    	    		"( 'craig@gmail.com', 'craig1234', 'Craig', 'mcdaniel', '1233 tribune road, Flint, MI 43202', '7772 7773 7774 7775', '818-904-6122'), " +
- 		    	    		"( 'anna@gmail.com', 'anna1234', 'Anna', 'Hector', '1593 liberty circle, Commerce, MI 48312', '8882 8883 8884 8885', '248-144-2830'), " +
- 		    	    		"( 'justin@gmail.com', 'justin1234', 'Justin', 'Novil', '1963 peace road, Woxom, MI 48320', '9992 9993 9994 9995', '248-108-3349'), " +
- 		    	    		"( 'marie@gmail.com', 'marie1234', 'Marie', 'palmer', '1123 croten road, Dearborn, MI 433202', '2222 1113 1114 1115', '808-998-1274');",
- 		    "INSERT INTO Request(clientID, location,height,proximity,sizeDiameter,photodata1,photodata2,photodata3,note)"+
-     	    	   "VALUES"  + 
- 		     	    	    "('1', 'default', 'default', 'default','default', '0x000000', '0x000000', '0x000000', 'note'),"+
- 		 		    	    "('2', 'backyard-east', '2.0 meters', '1 meter','60 millimeters', '0xFFD939588', '0xFFD856382', '0xFFD830386', 'note'),"+
- 		 		         	"('3', 'backyard-south', '1.75 meters', '2 meters','50 millimeters', '0xFFD758438', '0xFFD546721', '0xFFD223421', 'note'),"+
- 		 		    	    "('4','backyard-northeast', '3.0 meters', '.5 meters','90 millimeters', '0xFFD009879', '0xFFD675867', '0xFFD890798', 'note'),"+
- 		 		    	    "('5', 'backyard-northwest', '2.5 meters', '2.2 meters','70 millimeters', '0xFFD435908', '0xFFD124514', '0xFFD123511', 'note'),"+
- 		 		    	    "('6','backyard-north', '2.75 meters', '1.5 meters','80 millimeters', '0xFFD675754', '0xFFD105690', '0xFFD119938', 'note'),"+
- 		 		    	    "('7', 'backyard-west', '4.5 meters', '3.2 meters','130 millimeters', '0xFFD122334', '0xFFD097749', '0xFFD085591', 'note'),"+
- 		 		    	    "('8', 'frontyard-southeast', '4.0 meters', '6 meters','120 millimeters', '0xFFD849222', '0xFFD195872', '0xFFD294851', 'note'),"+
- 		 		    	    "('9', 'frontyard-northeast', '3.5 meters', '2.1 meters','1100 millimeters', '0xFFD457683', '0xFFD103885', '0xFFD390568', 'note'),"+
- 		 		    	    "('10', 'frontyard-northwest', '3.75 meters', '9 meters','115 millimeters', '0xFFD193852', '0xFFD301938', '0xFFD285920', 'note'),"+
- 		 		    	    "('11', 'frontyard-southwest', '3.25 meters', '4.5 meters','100 millimeters', '0xFFD029344', '0xFFD333876', '0xFFD784713', 'note');",
- 		    "INSERT INTO Contractor (clientID, email, password, firstName, lastName) " +
-  		    	   "VALUES " +
-  		    	    		"('000', 'david@gmail.com', 'pass1234', 'david', 'smith');",
-			"INSERT INTO OrderInfo (clientID, contractID) " +
+String[] TUPLES = {"insert into User(email, password, firstName, lastname, role, address, creditCard, phone)"+
+			"values ('root', 'pass1234', 'default', 'default', 'admin', 'default', '0000 0000 0000 0000', '000-000-0000')," +
+							"('breanna@gmail.com', 'breanna1234', 'Breanna', 'Walts', 'client', '1923 briggs street, Warren, MI 49502', '2222 2223 2224 2225', '517-724-0192'),"+
+							"('logan@gmail.com', 'logan1234', 'Logan', 'Baker', 'client', '6413 greene sqaure, Troy, MI 48915', '3332 3333 3334 3335', '248-970-1137'), "+
+							"('calire@gmail.com', 'claire1234', 'Claire', 'Fields', 'client', '1342 prime road, Detroit, MI 49203', '4442 4443 4444 4445', '586-431-3801'),"+
+							"('alexa@gmail.com', 'alexa1234', 'Alexa', 'Ferguson', 'client', '3951 kohler street, Rochester, MI 48323', '5552 5553 5554 5555', '248-115-4328'), "+
+							"('nathan@gmail.com', 'nathan1234', 'Nathan', 'Long', 'client', '8439 rennings road, New Baltimore, MI 49222', '6662 6663 6664 6665', '248-554-4182'),"+
+							"('craig@gmail.com', 'craig1234', 'Craig', 'mcdaniel', 'client', '1233 tribune road, Flint, MI 43202', '7772 7773 7774 7775', '818-904-6122'),"+
+							"('anna@gmail.com', 'anna1234', 'Anna', 'Hector', 'client', '1593 liberty circle, Commerce, MI 48312', '8882 8883 8884 8885', '248-144-2830'), "+
+							"('justin@gmail.com', 'justin1234', 'Justin', 'Novil', 'client', '1963 peace road, Woxom, MI 48320', '9992 9993 9994 9995', '248-108-3349'),"+
+							"('marie@gmail.com', 'marie1234', 'Marie', 'palmer', 'client', '1123 croten road, Dearborn, MI 433202', '2222 1113 1114 1115', '808-998-1274'),"+
+							"('david@gmail.com', 'pass1234', 'David', 'Smith', 'contractor', '1983 dumfore street, Pontiac, MI 43292', '4444 4444 44444 4444', '818-800-8000');",
+	    			
+	    			
+			"INSERT INTO Quote (contractorID, clientID, price, schedulestart, scheduleend) " +
 			"VALUES " +
-                    	    "('000', '0001-0001'),"+
-        		    	    "('111', '1111-1112'),"+
-        		    	    "('222', '2221-2222'),"+
-        		    	    "('333', '3331-3332'),"+
-        		    	    "('444', '4441-4442'),"+
-        		    	    "('555', '5551-5552'),"+
-        		    	    "('666', '6661-6662'),"+
-        		    	    "('777', '7771-7772'),"+
-        		    	    "('888', '8881-8882'),"+
-        		    	    "('999', '9991-9992'),"+
-        		    	    "('112', '1112-1113');",
-    	    "INSERT INTO Tree (clientID,location,height,proximity,sizeDiameter,photoID,photodata1,photodata2,photodata3)"+
+							"('1','1','00.00', '0001-01-01', '0001-01-01');",
+ 		  
+			"INSERT INTO OrderInfo (quoteID, price, schedulestart, scheduleend) " +
+			"VALUES " +
+        		    	    "('1', '100.00' , '2023-11-02', '2023-12-02');",
+        		    	    
+        		    	    
+        		    	    
+    	    "INSERT INTO Tree (quoteID, location, height, proximity, sizeDiameter, photodata1,  photodata2, photodata3)"+
   		  	"VALUES " +
-  		  				"('000', 'default', 'default', 'default','default', '11100', '0x000000', '0x000000', '0x000000'),"+
-  		  				"('111', 'backyard-east', '2.0 meters', '1 meter','60 millimeters', '11101', '0xFFD856382', '0xFFD830386', '0xFFD998450'),"+
-  		  				"('222', 'backyard-south', '1.75 meters', '2 meters','50 millimeters', '11102', '0xFFD546721', '0xFFD223421', '0xFFD450897'),"+
-  		  				"('333', 'backyard-northeast', '3.0 meters', '.5 meters','90 millimeters', '11103', '0xFFD675867', '0xFFD890798', '0xFFD707908'),"+
-  		  				"('444', 'backyard-northwest', '2.5 meters', '2.2 meters','70 millimeters', '11104', '0xFFD124514', '0xFFD123511', '0xFFD109281'),"+
-  		  				"('555', 'backyard-north', '2.75 meters', '1.5 meters','80 millimeters', '11105', '0xFFD105690', '0xFFD119938', '0xFFD343567'),"+
-  		  				"('666', 'backyard-west', '4.5 meters', '3.2 meters','130 millimeters', '11106', '0xFFD097749', '0xFFD085591', '0xFFD134239'),"+
-  		  				"('777', 'frontyard-southeast', '4.0 meters', '6 meters','120 millimeters', '11107', '0xFFD195872', '0xFFD294851', '0xFFD219191'),"+
-  		  				"('888', 'frontyard-northeast', '3.5 meters', '2.1 meters','1100 millimeters', '11108', '0xFFD103885', '0xFFD390568', '0xFFD457683'),"+
-  		  				"('999', 'frontyard-northwest', '3.75 meters', '9 meters','115 millimeters', '11109', '0xFFD301938', '0xFFD285920', '0xFFD193852'),"+
-  		  				"('112', 'frontyard-southwest', '3.25 meters', '4.5 meters','100 millimeters', '22200', '0xFFD333876', '0xFFD784713', '0xFFD029344');",
-			"INSERT INTO Bill (clientID, amount, status) " +
+  		  				"('1', 'backyard-east', '2.0 meters','.5 meters', '60 millimeters', '0x000000', '0x000000', '0x000000');",
+  		  				
+  		  				
+			"INSERT INTO Bill (orderID, price, discount, balance, status) " +
 			"VALUES " +
-                	    "('000', '000.00', 0),"+
-    		    	    "('111', '1000.00', 1),"+
-    		    	    "('222', '1200.00', 1),"+
-    		    	    "('333', '800.00', 0),"+
-    		    	    "('444', '300.00', 1),"+
-    		    	    "('555', '900.00', 1),"+
-    		    	    "('666', '400.00', 0),"+
-    		    	    "('777', '850.00', 1),"+
-    		    	    "('888', '700.00', 0),"+
-    		    	    "('999', '300.00', 0),"+
-    		    	    "('112', '1100.00', 0);",
-    	    "INSERT INTO Quotes (clientID, price, timeframe, status, requestID, note) " +
-            "VALUES " +
-	                      "('1', '000.00', 'default', 'pending', '1', 'note1' ),"+
-	                      "('2', '1000.00', '1 week', 'pending', '2', 'note2'),"+
-	                      "('3', '1200.00', '3 days', 'agree', '3', 'note3'),"+
-	                      "('4', '800.00', '2 weeks', 'quit', '4', 'note4'),"+
-	                      "('5', '300.00', '1 week', 'quit', '5', 'note5'),"+
-	                      "('6', '900.00', '3 weeks', 'agree', '6', 'note6'),"+
-	                      "('7', '400.00', '1 month', 'agree', '7', 'note7'),"+
-	                      "('8', '850.00', '5 days', 'pending', '8', 'note8'),"+
-	                      "('9', '700.00', '4 days', 'pending', '9', 'note9'),"+
-	                      "('10', '300.00', '2 weeks', 'pending', '10', 'note10'),"+
-	                      "('11', '1100.00', '1 week', 'pending', '11', 'note11');"
+    		    	    "('1', '100.00', '10.00', '90.00', 'pending');",
+    		    	    
+    		    	    
+    		    	    
+    		    	    
+    	    
+            
+	        "INSERT INTO QuotesMessages(userID, quoteID, msgtime, price, schedulestart, scheduleend)"+
+	        "VALUES" + 
+	        			"('1', '1', '2023-11-27 02:28:11', '100.00','2024-10-12', '2024-10-22');",
+	        			
+	        			
+	        			
+	       "INSERT INTO BillsMessages(userID, billID, price, schedulestart, scheduleend)"+
+	       "VALUES" + 
+	    		   	"('1','1','100.00', '2024-10-12', '2024-10-22');"
+	
 	    			};
 
     		
