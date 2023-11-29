@@ -13,26 +13,25 @@ public class tree{
     //constructors
     public tree() {
     }
-    public tree(int treeID) 
-    {
+
+    public tree(int treeID) {
         this.treeID = treeID;
     }
-    
-    public tree(int treeID, int quoteID, String location, String height, String proximity, String diameter, String photo1, String photo2, String photo3){
-    	this(quoteID, location, height, proximity, diameter, photo1, photo2, photo3);
-    	this.treeID = treeID; 
+
+    public tree(int treeID, int quoteID, String location, String height, String proximity, String diameter, String photo1, String photo2, String photo3) {
+        this(quoteID, location, height, proximity, diameter, photo1, photo2, photo3);
+        this.treeID = treeID;
     }
 
-    public tree(quoteID, location, height, proximity, diameter, photo1, photo2, photo3)
-    {
-    	this.quoteID = quoteID;
-    	this.location = location;
-     	this.height = height;
-      	this.proximity = proximity;
+    public tree(int quoteID, String location, String height, String proximity, String diameter, String photo1, String photo2, String photo3) {
+        this.quoteID = quoteID;
+        this.location = location;
+        this.height = height;
+        this.proximity = proximity;
         this.diameter = diameter;
-	this.photo1 = photo1;
- 	this.photo2 = photo2;
-  	this.photo3 = photo3;
+        this.photo1 = photo1;
+        this.photo2 = photo2;
+        this.photo3 = photo3;
     }
     
    //getter and setter methods
