@@ -23,6 +23,7 @@ public class quote{
     {
 	this.contractorID = contractorID;
     	this.clientID = clientID;
+	this.price = price;
     	this.startTime = startTime;
     	this.endTime = endTime;
     	this.status= status;
