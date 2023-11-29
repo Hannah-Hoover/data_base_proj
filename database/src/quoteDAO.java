@@ -24,14 +24,14 @@
 	 * Servlet implementation class Connect
 	 */
 	@WebServlet("/quoteDAO")
-public class quotesDAO {
+public class quoteDAO {
 		private static final long serialVersionUID = 1L;
 		private Connection connect = null;
 		private Statement statement = null;
 		private PreparedStatement preparedStatement = null;
 		private ResultSet resultSet = null;
 		
-		public quotesDAO(){}
+		public quoteDAO(){}
 		
 		/** 
 		 * @see HttpServlet#HttpServlet()
@@ -51,7 +51,7 @@ public class quotesDAO {
 		    public boolean database_login(String email, String password) throws SQLException{
 		    	try {
 		    		connect_func("root","pass1234");
-		    		String sql = "select * from Client where email = ?";
+		    		String sql = "select * from User where email = ?";
 		    		preparedStatement = connect.prepareStatement(sql);
 		    		preparedStatement.setString(1, email);
 		    		ResultSet rs = preparedStatement.executeQuery();
@@ -77,32 +77,33 @@ public class quotesDAO {
 		        }
 		    }
 		
-		    public List<quotes> listAllQuotes() throws SQLException {
+		    public List<quote> listAllQuote() throws SQLException {
 		    	System.out.print("In the quotes list function");
-		        List<quotes> listQuotes = new ArrayList<quotes>();        
-		        String sql = "SELECT * FROM Quotes";      
+		        List<quote> listQuote = new ArrayList<quote>();        
+		        String sql = "SELECT * FROM Quote";      
 		        connect_func();   
 		        statement = (Statement) connect.createStatement();
 		        ResultSet quoteset = statement.executeQuery(sql);
 		         
 		        while (quoteset.next()) {
 		        	System.out.print("122");
-		        	int clientID = quoteset.getInt("clientID");
+			    int quoteID = quoteset.getInt("quoteID");
+			    int contractorID = quoteset.getInt("contractorID");
+		            int clientID = quoteset.getInt("clientID");
 		            double price = quoteset.getDouble("price");
-		            String timeFrame = quoteset.getString("timeFrame");
+		            String startTime = quoteset.getString("startTime");
+			    String endTime = quoteset.getString("endTime");
 		            String status = quoteset.getString("status");
-		            int requestID = quoteset.getInt("requestID");
-		            String note = quoteset.getString("note");
 	
 		             
-		            quotes quote = new quotes(price, timeFrame, status, requestID, clientID, note);
+		            quote quotes = new quote(contractorID, clientID, price, startTime, endTime, status);
 		            quote.setQuoteID(quoteset.getInt("quoteID"));
-		            listQuotes.add(quote);
+		            listQuote.add(quotes);
 		        }
 		        
 		    quoteset.close();
 		    disconnect();        
-		    return listQuotes;
+		    return listQuote;
 		    }
 		    
 		    
@@ -140,57 +141,54 @@ public class quotesDAO {
 		        }
 		    }
 		    
-		    public void insertQuote(quotes quotes) throws SQLException {
+		    public void insertQuote(quote quotes) throws SQLException {
 		    	connect_func();         
-				String sql = "insert into Quotes(price, timeFrame, status, requestID,clientID, note) values (?, ?, ?, ?, ?, ?)";
+				String sql = "insert into Quote(contractorID, clientID, price, startTime, endTime, status) values (?, ?, ?, ?, ?, ?)";
 				preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-					
-					preparedStatement.setDouble(1, quotes.getPrice());
-					preparedStatement.setString(2, quotes.getTimeFrame());
-					preparedStatement.setString(3, quotes.getStatus());	
-					preparedStatement.setInt(4, quotes.getRequestID());	
-					preparedStatement.setInt(5, quotes.getClientID());
-					preparedStatement.setString(6, quotes.getNote());	
+
+			    		preparedStatement.setInt(1, quotes.getContractorID());
+			    		prepardedStatement.setInt(2, clientID.getClientID()
+					preparedStatement.setDouble(3, quotes.getPrice());
+					preparedStatement.setString(4, quotes.getStartTime());
+			    		preparedStatement.setString(5, quotes.getEndTime());
+					preparedStatement.setString(6, quotes.getStatus());		
 				preparedStatement.executeUpdate();
 		        preparedStatement.close();
 		    }
 		    
-		    public boolean update(quotes quote) throws SQLException {
+		    public boolean update(quote quote) throws SQLException {
 		    	System.out.println("\n \n update in quoteDAO.");
-		        String sql = "update Quotes set Price=?, TimeFrame =?, Status = ?,  RequestID = ?, Note = ?, ClientID = ? where quoteID= ?";
+		        String sql = "update Quote set QuoteID=?, ContractorID=?, ClientID=?, Price=?, StartTime=?, EndTime=? Status = ?";
 		        connect_func();
-		        
-		        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-				preparedStatement.setDouble(1, quote.getPrice());
-				preparedStatement.setString(2, quote.getTimeFrame());
-				preparedStatement.setString(3, quote.getStatus());	
-				preparedStatement.setInt(4, quote.getRequestID());
-				preparedStatement.setString(5, quote.getNote());
-				preparedStatement.setInt(6, quote.getClientID());
-				preparedStatement.setInt(7, quote.getQuoteID());
-				
-		         
+		        	    	preparedStatement.setInt(1, quotes.getContractorID());
+			    		prepardedStatement.setInt(2, clientID.getClientID()
+					preparedStatement.setDouble(3, quotes.getPrice());
+					preparedStatement.setString(4, quotes.getStartTime());
+			    		preparedStatement.setString(5, quotes.getEndTime());
+					preparedStatement.setString(6, quotes.getStatus());
+		       	 preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 		        boolean rowUpdated = preparedStatement.executeUpdate() > 0;
 		        preparedStatement.close();
 //		        disconnect();
 		        return rowUpdated;     
 		    }
 			
-		    public quotes getQuote(int quoteID)  throws SQLException{
-		        String sql = "SELECT * FROM Quotes where quoteID = "+quoteID;      
+		    public quote getQuote(int quoteID)  throws SQLException{
+		        String sql = "SELECT * FROM Quote where quoteID = "+quoteID;      
 		        connect_func();      
 		        PreparedStatement statement = connect.prepareStatement(sql);
 		        ResultSet rs = statement.executeQuery(sql);
-		        quotes quote=null;
+		        quote quote=null;
 		        if (rs.next()) {
-		            quote = new quotes(rs.getDouble("price"),rs.getString("timeFrame"),rs.getString("status"), rs.getInt("requestID"), rs.getInt("clientID"), rs.getString("note"));
+		            quote = new quotes(rs.getContractorID("contractorID"), rs.getClientID("clientID"), rs.getPrice("price"), rs.getStartTime("startTime"),rs.getEndTime("endTime"),rs.getStatus("status"));
 		            quote.setQuoteID(rs.getInt("quoteID"));
 		        }
 		        disconnect();        
 		        return quote;
 		    	
 		    }
-		    
+
+	/*
 		    public List<quotes> getQuotesByClientID(int clientID) throws SQLException {
 		    	System.out.println("\n \n quoteDAO.getQuote() is called.");
 		        List<quotes> listQuotes = new ArrayList<quotes>();        
@@ -207,8 +205,9 @@ public class quotesDAO {
 		        disconnect();        
 		        return listQuotes;
 			}
+	*/
 		    public boolean delete(int quoteID) throws SQLException {
-		        String sql = "DELETE FROM Quotes WHERE quoteID = ?";        
+		        String sql = "DELETE FROM Quote WHERE quoteID = ?";        
 		        connect_func();
 		         
 		        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
