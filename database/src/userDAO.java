@@ -88,21 +88,17 @@ public class userDAO
         ResultSet resultSet = statement.executeQuery(sql);
          
         while (resultSet.next()) {
+        	int userID = resultSet.getInt("userID");
             String email = resultSet.getString("email");
+            String password = resultSet.getString("password");
             String firstName = resultSet.getString("firstName");
             String lastName = resultSet.getString("lastName");
-            String password = resultSet.getString("password");
-            String birthday = resultSet.getString("birthday");
-            String adress_street_num = resultSet.getString("adress_street_num"); 
-            String adress_street = resultSet.getString("adress_street"); 
-            String adress_city = resultSet.getString("adress_city"); 
-            String adress_state = resultSet.getString("adress_state"); 
-            String adress_zip_code = resultSet.getString("adress_zip_code"); 
-            int cash_bal = resultSet.getInt("cash_bal");
-            int PPS_bal = resultSet.getInt("PPS_bal");
-
-             
-            user users = new user(email,firstName, lastName, password, birthday, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code, cash_bal,PPS_bal);
+            String role = resultSet.getString("role");
+            String address = resultSet.getString("address"); 
+            String creditCard = resultSet.getString("creditCard"); 
+            String phone = resultSet.getString("phone"); 
+    
+            user users = new user(userID, email, password, firstName, lastName, role, address, creditCard, phone);
             listUser.add(users);
             }
         resultSet.close();
@@ -147,20 +143,17 @@ public class userDAO
     
     public void insert(user users) throws SQLException {
     	connect_func("root","pass1234");         
-		String sql = "insert into User(email, firstName, lastName, password, birthday,adress_street_num, adress_street,adress_city,adress_state,adress_zip_code,cash_bal,PPS_bal) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,? ,?)";
+		String sql = "insert into User(userID, email,  password, firstName, lastName, role, address, creditCard, phone) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-			preparedStatement.setString(1, users.getEmail());
-			preparedStatement.setString(2, users.getFirstName());
-			preparedStatement.setString(3, users.getLastName());
-			preparedStatement.setString(4, users.getPassword());
-			preparedStatement.setString(5, users.getBirthday());
-			preparedStatement.setString(6, users.getAdress_street_num());		
-			preparedStatement.setString(7, users.getAdress_street());		
-			preparedStatement.setString(8, users.getAdress_city());		
-			preparedStatement.setString(9, users.getAdress_state());		
-			preparedStatement.setString(10, users.getAdress_zip_code());		
-			preparedStatement.setInt(11, users.getCash_bal());		
-			preparedStatement.setInt(12, users.getPPS_bal());		
+			preparedStatement.setInt(1, users.getUserID());
+			preparedStatement.setString(2, users.getEmail());
+			preparedStatement.setString(3, users.getPassword());
+			preparedStatement.setString(4, users.getFirstName());
+			preparedStatement.setString(5, users.getLastName());
+			preparedStatement.setString(6, users.getRole());
+			preparedStatement.setString(7, users.getAddress());		
+			preparedStatement.setString(8, users.getCreditCard());		
+			preparedStatement.setString(9, users.getPhone());			
 
 		preparedStatement.executeUpdate();
         preparedStatement.close();
@@ -179,22 +172,20 @@ public class userDAO
     }
      
     public boolean update(user users) throws SQLException {
-        String sql = "update User set firstName=?, lastName =?,password = ?,birthday=?,adress_street_num =?, adress_street=?,adress_city=?,adress_state=?,adress_zip_code=?, cash_bal=?, PPS_bal =? where email = ?";
+        String sql = "update User set userID= ?, password = ?, firstName=?, lastName =?, role=?, address =?, creditCard=?, phone=? where email = ?";
         connect_func();
         
         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-        preparedStatement.setString(1, users.getEmail());
-		preparedStatement.setString(2, users.getFirstName());
-		preparedStatement.setString(3, users.getLastName());
-		preparedStatement.setString(4, users.getPassword());
-		preparedStatement.setString(5, users.getBirthday());
-		preparedStatement.setString(6, users.getAdress_street_num());		
-		preparedStatement.setString(7, users.getAdress_street());		
-		preparedStatement.setString(8, users.getAdress_city());		
-		preparedStatement.setString(9, users.getAdress_state());		
-		preparedStatement.setString(10, users.getAdress_zip_code());		
-		preparedStatement.setInt(11, users.getCash_bal());		
-		preparedStatement.setInt(12, users.getPPS_bal());
+        preparedStatement.setInt(1, users.getUserID());
+        preparedStatement.setString(2, users.getEmail());
+        preparedStatement.setString(3, users.getPassword());
+		preparedStatement.setString(4, users.getFirstName());
+		preparedStatement.setString(5, users.getLastName());
+		preparedStatement.setString(6, users.getRole());
+		preparedStatement.setString(7, users.getAddress());		
+		preparedStatement.setString(8, users.getCreditCard());		
+		preparedStatement.setString(9, users.getPhone());		
+	
          
         boolean rowUpdated = preparedStatement.executeUpdate() > 0;
         preparedStatement.close();
@@ -215,19 +206,15 @@ public class userDAO
         ResultSet resultSet = preparedStatement.executeQuery();
          
         if (resultSet.next()) {
+        	int userID = resultSet.getInt("userID");
+        	String password = resultSet.getString("password");
             String firstName = resultSet.getString("firstName");
             String lastName = resultSet.getString("lastName");
-            String password = resultSet.getString("password");
-            String birthday = resultSet.getString("birthday");
             String role= resultSet.getString("role");
-            String adress_street_num = resultSet.getString("adress_street_num"); 
-            String adress_street = resultSet.getString("adress_street"); 
-            String adress_city = resultSet.getString("adress_city"); 
-            String adress_state = resultSet.getString("adress_state"); 
-            String adress_zip_code = resultSet.getString("adress_zip_code"); 
-            int cash_bal = resultSet.getInt("cash_bal");
-            int PPS_bal = resultSet.getInt("PPS_bal");
-            user = new user(email, firstName, lastName, password, birthday, role, adress_street_num,  adress_street,  adress_city,  adress_state,  adress_zip_code,cash_bal,PPS_bal);
+            String address = resultSet.getString("address"); 
+            String creditCard = resultSet.getString("creditCard"); 
+            String phone = resultSet.getString("phone");
+            user = new user(userID, email, password, firstName, lastName, role, address,  creditCard,  phone);
         }
     
     }finally {

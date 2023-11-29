@@ -52,10 +52,10 @@ public class user
 	    public void setEmail(String email) {
 	        this.email = email;
 	    }
-	    public int getuserID() {
+	    public int getUserID() {
 	        return userID;
 	    }
-	    public void setuserID(int userID) {
+	    public void setUserID(int userID) {
 	        this.userID = userID;
 	    }
 	    public String getPassword() {
@@ -85,24 +85,24 @@ public class user
 	    	this.role = role;
 	    }
 	    
-	    public String getaddress() {
+	    public String getAddress() {
 	        return address;
 	    }
-	    public void setaddress(String address) {
+	    public void setAddress(String address) {
 	        this.address = address;
 	    }
 	    
-	    public String getcreditCard() {
+	    public String getCreditCard() {
 	    	return creditCard;
 	    }
-	    public void setcreditCard(String creditCard) {
+	    public void setCreditCard(String creditCard) {
 	    	this.creditCard = creditCard;
 	    }
 	    
-	    public String getphone() {
+	    public String getPhone() {
 	    	return phone;
 	    }
-	    public void phone(String phone) {
+	    public void Phone(String phone) {
 	    	this.phone = phone;
 	    }
 	}

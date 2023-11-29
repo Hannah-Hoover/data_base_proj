@@ -1,7 +1,7 @@
 public class quote{
 	protected int quoteID;
 	protected int contractorID;
-	protected int clientID
+	protected int clientID;
 	protected double price;
 	protected String startTime;
 	protected String endTime;
