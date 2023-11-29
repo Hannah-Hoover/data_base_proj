@@ -317,7 +317,7 @@ public class userDAO
 			        		"email	VARCHAR(50) NOT NULL,"+
 			        		"password VARCHAR(20) NOT NULL, "+
 			        		"firstName VARCHAR(20) NOT NULL, "+
-			        		"lastname VARCHAR(20) NOT NULL, "+
+			        		"lastName VARCHAR(20) NOT NULL, "+
 			        	    "role VARCHAR(20) NOT NULL,"+
 			        		"address VARCHAR(50), "+
 			        		"creditCard VARCHAR(50)," +
@@ -331,6 +331,7 @@ public class userDAO
 						    "price DOUBLE, "+
 						    "schedulestart DATETIME,"+
 						    "scheduleend DATETIME,"+
+						    "status VARCHAR(20),"+
 						    "FOREIGN KEY (contractorID) REFERENCES User(userID),"+
 						    "FOREIGN KEY (clientID) REFERENCES User(userID)"+"); ",
 					
@@ -401,7 +402,7 @@ public class userDAO
 
 					};
     	  
-String[] TUPLES = {"insert into User(email, password, firstName, lastname, role, address, creditCard, phone)"+
+String[] TUPLES = {"insert into User(email, password, firstName, lastName, role, address, creditCard, phone)"+
 			"values ('root', 'pass1234', 'default', 'default', 'admin', 'default', '0000 0000 0000 0000', '000-000-0000')," +
 							"('breanna@gmail.com', 'breanna1234', 'Breanna', 'Walts', 'client', '1923 briggs street, Warren, MI 49502', '2222 2223 2224 2225', '517-724-0192'),"+
 							"('logan@gmail.com', 'logan1234', 'Logan', 'Baker', 'client', '6413 greene sqaure, Troy, MI 48915', '3332 3333 3334 3335', '248-970-1137'), "+
@@ -415,9 +416,9 @@ String[] TUPLES = {"insert into User(email, password, firstName, lastname, role,
 							"('david@gmail.com', 'pass1234', 'David', 'Smith', 'contractor', '1983 dumfore street, Pontiac, MI 43292', '4444 4444 44444 4444', '818-800-8000');",
 	    			
 	    			
-			"INSERT INTO Quote (contractorID, clientID, price, schedulestart, scheduleend) " +
+			"INSERT INTO Quote (contractorID, clientID, price, schedulestart, scheduleend, status) " +
 			"VALUES " +
-							"('1','1','00.00', '0001-01-01', '0001-01-01');",
+							"('1','1','00.00', '0001-01-01', '0001-01-01','pending');",
  		  
 			"INSERT INTO OrderInfo (quoteID, price, schedulestart, scheduleend) " +
 			"VALUES " +

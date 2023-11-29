@@ -1,18 +1,14 @@
 public class user 
 {
-		protected String password;
+		protected int userID;
 	 	protected String email;
+	 	protected String password;
 	    protected String firstName;
 	    protected String lastName;
-	    protected String adress_street_num;
-	    protected String adress_street;
-	    protected String adress_city;
-	    protected String adress_state;
-	    protected String adress_zip_code;
-	    protected String birthday;
 	    protected String role;
-	    protected int cash_bal;
-	    protected int PPS_bal;
+	    protected String address;
+	    protected String creditCard;
+	    protected String phone;
 	    
 	   /* public enum UserRole{
 	    	Client, Contractor, Admin
@@ -24,32 +20,29 @@ public class user
 	    public user() {
 	    }
 	 
-	    public user(String email) 
+	    public user(int userID) 
 	    {
-	        this.email = email;
+	        this.userID = userID;
 	    }
 	    
-	    public user(String email,String firstName, String lastName, String password,String birthday, String role, String adress_street_num, String adress_street, String adress_city, String adress_state,String adress_zip_code, int cash_bal,  int PPS_bal) 
+	    public user(int userID, String email, String password, String firstName, String lastName, String role, String address, String creditCard, String phone) 
 	    {
-	    	this(firstName,lastName,password,birthday,role,adress_street_num,adress_street,adress_city,adress_state,adress_zip_code,cash_bal,PPS_bal);
-	    	this.email = email;
+	    	this(email, password, firstName, lastName, role, address, creditCard, phone);
+	    	this.userID = userID;
 	    }
 	 
 	
-	    public user(String firstName, String lastName, String password,String birthday, String role, String adress_street_num, String adress_street, String adress_city, String adress_state,String adress_zip_code, int cash_bal,  int PPS_bal) 
+	    public user(String email, String password, String firstName, String lastName, String role, String address, String creditCard, String phone) 
 	    {
+	    	this.email = email;
+	    	this.password = password;
 	    	this.firstName = firstName;
 	    	this.lastName = lastName;
-	    	this.password = password;
-	        this.birthday = birthday;
 	        this.role= role;
-	        this.adress_street_num = adress_street_num;
-	        this.adress_street = adress_street;
-	        this.adress_city= adress_city;
-	        this.adress_state = adress_state;
-	        this.adress_zip_code = adress_zip_code;
-	        this.cash_bal = cash_bal;
-	        this.PPS_bal = PPS_bal;
+	        this.address = address;
+	        this.creditCard = creditCard;
+	        this.phone= phone;
+	
 	    }
 	    
 	   //getter and setter methods
@@ -59,7 +52,18 @@ public class user
 	    public void setEmail(String email) {
 	        this.email = email;
 	    }
-	    
+	    public int getuserID() {
+	        return userID;
+	    }
+	    public void setuserID(int userID) {
+	        this.userID = userID;
+	    }
+	    public String getPassword() {
+	        return password;
+	    }
+	    public void setPassword(String password) {
+	        this.password = password;
+	    }
 	    public String getFirstName() {
 	        return firstName;
 	    }
@@ -73,20 +77,7 @@ public class user
 	    public void setLastName(String lastName) {
 	        this.lastName = lastName;
 	    }
-	    
-	    public String getPassword() {
-	        return password;
-	    }
-	    public void setPassword(String password) {
-	        this.password = password;
-	    }
 	  
-	    public String getBirthday() {
-	    	return birthday;
-	    }
-	    public void setBirthday(String birthday) {
-	    	this.birthday = birthday;
-	    }
 	    public String getRole() {
 	    	return role;
 	    }
@@ -94,48 +85,24 @@ public class user
 	    	this.role = role;
 	    }
 	    
-	    public String getAdress_street_num() {
-	        return adress_street_num;
+	    public String getaddress() {
+	        return address;
 	    }
-	    public void setAdress_street_num(String adress_street_num) {
-	        this.adress_street_num = adress_street_num;
-	    }
-	    public String getAdress_street() {
-	        return adress_street;
-	    }
-	    public void setAdress_street(String adress_street) {
-	        this.adress_street = adress_street;
-	    }
-	    public String getAdress_city() {
-	        return adress_city;
-	    }
-	    public void setAdress_city(String adress_city) {
-	        this.adress_city = adress_city;
-	    }
-	    public String getAdress_state() {
-	        return adress_state;
-	    }
-	    public void setAdress_state(String adress_state) {
-	        this.adress_state = adress_state;
-	    }
-	    public String getAdress_zip_code() {
-	        return adress_zip_code;
-	    }
-	    public void setAdress_zip_code(String adress_zip_code) {
-	        this.adress_zip_code = adress_zip_code;
+	    public void setaddress(String address) {
+	        this.address = address;
 	    }
 	    
-	    public int getCash_bal() {
-	    	return cash_bal;
+	    public String getcreditCard() {
+	    	return creditCard;
 	    }
-	    public void setCash_bal(int cash_bal) {
-	    	this.cash_bal = cash_bal;
+	    public void setcreditCard(String creditCard) {
+	    	this.creditCard = creditCard;
 	    }
 	    
-	    public int getPPS_bal() {
-	    	return PPS_bal;
+	    public String getphone() {
+	    	return phone;
 	    }
-	    public void setPPS_bal(int PPS_bal) {
-	    	this.PPS_bal = PPS_bal;
+	    public void phone(String phone) {
+	    	this.phone = phone;
 	    }
 	}
