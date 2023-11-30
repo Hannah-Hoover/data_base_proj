@@ -29,10 +29,10 @@ public class QuotesMessages {
 	    }
 	    
 	   //getter and setter methods
-	    public int getquotemsgID() {
+	    public int getQuotemsgID() {
 	        return quotemsgID;
 	    }
-	    public void setquotemsgID(int quotemsgID) {
+	    public void setQuotemsgID(int quotemsgID) {
 	        this.quotemsgID = quotemsgID;
 	    }
 	    
