@@ -14,7 +14,13 @@ public class QuotesMessages {
 	    //constructors
 	    public QuotesMessages() {
 	    }    
-
+	    public QuotesMessages(int quotemsgID){
+		  this.quotemsgID = quotemsgID;
+	    }
+	    public QuoteMessages(int quotemsgID, int userID,int quoteID, String msgtime, double price, String schedulestart, String scheduleend, String note){
+	    	  this(userID, quoteID, msgtime, price, schedulestart, scheduleend, status,note);
+    	          this.quotemsgID = quotemsgID; 
+    	    }
 	    public QuotesMessages(int quotemsgID, int userID, int quoteID, String msgtime, double price, String scheudlestart, String scheudleend, String note)
 	    {
 	    	System.out.println("QuotesMessages.java");
