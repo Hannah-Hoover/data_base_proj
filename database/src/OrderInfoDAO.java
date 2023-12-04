@@ -76,5 +76,144 @@ public class OrderInfoDAO {
 		            System.out.println(connect);
 		        }
 		    }
+	
+		    public List<OrderInfo> listAllOrders() throws SQLException {
+		    	System.out.print("In the quotes list function");
+		        List<OrderInfo> listOrders = new ArrayList<OrderInfo>();        
+		        String sql = "SELECT * FROM OrderInfo";      
+		        connect_func();   
+		        statement = (Statement) connect.createStatement();
+		        ResultSet orderset = statement.executeQuery(sql);
+		         
+		        while (orderset.next()) {
+			    int orderID = orderset.getInt("quoteID");
+			    int quoteID = orderset.getInt("contractorID");
+		            double price = quoteset.getDouble("price");
+		            String schedulestart = quoteset.getString("schedulestart");
+			    String scheduleend = quoteset.getString("scheduleend");
+	
+		            OrderInfo orders = new OrderInfo(contractorID, clientID, price, startTime, endTime, status);
+		            orders.setQuoteID(orderset.getInt("orderID"));
+		            listOrders.add(orders);
+		        }
+		        
+		    quoteset.close();
+		    disconnect();        
+		    return listQuote;
+		    }
+		    
+		    
+		  /*
+		    public List<quotes> listUserQuotes() throws SQLException {
+		    	System.out.print("In the userlist function");
+		        List<quotes> listUserQuotes = new ArrayList<quotes>();        
+		        String sql = "SELECT * FROM Quotes= ";      
+		        connect_func();   
+		        statement = (Statement) connect.createStatement();
+		        ResultSet quoteset = statement.executeQuery(sql);
+		         
+		        while (quoteset.next()) {
+		        	System.out.print("122");
+		        	int clientID = quoteset.getInt("clientID");
+		            double price = quoteset.getDouble("price");
+		            String timeFrame = quoteset.getString("timeFrame");
+		            String status = quoteset.getString("status");
+		            int requestID = quoteset.getInt("requestID");
+	
+		             
+		            quotes quote = new quotes(price, timeFrame, status, requestID, clientID);
+		            listUserQuotes.add(quote);
+		        }
+		        
+		    quoteset.close();
+		    disconnect();        
+		    return listUserQuotes;
+		    }
+		 */
+		    
+		    protected void disconnect() throws SQLException {
+		        if (connect != null && !connect.isClosed()) {
+		        	connect.close();
+		        }
+		    }
+		    
+		    public void insertQuote(quote quotes) throws SQLException {
+		    	connect_func();         
+				String sql = "insert into Quote(contractorID, clientID, price, startTime, endTime, status) values (?, ?, ?, ?, ?, ?)";
+				preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 
+			    		preparedStatement.setInt(1, quotes.getContractorID());
+			    		preparedStatement.setInt(2, quotes.getClientID());
+			    		preparedStatement.setDouble(3, quotes.getPrice());
+			    		preparedStatement.setString(4, quotes.getStartTime());
+			    		preparedStatement.setString(5, quotes.getEndTime());
+			    		preparedStatement.setString(6, quotes.getStatus());		
+			    		preparedStatement.executeUpdate();
+			    		preparedStatement.close();
+		    }
+		    
+		    public boolean update(quote quotes) throws SQLException {
+		    	System.out.println("\n \n update in quoteDAO.");
+		        String sql = "update Quote set QuoteID=?, ContractorID=?, ClientID=?, Price=?, StartTime=?, EndTime=? Status = ?";
+		        connect_func();
+		        	    preparedStatement.setInt(1, quotes.getContractorID());
+			    		preparedStatement.setInt(2, quotes.getClientID());
+			    		preparedStatement.setDouble(3, quotes.getPrice());
+			    		preparedStatement.setString(4, quotes.getStartTime());
+			    		preparedStatement.setString(5, quotes.getEndTime());
+			    		preparedStatement.setString(6, quotes.getStatus());
+			    		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+		        boolean rowUpdated = preparedStatement.executeUpdate() > 0;
+		        preparedStatement.close();
+//		        disconnect();
+		        return rowUpdated;     
+		    }
+			
+		    public quote getQuote(int quoteID)  throws SQLException{
+		        String sql = "SELECT * FROM Quote where quoteID = "+quoteID;      
+		        connect_func();      
+		        PreparedStatement statement = connect.prepareStatement(sql);
+		        ResultSet rs = statement.executeQuery(sql);
+		        quote quote=null;
+		        if (rs.next()) {
+		            quote = new quote(rs.getInt("contractorID"), rs.getInt("clientID"), rs.getDouble("price"), rs.getString("startTime"),rs.getString("endTime"),rs.getString("status"));
+		            quote.setQuoteID(rs.getInt("quoteID"));
+		        }
+		        disconnect();        
+		        return quote;
+		    	
+		    }
+
+	/*
+		    public List<quotes> getQuotesByClientID(int clientID) throws SQLException {
+		    	System.out.println("\n \n quoteDAO.getQuote() is called.");
+		        List<quotes> listQuotes = new ArrayList<quotes>();        
+		        String sql = "SELECT * FROM Quotes where clientID = "+clientID;      
+		        connect_func();      
+		        PreparedStatement statement = connect.prepareStatement(sql);
+		        ResultSet rs = statement.executeQuery(sql);
+		        quotes quote=null;
+		        while (rs.next()) {
+		            quote = new quotes(rs.getDouble("price"),rs.getString("timeFrame"),rs.getString("status"), rs.getInt("requestID"), rs.getInt("clientID"), rs.getString("note"));
+		            quote.setQuoteID(rs.getInt("quoteID"));
+		            listQuotes.add(quote);
+		        }
+		        disconnect();        
+		        return listQuotes;
+			}
+	*/
+		    public boolean delete(int quoteID) throws SQLException {
+		        String sql = "DELETE FROM Quote WHERE quoteID = ?";        
+		        connect_func();
+		         
+		        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+		        preparedStatement.setInt(1, quoteID);
+		         
+		        boolean rowDeleted = preparedStatement.executeUpdate() > 0;
+		        preparedStatement.close();
+		        disconnect();
+		        return rowDeleted;     
+		    }
+		     
+	
 }
