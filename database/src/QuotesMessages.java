@@ -21,10 +21,8 @@ public class QuotesMessages {
 	    	  this(userID, quoteID, msgtime, price, schedulestart, scheduleend, status,note);
     	          this.quotemsgID = quotemsgID; 
     	    }
-	    public QuotesMessages(int quotemsgID, int userID, int quoteID, String msgtime, double price, String scheudlestart, String scheudleend, String note)
+	    public QuotesMessages(int userID, int quoteID, String msgtime, double price, String scheudlestart, String scheudleend, String note)
 	    {
-	    	System.out.println("QuotesMessages.java");
-	    	this.quotemsgID = quotemsgID;
 	    	this.userID = userID;
 	    	this.quoteID = quoteID;
 	    	this.msgtime = msgtime;
