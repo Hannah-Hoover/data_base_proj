@@ -27,24 +27,24 @@ public class BillsMessages {
     }
     
    //getter and setter methods
-    public int getbillmsgID() {
+    public int getBillmsgID() {
         return billmsgID;
     }
-    public void setbillmsgID(int billmsgID) {
+    public void setBillmsgID(int billmsgID) {
         this.billmsgID = billmsgID;
     }
     
-    public int getuserID() {
+    public int getUserID() {
         return userID;
     }
-    public void setuserID(int userID) {
+    public void setUserID(int userID) {
         this.userID = userID;
     }
     
-    public int getbillID() {
+    public int getBillID() {
         return billID;
     }
-    public void setbillID(int billID) {
+    public void setBillID(int billID) {
         this.billID = billID;
     }
     
@@ -55,16 +55,16 @@ public class BillsMessages {
         this.price = price;
     }
     
-    public String getschedulestart() {
+    public String getSchedulestart() {
         return schedulestart;
     }
-    public void setschedulestart(String schedulestart) {
+    public void setSchedulestart(String schedulestart) {
         this.schedulestart = schedulestart;
     }
-    public String getscheduleend() {
+    public String getScheduleend() {
         return scheduleend;
     }
-    public void setscheduleend(String scheduleend) {
+    public void setScheduleend(String scheduleend) {
         this.scheduleend = scheduleend;
     }
    

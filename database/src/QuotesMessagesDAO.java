@@ -96,7 +96,7 @@ public class QuotesMessagesDAO {
 		            String note = resultSet.getString("note");
 	
 		             
-		            QuotesMessages quotesmessages = new QuotesMessages(userID, quoteID, msgtime, price, schedulestart, scheduleend, note);
+		            QuotesMessages quotesmessages = new QuotesMessages(quotemsgID, userID, quoteID, msgtime, price, schedulestart, scheduleend, note);
 		            quotesmessages.setQuotemsgID(resultSet.getInt("quotemsgID"));
 		            listQuotesMessages.add(quotesmessages);
 		        }
@@ -114,6 +114,88 @@ public class QuotesMessagesDAO {
 		        }
 		    }
 		    
+		    public void insert(QuotesMessages quotesmessages) throws SQLException {
+		    	connect_func("root","pass1234");         
+				String sql = "insert into QuotesMessages(quotemsgID, userID, quoteID, msgtime, price, schedulestart, scheduleend, note) values (?, ?, ?, ?, ?, ?, ?, ?)";
+				preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+					preparedStatement.setInt(1, quotesmessages.getQuotemsgID());
+					preparedStatement.setInt(2, quotesmessages.getUserID());
+					preparedStatement.setInt(3, quotesmessages.getQuoteID());
+					preparedStatement.setString(4, quotesmessages.getMsgtime());
+					preparedStatement.setDouble(5, quotesmessages.getPrice());
+					preparedStatement.setString(6, quotesmessages.getSchedulestart());
+					preparedStatement.setString(7, quotesmessages.getScheduleend());		
+					preparedStatement.setString(8, quotesmessages.getNote());				
+
+				preparedStatement.executeUpdate();
+		        preparedStatement.close();
+		    }
+		    public boolean delete(String email) throws SQLException {
+		        String sql = "DELETE FROM QuotesMessages WHERE email = ?";        
+		        connect_func();
+		         
+		        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+		        preparedStatement.setString(1, email);
+		         
+		        boolean rowDeleted = preparedStatement.executeUpdate() > 0;
+		        preparedStatement.close();
+		        return rowDeleted;     
+		    }
+		    public boolean update(QuotesMessages quotesmessages) throws SQLException {
+		        String sql = "update QuotesMessages set quotemsgID= ?, userID= ?, quoteID= ?, msgtime=?, price=?, schedulesttart=?, scheduleend=?, note=?, where email = ?";
+		        connect_func();
+		        
+		        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+		        preparedStatement.setInt(1, quotesmessages.getQuotemsgID());
+				preparedStatement.setInt(2, quotesmessages.getUserID());
+				preparedStatement.setInt(3, quotesmessages.getQuoteID());
+				preparedStatement.setString(4, quotesmessages.getMsgtime());
+				preparedStatement.setDouble(5, quotesmessages.getPrice());
+				preparedStatement.setString(6, quotesmessages.getSchedulestart());
+				preparedStatement.setString(7, quotesmessages.getScheduleend());		
+				preparedStatement.setString(8, quotesmessages.getNote());			
+			
+		         
+		        boolean rowUpdated = preparedStatement.executeUpdate() > 0;
+		        preparedStatement.close();
+		        return rowUpdated;     
+		    }
+		    
+		    public QuotesMessages getQuotesMessages(int QuotemsgID)  throws SQLException{
+		        String sql = "SELECT * FROM QuotesMessages where QuotemsgID = "+QuotemsgID;      
+		        connect_func();      
+		        PreparedStatement statement = connect.prepareStatement(sql);
+		        ResultSet rs = statement.executeQuery(sql);
+		        QuotesMessages quotesMessage=null;
+		        if (rs.next()) {
+		        	quotesMessage = new QuotesMessages(rs.getInt("quotemsgID"), rs.getInt("userID"), rs.getInt("quoteID"), rs.getString("msgtime"),rs.getDouble("price"),rs.getString("schedulestart"), rs.getString("scheduleend"), rs.getString("note"));
+		        	quotesMessage.setQuotemsgID(rs.getInt("QuotemsgID"));
+		        }
+		        disconnect();        
+		        return quotesMessage;
+		    	
+		    }
+		    
+		    public boolean delete(int quotemsgID) throws SQLException {
+		        String sql = "DELETE FROM QuoteMessages WHERE quotemsgID = ?";        
+		        connect_func();
+		         
+		        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+		        preparedStatement.setInt(1, quotemsgID);
+		         
+		        boolean rowDeleted = preparedStatement.executeUpdate() > 0;
+		        preparedStatement.close();
+		        disconnect();
+		        return rowDeleted;     
+		    }
+		     
+	
+		   }
+		    
+		    
+		    
+		    
+		    
 		
 
-}
+

@@ -36,24 +36,24 @@ public class QuotesMessages {
 	        this.quotemsgID = quotemsgID;
 	    }
 	    
-	    public int getuserID() {
+	    public int getUserID() {
 	        return userID;
 	    }
-	    public void setuserID(int userID) {
+	    public void setUserID(int userID) {
 	        this.userID = userID;
 	    }
 	    
-	    public int getquoteID() {
+	    public int getQuoteID() {
 	        return quoteID;
 	    }
-	    public void setquoteID(int quoteID) {
+	    public void setQuoteID(int quoteID) {
 	        this.quoteID = quoteID;
 	    }
 	    
-	    public String getmsgtime() {
+	    public String getMsgtime() {
 	        return msgtime;
 	    }
-	    public void setmsgtime(String msgtime) {
+	    public void setMsgtime(String msgtime) {
 	        this.msgtime = msgtime;
 	    }
 	    
@@ -64,16 +64,16 @@ public class QuotesMessages {
 	        this.price = price;
 	    }
 	    
-	    public String getschedulestart() {
+	    public String getSchedulestart() {
 	        return schedulestart;
 	    }
-	    public void setschedulestart(String schedulestart) {
+	    public void setSchedulestart(String schedulestart) {
 	        this.schedulestart = schedulestart;
 	    }
-	    public String getscheduleend() {
+	    public String getScheduleend() {
 	        return scheduleend;
 	    }
-	    public void setscheduleend(String scheduleend) {
+	    public void setScheduleend(String scheduleend) {
 	        this.scheduleend = scheduleend;
 	    }
 	   

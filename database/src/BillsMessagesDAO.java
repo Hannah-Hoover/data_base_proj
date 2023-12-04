@@ -76,4 +76,124 @@ public class BillsMessagesDAO {
 		            System.out.println(connect);
 		        }
 		    }
-}
+		    
+		    public List<BillsMessages> listAllBillsMessages() throws SQLException {
+		    	System.out.print("In the BillsMessages list function");
+		        List<BillsMessages> listBillsMessages = new ArrayList<BillsMessages>();        
+		        String sql = "SELECT * FROM BillsMessages";      
+		        connect_func();   
+		        statement = (Statement) connect.createStatement();
+		        ResultSet resultSet = statement.executeQuery(sql);
+		         
+		        while (resultSet.next()) {
+		        	System.out.print("122");
+		        	int billmsgID = resultSet.getInt("billmsgID");
+		        	int userID = resultSet.getInt("userID");
+		            int billID = resultSet.getInt("billID");
+		            double price = resultSet.getDouble("price");
+		            String schedulestart = resultSet.getString("schedulestart");
+		            String scheduleend = resultSet.getString("scheduleend");
+		            String note = resultSet.getString("note");
+	
+		             
+		            BillsMessages billsmessages = new BillsMessages(billmsgID, userID, billID, price, schedulestart, scheduleend, note);
+		            billsmessages.setBillmsgID(resultSet.getInt("billmsgID"));
+		            listBillsMessages.add(billsmessages);
+		        }
+		        
+		        resultSet.close();
+		        disconnect();        
+		        return listBillsMessages;
+		    }
+		    protected void disconnect() throws SQLException {
+		        if (connect != null && !connect.isClosed()) {
+		        	if (statement != null) {
+		        	statement.close();
+		        	}
+		        	connect.close();
+		        }
+		    }
+		    
+		    public void insert(BillsMessages billsmessages) throws SQLException {
+		    	connect_func("root","pass1234");         
+				String sql = "insert into BillsMessages(billmsgID, userID, billID, price, schedulestart, scheduleend, note) values (?, ?, ?, ?, ?, ?, ?)";
+				preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+					preparedStatement.setInt(1, billsmessages.getBillmsgID());
+					preparedStatement.setInt(2, billsmessages.getUserID());
+					preparedStatement.setInt(3, billsmessages.getBillID());
+					preparedStatement.setDouble(5, billsmessages.getPrice());
+					preparedStatement.setString(6, billsmessages.getSchedulestart());
+					preparedStatement.setString(7, billsmessages.getScheduleend());		
+					preparedStatement.setString(8, billsmessages.getNote());				
+
+				preparedStatement.executeUpdate();
+		        preparedStatement.close();
+		    }
+		    public boolean delete(String email) throws SQLException {
+		        String sql = "DELETE FROM BillsMessages WHERE email = ?";        
+		        connect_func();
+		         
+		        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+		        preparedStatement.setString(1, email);
+		         
+		        boolean rowDeleted = preparedStatement.executeUpdate() > 0;
+		        preparedStatement.close();
+		        return rowDeleted;     
+		    }
+		    public boolean update(BillsMessages billsmessages) throws SQLException {
+		        String sql = "update BillsMessages set billmsgID= ?, userID= ?, billID= ?, price=?, schedulesttart=?, scheduleend=?, note=?, where email = ?";
+		        connect_func();
+		        
+		        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+		        preparedStatement.setInt(1, billsmessages.getBillmsgID());
+				preparedStatement.setInt(2, billsmessages.getUserID());
+				preparedStatement.setInt(3, billsmessages.getBillID());
+				preparedStatement.setDouble(5, billsmessages.getPrice());
+				preparedStatement.setString(6, billsmessages.getSchedulestart());
+				preparedStatement.setString(7, billsmessages.getScheduleend());		
+				preparedStatement.setString(8, billsmessages.getNote());			
+			
+		         
+		        boolean rowUpdated = preparedStatement.executeUpdate() > 0;
+		        preparedStatement.close();
+		        return rowUpdated;     
+		    }
+		    
+		    public QuotesMessages getBillsMessages(int BillmsgID)  throws SQLException{
+		        String sql = "SELECT * FROM BillsMessages where BillmsgID = "+BillmsgID;      
+		        connect_func();      
+		        PreparedStatement statement = connect.prepareStatement(sql);
+		        ResultSet rs = statement.executeQuery(sql);
+		        BillsMessages billsMessage=null;
+		        if (rs.next()) {
+		        	billsMessage = new BillsMessages(rs.getInt("billmsgID"), rs.getInt("userID"), rs.getInt("billID"),rs.getDouble("price"),rs.getString("schedulestart"), rs.getString("scheduleend"), rs.getString("note"));
+		        	billsMessage.setBillmsgID(rs.getInt("billmsgID"));
+		        }
+		        disconnect();        
+		        return billsmessage;
+		    	
+		    }
+		    
+		    public boolean delete(int billmsgID) throws SQLException {
+		        String sql = "DELETE FROM BillsMessages WHERE billmsgID = ?";        
+		        connect_func();
+		         
+		        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+		        preparedStatement.setInt(1, billmsgID);
+		         
+		        boolean rowDeleted = preparedStatement.executeUpdate() > 0;
+		        preparedStatement.close();
+		        disconnect();
+		        return rowDeleted;     
+		    }
+		     
+	
+		   }
+		    
+		    
+		    
+		    
+		    
+		
+
+
