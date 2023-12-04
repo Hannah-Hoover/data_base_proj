@@ -8,16 +8,18 @@ public class BillsMessages {
 	protected String scheduleend;
 	protected String note;
 	
-	
- 
     //constructors
     public BillsMessages() {
     }    
-
-    public BillsMessages(int billmsgID, int userID, int billID, double price, String scheudlestart, String scheudleend, String note)
-    {
-    	System.out.println("BillsMessages.java");
-    	this.billmsgID = billmsgID;
+    public BillsMessages(int quotemsgID){
+		  this.quotemsgID = quotemsgID;
+    }
+    public BillsMessages(int billmsgID, int userID,int billID, double price, String schedulestart, String scheduleend, String note){
+    	  this(userID, quoteID, msgtime, price, schedulestart, scheduleend, status,note);
+	   this.quotemsgID = quotemsgID; 
+    }
+    public BillsMessages(int userID, int billID, double price, String scheudlestart, String scheudleend, String note)
+	{
     	this.userID = userID;
     	this.billID = billID;
     	this.price= price;
