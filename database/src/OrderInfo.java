@@ -5,16 +5,19 @@ public class OrderInfo {
 	protected double price;
 	protected String schedulestart;
 	protected String scheduleend;
-	
 
-	
-	
- 
     //constructors
     public OrderInfo() {
-    }    
-
-    public OrderInfo(int orderID, int quoteID, double price, String schedulestart, String scheduleend)
+    }  
+	
+    public OrderInfo(int orderID) {
+	    this.orderID = orderID;
+    } 
+    public bill(int billID, int quoteID, double price, String schedulestart,String scheduleend){
+	    this(quoteID, price, discount, balance, status);
+            this.orderID = orderID; 
+    }
+    public OrderInfo(int quoteID, double price, String schedulestart, String scheduleend)
     {
     	System.out.println("OrderInfo.java");
     	this.orderID = orderID;
