@@ -187,10 +187,10 @@ public class treeDAO {
 		        tree tree=null;
 		        if (rs.next()) {
 		            tree = new tree(rs.getInt("quoteID"), rs.getString("location"), rs.getString("height"), rs.getString("proximity"),rs.getString("diameter"),rs.getString("photo1"),rs.getString("photo2"),rs.getString("photo3"));
-		            quote.setTreeID(rs.getInt("treeID"));
+		            tree.setTreeID(rs.getInt("treeID"));
 		        }
 		        disconnect();        
-		        return quote;
+		        return tree;
 		    	
 		    }
 
