@@ -28,34 +28,34 @@ public class OrderInfo {
     }
     
    //getter and setter methods
-    public int getorderID() {
+    public int getOrderID() {
         return orderID;
     }
-    public void setorderID(int orderID) {
+    public void setOrderID(int orderID) {
         this.orderID = orderID;
     }
-    public int getquoteID() {
+    public int getQuoteID() {
         return quoteID;
     }
-    public void setquoteID(int quoteID) {
+    public void setQuoteID(int quoteID) {
         this.quoteID = quoteID;
     }
-    public double getprice() {
+    public double getPrice() {
         return price;
     }
-    public void setprice(double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
-    public String getschedulestart() {
+    public String getSchedulestart() {
         return schedulestart;
     }
-    public void setschedulestart(String schedulestart) {
+    public void setSchedulestart(String schedulestart) {
         this.schedulestart = schedulestart;
     }
-    public String getscheduleend() {
+    public String getScheduleend() {
         return scheduleend;
     }
-    public void setscheduleend(String scheduleend) {
+    public void setScheduleend(String scheduleend) {
         this.scheduleend = scheduleend;
     }
     
