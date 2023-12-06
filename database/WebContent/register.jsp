@@ -42,7 +42,7 @@
 				</tr>
 				 <tr>
 					<th>Role: </th>
-					<td>align="center" colspan="3">
+					<td align="center" colspan="3">
 						<input type="text" name="role" size="45" value="role" onfocus="this.value=''">
 					</td>
 				</tr>

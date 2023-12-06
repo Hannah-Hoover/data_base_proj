@@ -13,7 +13,7 @@
 		<form action="login" method="post">
 			<table border="1" cellpadding="5">
 				<tr>
-					<th>User name: </th>
+					<th>Username: </th>
 					<td>
 						<input type="text" name="email" size="45" autofocus>
 					</td>
@@ -22,6 +22,13 @@
 					<th>Password: </th>
 					<td> 
 						<input type="password" name="password" size="45">
+					</td>
+				</tr>
+				<tr>
+					<th>Role: </th>
+					<td> 
+						<input type="text" name="role" size="45" value="role" onfocus="this.value=''">
+						
 					</td>
 				</tr>
 				<tr>

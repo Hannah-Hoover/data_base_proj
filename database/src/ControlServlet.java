@@ -23,7 +23,7 @@ import java.sql.PreparedStatement;
 public class ControlServlet extends HttpServlet {
 	    private static final long serialVersionUID = 1L;
 	    private userDAO userDAO = new userDAO();
-	    private quotesDAO quotesDAO = new quotesDAO();
+	    //private quotesDAO quotesDAO = new quotesDAO();
 	    private clientDAO clientDAO = new clientDAO();
 	    private contractorDAO contractorDAO = new contractorDAO();
 	    private requestDAO requestDAO = new requestDAO();
@@ -49,9 +49,11 @@ public class ControlServlet extends HttpServlet {
 	    
 	    try {
         	switch(action) {  
+       
         	case "/login":
         		login(request,response);
         		break;
+        	
         	case "/register":
         		register(request, response);
         		break;
@@ -63,6 +65,7 @@ public class ControlServlet extends HttpServlet {
         	case "/root":
         		rootPage(request,response, "");
         		break;
+        		/*
         	case "/logout":
         		logout(request,response);
         		break;
@@ -118,6 +121,8 @@ public class ControlServlet extends HttpServlet {
         		 contractorPage(request, response, "");
         		 break;
 	    	}
+	    	*/
+        	}
 	    }
 	    catch(Exception ex) {
         	System.out.println(ex.getMessage());
@@ -132,7 +137,7 @@ public class ControlServlet extends HttpServlet {
 	        dispatcher.forward(request, response);
 			
 		}
-
+/*
 	    private void clientResponse(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
 	    	int quoteID=Integer.parseInt(request.getParameter("id"));
 			quotes res = quotesDAO.getQuote(quoteID);
@@ -141,6 +146,8 @@ public class ControlServlet extends HttpServlet {
 	        dispatcher.forward(request, response);
 			
 		}
+		*/
+	    /*
 	    
 	    private void contractorResponse(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
 	    	int quoteID=Integer.parseInt(request.getParameter("id"));
@@ -149,7 +156,8 @@ public class ControlServlet extends HttpServlet {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("ContractorResponse.jsp");       
 	        dispatcher.forward(request, response);
 			
-		}
+		} */
+	    /*
 	    
 	    private void contractorUpdateQuotes(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
@@ -174,8 +182,9 @@ public class ControlServlet extends HttpServlet {
 	     
 	        System.out.println("contractorUpdateQuotes finished: 1111111111111111111111111111111");
 	    }
+	    */
 	 
-	    
+	   /* 
 	    private void updateQuotes(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
 	        System.out.println("updateQuotes started: 000000000000000000000000000");
@@ -193,6 +202,7 @@ public class ControlServlet extends HttpServlet {
 	     
 	        System.out.println("updateQuotes finished: 1111111111111111111111111111111");
 	    }
+	    */
 	 
 		private void listUser(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
@@ -207,7 +217,7 @@ public class ControlServlet extends HttpServlet {
 	        System.out.println("listPeople finished: 111111111111111111111111111111111111");
 	    }
 	    
-	    private void listQuotes(HttpServletRequest request, HttpServletResponse response)
+	  /*  private void listQuotes(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
 	        System.out.println("listQuote started: 00000000000000000000000000000000000");
 	        	        List<quotes> listQuotes = quotesDAO.listAllQuotes();
@@ -217,6 +227,7 @@ public class ControlServlet extends HttpServlet {
 	     
 	        System.out.println("listQuote finished: 111111111111111111111111111111111111");
 	    }
+	    */
 	    /*
 	    private void listUserQuotes(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
@@ -248,6 +259,7 @@ public class ControlServlet extends HttpServlet {
 			request.setAttribute("listUser", userDAO.listAllUsers());
 	    	request.getRequestDispatcher("rootView.jsp").forward(request, response);
 	    }
+	    /*
 	    private void contractorPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
 	    	System.out.println("contractor view");
 	    	request.setAttribute("listRequest", requestDAO.listAllRequests());
@@ -261,62 +273,44 @@ public class ControlServlet extends HttpServlet {
 			request.setAttribute("listQuotes", quotesDAO.getQuotesByClientID(clientID));
 	    	request.getRequestDispatcher("clientactivitypage.jsp").forward(request, response);
 	    }
+	    */
+	    
+	    
 	   
 		   protected void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 		    	 String email = request.getParameter("email");
 		    	 String password = request.getParameter("password");
-		    	 sessionID = request.getParameter("clientID");
-		    	 System.out.println("SESSION ID"+sessionID);
+		    	 String role = request.getParameter("role");
 		    	 
-		    	 session = request.getSession();
-		    	 System.out.println("SESSION ID"+sessionID);
 		    	 
-		    	 if(email.equals("david@gmail.com")) {
-		    		 contractor contractor = contractorDAO.getContractor(email);
-		    		 if (contractor != null && contractor.getPassword().equals(password)) {
-			    	        // Valid user, set session attributes
-			    	       // session = request.getSession();
-			    	        session.setAttribute("username", email);
-			    	        session.setAttribute("id", sessionID);
-			    	        
-			    	        System.out.println("Login Successful! Redirecting to contractor page");
-			    	        contractorPage(request, response, "");}
-		    	 else{
-			    	        request.setAttribute("loginStr", "Login Failed: Please check your credentials.");
-			    	        request.getRequestDispatcher("login.jsp").forward(request, response);
+		    	 if(email.equals("root") && password.equals("pass1234")){
+		    		 if (role.equals("admin")) {
+			    	        System.out.println("Login Successful! Redirecting to root");
+			    	        session = request.getSession();
+			    	        session.setAttribute("username",  email);
+			    	        rootPage(request,response, "");
+		    		 }
+		   
+		    	 else if(userDAO.isValid(email,password)) {
+		    		 if (role.equals("client")) {
+		    			 currentUser = email;
+		    			 System.out.println("Login Successful! Redirecting");
+		    			 request.getRequestDispatcher("activitypage.jsp").forward(request, response);
+		    		 }
+		    		else if (role.equals("contractor")) {
+			    		 currentUser = email;
+			   			 System.out.println("Login Successful! Redirecting");
+			   			 request.getRequestDispatcher("activitypage.jsp").forward(request, response);
+					     }
 			    	 }
-		    	 
-		    	 }else{
-		    	 
-		    	 client client= clientDAO.getClient(email);
-		    
-		    	 
-		    	 if (client != null && client.getPassword().equals(password)) {
-		    	        // Valid user, set session attributes
-		    	       // session = request.getSession();
-		    	        session.setAttribute("username", email);
-		    	        System.out.println("authenticating with client "+client.getID());
-		    	        session.setAttribute("clientID", client.getID());
-		    	       // sessionID = request.getParameter("clientID");
-		    	        //System.out.println("SESSION ID"+sessionID);
-
-		    	        // Redirect based on the user's role
-		    	        if ("root".equals(email)) {
-		    	            System.out.println("Login Successful! Redirecting to root");
-		    	            rootPage(request, response, "");
-		    	        } else if ("david@gmail.com".equals(email)) {
-		    	            System.out.println("Login Successful! Redirecting to contractor page");
-		    	            contractorPage(request, response, "");
-		    	        } else {
-		    	            System.out.println("Login Successful! Redirecting to client page");
-		    	            clientPage(request, response, "");
-		    	        }
-		    	    } else {
+			     }   		 
+		    	 else {
 		    	        request.setAttribute("loginStr", "Login Failed: Please check your credentials.");
 		    	        request.getRequestDispatcher("login.jsp").forward(request, response);
-		    	       }
 		    	 }
-		   }	 
+		    	 }
+		    	
+	 
 	    	
 	          
 	    private void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
@@ -330,7 +324,23 @@ public class ControlServlet extends HttpServlet {
 	   	 	String phone = request.getParameter("phone");
 	   	 	String confirm = request.getParameter("confirmation");
 	   	 	
-	   	 	if(role.equals("client")) {
+	   	 	
+	   		if (password.equals(confirm)) {
+   	 			if (!userDAO.checkEmail(email)) {
+   	 				System.out.println("Registration Successful! Added to database");
+   	 				user users = new user(email,password, firstName, lastName, password, address, creditcard, phone);
+   	 				userDAO.insert(users);
+   	 				response.sendRedirect("login.jsp"); 
+   	 			}
+   	 			else {
+   	 				System.out.println("Username taken, please enter new username");
+	   	 			request.setAttribute("errorOne","Registration failed: Username taken, please enter a new username.");
+	   	 			request.getRequestDispatcher("register.jsp").forward(request, response);
+   	 			}
+   	 		}
+	    }
+	   	 	
+	   	 	/*if(role.equals("client")) {
 	   	 		if (password.equals(confirm)) {
 	   	 			if (!clientDAO.checkClientEmail(email)) {
 	   	 				System.out.println("Registration Successful! Added to database");
@@ -370,7 +380,7 @@ public class ControlServlet extends HttpServlet {
 	   	 		} 
 	   	 	}
 	   	 	
-	    }  
+	    }  */
 	    
 	    private void request(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	System.out.println("in request");
@@ -398,6 +408,7 @@ public class ControlServlet extends HttpServlet {
             //request.getRequestDispatcher("clientquote.jsp").forward(request, response);
         
     }
+	    /*
 	    private void Quote(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	System.out.println("in quote");
             String price = request.getParameter("price");
@@ -422,7 +433,9 @@ public class ControlServlet extends HttpServlet {
         	contractorPage(request, response, "");
             
         
-    }
+    } */
+	    
+	    /*
 	    private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 	    	currentUser = "";
         		response.sendRedirect("login.jsp");
@@ -449,7 +462,8 @@ public class ControlServlet extends HttpServlet {
 	        clientPage(request, response, "");
 	        
 	        System.out.println("deletePeople finished: 1111111111111111111111111111111");
-	    }
+	    } */
+	    /*
 	    private void UpdateQuoteContractor(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
 	        System.out.println("updateQuotecontractor started: 000000000000000000000000000");
@@ -468,6 +482,6 @@ public class ControlServlet extends HttpServlet {
 	        contractorPage(request, response, "");
 	        
 	        System.out.println("deletePeople finished: 1111111111111111111111111111111");
-	    }
+	    } */
 
 }
