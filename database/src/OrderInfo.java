@@ -13,8 +13,8 @@ public class OrderInfo {
     public OrderInfo(int orderID) {
 	    this.orderID = orderID;
     } 
-    public bill(int billID, int quoteID, double price, String schedulestart,String scheduleend){
-	    this(quoteID, price, discount, balance, status);
+    public OrderInfo(int orderID, int quoteID, double price, String schedulestart,String scheduleend){
+	this(quoteID, price, schedulestart, scheduleend);
             this.orderID = orderID; 
     }
     public OrderInfo(int quoteID, double price, String schedulestart, String scheduleend)

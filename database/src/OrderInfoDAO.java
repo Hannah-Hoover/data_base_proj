@@ -141,7 +141,7 @@ public class OrderInfoDAO {
 		        return rowUpdated;     
 		    }
 			
-		    public quote getOrderInfo(int OrderID)  throws SQLException{
+		    public OrderInfo getOrderInfo(int OrderID)  throws SQLException{
 		        String sql = "SELECT * FROM OrderInfo where orderID = "+OrderID;      
 		        connect_func();      
 		        PreparedStatement statement = connect.prepareStatement(sql);

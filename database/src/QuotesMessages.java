@@ -7,6 +7,7 @@ public class QuotesMessages {
 		protected double price;
 		protected String schedulestart;
 		protected String scheduleend;
+		protected String status;
 		protected String note;
 		
 		
@@ -17,19 +18,20 @@ public class QuotesMessages {
 	    public QuotesMessages(int quotemsgID){
 		  this.quotemsgID = quotemsgID;
 	    }
-	    public QuoteMessages(int quotemsgID, int userID,int quoteID, String msgtime, double price, String schedulestart, String scheduleend, String note){
-	    	  this(userID, quoteID, msgtime, price, schedulestart, scheduleend, status,note);
-    	          this.quotemsgID = quotemsgID; 
-    	    }
-	    public QuotesMessages(int userID, int quoteID, String msgtime, double price, String scheudlestart, String scheudleend, String note)
+	    public QuotesMessages(int quotemsgID, int userID, int quoteID, String msgtime, double price, String schedulestart, String scheduleend, String status, String note){
+	    this(userID, quoteID, msgtime, price, schedulestart, scheduleend, status, note);
+    	     this.quotemsgID = quotemsgID; 
+    	}
+	    public QuotesMessages(int userID, int quoteID, String msgtime, double price, String scheudlestart, String scheudleend, String status, String note)
 	    {
 	    	this.userID = userID;
 	    	this.quoteID = quoteID;
 	    	this.msgtime = msgtime;
-	    	this.price= price;
-	    	this.schedulestart=scheudlestart;
-	    	this.scheduleend=scheudleend;
-	    	this.note=note;
+	    	this.price = price;
+	    	this.schedulestart= scheudlestart;
+	    	this.scheduleend= scheudleend;
+	    	this.status= status;
+	    	this.note= note;
 	    }
 	    
 	   //getter and setter methods
@@ -79,6 +81,13 @@ public class QuotesMessages {
 	    }
 	    public void setScheduleend(String scheduleend) {
 	        this.scheduleend = scheduleend;
+	    }
+	    
+	    public String getStatus() {
+	        return status;
+	    }
+	    public void setStatus(String status) {
+	        this.status = status;
 	    }
 	   
 	    public String getNote() {

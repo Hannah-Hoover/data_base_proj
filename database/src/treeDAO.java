@@ -78,64 +78,36 @@ public class treeDAO {
 		    }
 		
 		    public List<tree> listAllTrees() throws SQLException {
-		    	System.out.print("In the quotes list function");
+		    	System.out.print("In the trees list function");
 		        List<tree> listTrees = new ArrayList<tree>();        
 		        String sql = "SELECT * FROM Tree";      
 		        connect_func();   
 		        statement = (Statement) connect.createStatement();
 		        ResultSet treeset = statement.executeQuery(sql);
 		         
-		        while (quoteset.next()) {
-		        	  System.out.print("122");
+		        while (treeset.next()) {
+		        System.out.print("122");
                 int treeID = treeset.getInt("treeID");
-			          int quoteID = treeset.getInt("quoteID");
-			          String location = treeset.getInt("location");
-		            String height = treeset.getInt("height");
-		            String proximity = treeset.getDouble("proximity");
-		            String diameter = treeset.getString("diameter");
-			          String photo1 = treeset.getString("photo1");
-		            String photo2 = treeset.getString("photo2");
+			    int quoteID = treeset.getInt("quoteID");
+			    String location = treeset.getString("location");
+		        double height = treeset.getDouble("height");
+		        double proximity = treeset.getDouble("proximity");
+		        double diameter = treeset.getDouble("diameter");
+			    String photo1 = treeset.getString("photo1");
+		        String photo2 = treeset.getString("photo2");
                 String photo3 = treeset.getString("photo3");
 	
 		             
-		            tree tree = new tree(quoteID, location, height, proxitimity, diameter, photo1, photo2, photo3);
-		            tree.setTreeID(treeset.getInt("tree"));
-		            listTree.add(tree);
+		            tree tree = new tree(quoteID, location, height, proximity, diameter, photo1, photo2, photo3);
+		            tree.setTreeID(treeset.getInt("treeID"));
+		            listTrees.add(tree);
 		        }
 		        
 		    treeset.close();
 		    disconnect();        
-		    return listTree;
+		    return listTrees;
 		    }
-		    
-		    
-		  /*
-		    public List<quotes> listUserQuotes() throws SQLException {
-		    	System.out.print("In the userlist function");
-		        List<quotes> listUserQuotes = new ArrayList<quotes>();        
-		        String sql = "SELECT * FROM Quotes= ";      
-		        connect_func();   
-		        statement = (Statement) connect.createStatement();
-		        ResultSet quoteset = statement.executeQuery(sql);
-		         
-		        while (quoteset.next()) {
-		        	System.out.print("122");
-		        	int clientID = quoteset.getInt("clientID");
-		            double price = quoteset.getDouble("price");
-		            String timeFrame = quoteset.getString("timeFrame");
-		            String status = quoteset.getString("status");
-		            int requestID = quoteset.getInt("requestID");
-	
-		             
-		            quotes quote = new quotes(price, timeFrame, status, requestID, clientID);
-		            listUserQuotes.add(quote);
-		        }
-		        
-		    quoteset.close();
-		    disconnect();        
-		    return listUserQuotes;
-		    }
-		 */
+		
 		    
 		    protected void disconnect() throws SQLException {
 		        if (connect != null && !connect.isClosed()) {
@@ -150,9 +122,9 @@ public class treeDAO {
 
 			    		preparedStatement.setInt(1, tree.getQuoteID());
 			    		preparedStatement.setString(2, tree.getLocation());
-			    		preparedStatement.setString(3, tree.getHeight());
-			    		preparedStatement.setString(4, tree.getProximity());
-			    		preparedStatement.setString(5, tree.getDiameter());
+			    		preparedStatement.setDouble(3, tree.getHeight());
+			    		preparedStatement.setDouble(4, tree.getProximity());
+			    		preparedStatement.setDouble(5, tree.getDiameter());
 			    		preparedStatement.setString(6, tree.getPhoto1());		
               preparedStatement.setString(7, tree.getPhoto2());	
               preparedStatement.setString(8, tree.getPhoto3());	
@@ -166,9 +138,9 @@ public class treeDAO {
 		        connect_func();
 		     			preparedStatement.setInt(1, tree.getQuoteID());
 			    		preparedStatement.setString(2, tree.getLocation());
-			    		preparedStatement.setString(3, tree.getHeight());
-			    		preparedStatement.setString(4, tree.getProximity());
-			    		preparedStatement.setString(5, tree.getDiameter());
+			    		preparedStatement.setDouble(3, tree.getHeight());
+			    		preparedStatement.setDouble(4, tree.getProximity());
+			    		preparedStatement.setDouble(5, tree.getDiameter());
 			    		preparedStatement.setString(6, tree.getPhoto1());		
               preparedStatement.setString(7, tree.getPhoto2());	
               preparedStatement.setString(8, tree.getPhoto3());
@@ -179,14 +151,14 @@ public class treeDAO {
 		        return rowUpdated;     
 		    }
 			
-		    public quote getTree(int treeID)  throws SQLException{
+		    public tree getTree(int treeID)  throws SQLException{
 		        String sql = "SELECT * FROM Tree where treeID = "+treeID;      
 		        connect_func();      
 		        PreparedStatement statement = connect.prepareStatement(sql);
 		        ResultSet rs = statement.executeQuery(sql);
 		        tree tree=null;
 		        if (rs.next()) {
-		            tree = new tree(rs.getInt("quoteID"), rs.getString("location"), rs.getString("height"), rs.getString("proximity"),rs.getString("diameter"),rs.getString("photo1"),rs.getString("photo2"),rs.getString("photo3"));
+		            tree = new tree(rs.getInt("quoteID"), rs.getString("location"), rs.getDouble("height"), rs.getDouble("proximity"),rs.getDouble("diameter"),rs.getString("photo1"),rs.getString("photo2"),rs.getString("photo3"));
 		            tree.setTreeID(rs.getInt("treeID"));
 		        }
 		        disconnect();        
@@ -194,24 +166,7 @@ public class treeDAO {
 		    	
 		    }
 
-	/*
-		    public List<quotes> getQuotesByClientID(int clientID) throws SQLException {
-		    	System.out.println("\n \n quoteDAO.getQuote() is called.");
-		        List<quotes> listQuotes = new ArrayList<quotes>();        
-		        String sql = "SELECT * FROM Quotes where clientID = "+clientID;      
-		        connect_func();      
-		        PreparedStatement statement = connect.prepareStatement(sql);
-		        ResultSet rs = statement.executeQuery(sql);
-		        quotes quote=null;
-		        while (rs.next()) {
-		            quote = new quotes(rs.getDouble("price"),rs.getString("timeFrame"),rs.getString("status"), rs.getInt("requestID"), rs.getInt("clientID"), rs.getString("note"));
-		            quote.setQuoteID(rs.getInt("quoteID"));
-		            listQuotes.add(quote);
-		        }
-		        disconnect();        
-		        return listQuotes;
-			}
-	*/
+	
 		    public boolean delete(int treeID) throws SQLException {
 		        String sql = "DELETE FROM Tree WHERE treeID = ?";        
 		        connect_func();

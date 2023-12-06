@@ -12,11 +12,11 @@ public class BillsMessages {
     public BillsMessages() {
     }    
     public BillsMessages(int quotemsgID){
-		  this.quotemsgID = quotemsgID;
+		  this.billmsgID = billmsgID;
     }
     public BillsMessages(int billmsgID, int userID,int billID, double price, String schedulestart, String scheduleend, String note){
-    	  this(userID, quoteID, msgtime, price, schedulestart, scheduleend, status,note);
-	   this.quotemsgID = quotemsgID; 
+    this(userID, billID, price, schedulestart, scheduleend, note);
+	   this.billmsgID = billmsgID; 
     }
     public BillsMessages(int userID, int billID, double price, String scheudlestart, String scheudleend, String note)
 	{

@@ -159,7 +159,7 @@ public class BillsMessagesDAO {
 		        return rowUpdated;     
 		    }
 		    
-		    public QuotesMessages getBillsMessages(int BillmsgID)  throws SQLException{
+		    public BillsMessages getBillsMessages(int BillmsgID)  throws SQLException{
 		        String sql = "SELECT * FROM BillsMessages where BillmsgID = "+BillmsgID;      
 		        connect_func();      
 		        PreparedStatement statement = connect.prepareStatement(sql);
@@ -170,7 +170,7 @@ public class BillsMessagesDAO {
 		        	billsMessage.setBillmsgID(rs.getInt("billmsgID"));
 		        }
 		        disconnect();        
-		        return billsmessage;
+		        return billsMessage;
 		    	
 		    }
 		    
