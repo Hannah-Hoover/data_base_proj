@@ -2,9 +2,9 @@ public class tree{
 	protected int treeID;
 	protected int quoteID;
 	protected String location;
-	protected double height;
-	protected double proximity;
-	protected double diameter;
+	protected String height;
+	protected String proximity;
+	protected String diameter;
 	protected String photo1;
 	protected String photo2;
 	protected String photo3;
@@ -18,12 +18,12 @@ public class tree{
         this.treeID = treeID;
     }
 
-    public tree(int treeID, int quoteID, String location, double height, double proximity, double diameter, String photo1, String photo2, String photo3) {
+    public tree(int treeID, int quoteID, String location, String height, String proximity, String diameter, String photo1, String photo2, String photo3) {
         this(quoteID, location, height, proximity, diameter, photo1, photo2, photo3);
         this.treeID = treeID;
     }
 
-    public tree(int quoteID, String location, double height, double proximity, double diameter, String photo1, String photo2, String photo3) {
+    public tree(int quoteID, String location, String height, String proximity, String diameter, String photo1, String photo2, String photo3) {
         this.quoteID = quoteID;
         this.location = location;
         this.height = height;
@@ -56,23 +56,23 @@ public class tree{
         this.location = location;
     }
 
-    public Double getHeight() {
+    public String getHeight() {
         return height;
     }
-    public void setHeight(Double height) {
+    public void setHeight(String height) {
         this.height = height;
     }
 
-    public Double getProximity() {
+    public String getProximity() {
         return proximity;
     }
-    public void setProximity(Double proximity) {
+    public void setProximity(String proximity) {
         this.proximity = proximity;
     }
-    public Double getDiameter() {
+    public String getDiameter() {
         return diameter;
     }
-    public void setDiameter(Double diameter) {
+    public void setDiameter(String diameter) {
         this.diameter = diameter;
     }
     public String getPhoto1() {

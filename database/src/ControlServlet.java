@@ -24,6 +24,7 @@ public class ControlServlet extends HttpServlet {
 	    private static final long serialVersionUID = 1L;
 	    private userDAO userDAO = new userDAO();
 	    private quoteDAO quoteDAO = new quoteDAO();
+	    private treeDAO treeDAO = new treeDAO();
 	    private clientDAO clientDAO = new clientDAO();
 	    private contractorDAO contractorDAO = new contractorDAO();
 	    private requestDAO requestDAO = new requestDAO();
@@ -300,23 +301,46 @@ public class ControlServlet extends HttpServlet {
 	    
 	    private void request(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	System.out.println("in request");
-            String location = request.getParameter("location");
-            String height = request.getParameter("height");
-            String proximity = request.getParameter("proximity");
-            String sizeDiameter = request.getParameter("sizeDiameter");
-        	String photodata1 = request.getParameter("photodata1");
-            String photodata2 = request.getParameter("photodata2");
-            String photodata3 = request.getParameter("photodata3");
-            String note = request.getParameter("note");
+            //String location = request.getParameter("location");
+            //String height = request.getParameter("height");
+            //String proximity = request.getParameter("proximity");
+            //String sizeDiameter = request.getParameter("sizeDiameter");
+        	//String photodata1 = request.getParameter("photodata1");
+            //String photodata2 = request.getParameter("photodata2");
+            //String photodata3 = request.getParameter("photodata3");
+            //String note = request.getParameter("note");
+	    	
+	    	quote quote = new quote();
+	    	int quoteID = quote.getQuoteID();
+	    	
+            int numTrees = Integer.parseInt(request.getParameter("numTrees"));
+            
+            List<tree> trees = new ArrayList<>();
+            
+            for(int i = 1; i <= numTrees; i++) {
+                String location = request.getParameter("location" + i);
+                String height = request.getParameter("height" + i);
+                String proximity = request.getParameter("proximity" + i);
+                String diameter = request.getParameter("diameter" + i);
+                String photodata1 = request.getParameter("photodata1" + i);
+                String photodata2 = request.getParameter("photodata2" + i);
+                String photodata3 = request.getParameter("photodata3" + i);
+
+                tree tree = new tree(quoteID,location, height, proximity, diameter, photodata1, photodata2, photodata3);
+                treeDAO.insertTree(tree);            	
+            	
+            }
+            
             //Integer requestID = (Integer)request.getSession().getAttribute("requestID");
            // session.setAttribute("clientID", client.getID());
             Integer clientID = (Integer)request.getSession().getAttribute("clientID");
             System.out.println("client id is "+clientID);
             
-            
+          /*  
             request requests = new request(clientID, location, height, proximity, sizeDiameter, photodata1, photodata2, photodata3, note);
             System.out.println(requests.toString());
             requestDAO.insert(requests);
+            */
             
         	System.out.println("Request Successful! Added to database");
         	response.sendRedirect("out.jsp");
