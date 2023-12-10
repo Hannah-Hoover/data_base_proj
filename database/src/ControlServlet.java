@@ -311,6 +311,14 @@ public class ControlServlet extends HttpServlet {
             //String note = request.getParameter("note");
 	    	
 	    	quote quote = new quote();
+	    	int ctid = 0;
+	    	int clid = 0;
+	    	double p = 0;
+	    	String st = "0";
+	    	String ed = "0";
+	    	String stat = "0";
+	    	
+	    	quote quotes = new quote(ctid, clid, p, st, ed, stat);
 	    	int quoteID = quote.getQuoteID();
 	    	
             int numTrees = Integer.parseInt(request.getParameter("numTrees"));
@@ -326,7 +334,7 @@ public class ControlServlet extends HttpServlet {
                 String photodata2 = request.getParameter("photodata2" + i);
                 String photodata3 = request.getParameter("photodata3" + i);
 
-                tree tree = new tree(quoteID,location, height, proximity, sizeDiameter, photodata1, photodata2, photodata3);
+                tree tree = new tree(quoteID, location, height, proximity, sizeDiameter, photodata1, photodata2, photodata3);
                 treeDAO.insertTree(tree);            	
             	
             }

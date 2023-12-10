@@ -92,7 +92,7 @@ public class treeDAO {
 			    String location = treeset.getString("location");
 		        String height = treeset.getString("height");
 		        String proximity = treeset.getString("proximity");
-		        String diameter = treeset.getString("diameter");
+		        String diameter = treeset.getString("sizeDiameter");
 			    String photo1 = treeset.getString("photo1");
 		        String photo2 = treeset.getString("photo2");
                 String photo3 = treeset.getString("photo3");
@@ -158,7 +158,7 @@ public class treeDAO {
 		        ResultSet rs = statement.executeQuery(sql);
 		        tree tree=null;
 		        if (rs.next()) {
-		            tree = new tree(rs.getInt("quoteID"), rs.getString("location"), rs.getString("height"), rs.getString("proximity"),rs.getString("diameter"),rs.getString("photo1"),rs.getString("photo2"),rs.getString("photo3"));
+		            tree = new tree(rs.getInt("quoteID"), rs.getString("location"), rs.getString("height"), rs.getString("proximity"),rs.getString("sizeDiameter"),rs.getString("photo1"),rs.getString("photo2"),rs.getString("photo3"));
 		            tree.setTreeID(rs.getInt("treeID"));
 		        }
 		        disconnect();        
