@@ -58,7 +58,7 @@
 
                 var diameterInput = document.createElement("input");
                 diameterInput.type = "text";
-                diameterInput.name = "diameter" + (i + 1);
+                diameterInput.name = "sizeDiameter" + (i + 1);
                 diameterContainer.appendChild(diameterInput);
 
                 container.appendChild(diameterContainer);
