@@ -23,7 +23,7 @@ import java.sql.PreparedStatement;
 public class ControlServlet extends HttpServlet {
 	    private static final long serialVersionUID = 1L;
 	    private userDAO userDAO = new userDAO();
-	    private quoteDAO quoteDAO = new quoteDAO();
+	    private quotesDAO quoteDAO = new quotesDAO();
 	    private clientDAO clientDAO = new clientDAO();
 	    private contractorDAO contractorDAO = new contractorDAO();
 	    private requestDAO requestDAO = new requestDAO();
@@ -196,7 +196,7 @@ public class ControlServlet extends HttpServlet {
 	   		if (password.equals(confirm)) {
    	 			if (!userDAO.checkEmail(email)) {
    	 				System.out.println("Registration Successful! Added to database");
-   	 				user users = new user(email,password, firstName, lastName, password, address, creditcard, phone);
+   	 				user users = new user(email,password, firstName, lastName, role, address, creditcard, phone);
    	 				userDAO.insert(users);
    	 				response.sendRedirect("login.jsp"); 
    	 			}
@@ -268,7 +268,7 @@ public class ControlServlet extends HttpServlet {
             //request.getAttribute("clientID")
          // String name= (String)session.getAttribute("clientID");
             
-            quote quote = new quote(Integer.parseInt(contractorID), Integer.parseInt(clientID), Double.parseDouble(price), startTime, endTime, status);
+            quotes quote = new quotes(Integer.parseInt(contractorID), Integer.parseInt(clientID), Double.parseDouble(price), startTime, endTime, status);
             quoteDAO.insertQuote(quote);
             
             
@@ -280,7 +280,7 @@ public class ControlServlet extends HttpServlet {
 	            throws SQLException, IOException, ServletException {
 	        System.out.println("listQuote started: 00000000000000000000000000000000000");
 	        
-	        List<quote> listQuote = quoteDAO.listAllQuote();
+	        List<quotes> listQuote = quoteDAO.listAllQuotes();
 	        request.setAttribute("listQuote", listQuote);       
 	        RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
 	        dispatcher.forward(request, response);
