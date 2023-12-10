@@ -309,16 +309,19 @@ public class ControlServlet extends HttpServlet {
             //String photodata2 = request.getParameter("photodata2");
             //String photodata3 = request.getParameter("photodata3");
             //String note = request.getParameter("note");
-	 
-	    	int ctid = 0;
-	    	int clid = 0;
-	    	double p = 0;
+	    	
+	    	Integer clientID = (Integer)request.getSession().getAttribute("clientID");
+            System.out.println("client id is "+clientID);
+            
+	    	int ctid = 11;
+	    	//int clid = 10;
+	    	double p = 0.0;
 	    	String st = "2001-10-10 22:22:22";
 	    	String ed = "2001-11-11 22:21:20";
 	    	String stat = "0";
 	    	
-	    	quote quote = new quote(ctid, clid, p, st, ed, stat);
-	    	quoteDAO.insertQuote(quote);
+	    	quote quote = new quote(ctid, clientID, p, st, ed, stat);
+	    	quote = quoteDAO.insertQuote(quote);
 	    	int quoteID = quote.getQuoteID();
 	    	
 	    	System.out.print(quoteID);
@@ -343,8 +346,8 @@ public class ControlServlet extends HttpServlet {
             
             //Integer requestID = (Integer)request.getSession().getAttribute("requestID");
            // session.setAttribute("clientID", client.getID());
-            Integer clientID = (Integer)request.getSession().getAttribute("clientID");
-            System.out.println("client id is "+clientID);
+           // Integer clientID = (Integer)request.getSession().getAttribute("clientID");
+           //System.out.println("client id is "+clientID);
             
           /*  
             request requests = new request(clientID, location, height, proximity, sizeDiameter, photodata1, photodata2, photodata3, note);

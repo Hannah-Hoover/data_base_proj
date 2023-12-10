@@ -141,7 +141,7 @@ public class quoteDAO {
 		        }
 		    }
 		    
-		    public void insertQuote(quote quotes) throws SQLException {
+		    public quote insertQuote(quote quotes) throws SQLException {
 		    	connect_func();         
 				String sql = "insert into Quote(contractorID, clientID, price, startTime, endTime, status) values (?, ?, ?, ?, ?, ?)";
 				preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
@@ -153,7 +153,13 @@ public class quoteDAO {
 			    		preparedStatement.setString(5, quotes.getEndTime());
 			    		preparedStatement.setString(6, quotes.getStatus());		
 			    		preparedStatement.executeUpdate();
+			    		String sql1= "SELECT max(quoteID) as quoteID FROM Quote";  
+			    		ResultSet rs = preparedStatement.executeQuery(sql1);
+			    		if (rs.next()) {
+			    		quotes.setQuoteID(rs.getInt("quoteID"));
+			    		}
 			    		preparedStatement.close();
+			    		return quotes;
 		    }
 		    
 		    public boolean update(quote quotes) throws SQLException {
