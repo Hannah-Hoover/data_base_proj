@@ -23,7 +23,7 @@ import java.sql.PreparedStatement;
 public class ControlServlet extends HttpServlet {
 	    private static final long serialVersionUID = 1L;
 	    private userDAO userDAO = new userDAO();
-	    private quotesDAO quoteDAO = new quotesDAO();
+	    private quoteDAO quoteDAO = new quoteDAO();
 	    private clientDAO clientDAO = new clientDAO();
 	    private contractorDAO contractorDAO = new contractorDAO();
 	    private requestDAO requestDAO = new requestDAO();
@@ -268,7 +268,7 @@ public class ControlServlet extends HttpServlet {
             //request.getAttribute("clientID")
          // String name= (String)session.getAttribute("clientID");
             
-            quotes quote = new quotes(Integer.parseInt(contractorID), Integer.parseInt(clientID), Double.parseDouble(price), startTime, endTime, status);
+            quote quote = new quote(Integer.parseInt(contractorID), Integer.parseInt(clientID), Double.parseDouble(price), startTime, endTime, status);
             quoteDAO.insertQuote(quote);
             
             
@@ -280,7 +280,7 @@ public class ControlServlet extends HttpServlet {
 	            throws SQLException, IOException, ServletException {
 	        System.out.println("listQuote started: 00000000000000000000000000000000000");
 	        
-	        List<quotes> listQuote = quoteDAO.listAllQuotes();
+	        List<quote> listQuote = quoteDAO.listAllQuote();
 	        request.setAttribute("listQuote", listQuote);       
 	        RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
 	        dispatcher.forward(request, response);
