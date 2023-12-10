@@ -318,6 +318,7 @@ public class ControlServlet extends HttpServlet {
 	    	String stat = "0";
 	    	
 	    	quote quote = new quote(ctid, clid, p, st, ed, stat);
+	    	quoteDAO.insertQuote(quote);
 	    	int quoteID = quote.getQuoteID();
 	    	System.out.print(quoteID);
 	    	
