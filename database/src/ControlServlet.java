@@ -313,13 +313,14 @@ public class ControlServlet extends HttpServlet {
 	    	int ctid = 0;
 	    	int clid = 0;
 	    	double p = 0;
-	    	String st = "0";
-	    	String ed = "0";
+	    	String st = "2001-10-10 22:22:22";
+	    	String ed = "2001-11-11 22:21:20";
 	    	String stat = "0";
 	    	
 	    	quote quote = new quote(ctid, clid, p, st, ed, stat);
 	    	quoteDAO.insertQuote(quote);
 	    	int quoteID = quote.getQuoteID();
+	    	
 	    	System.out.print(quoteID);
 	    	
             int numTrees = Integer.parseInt(request.getParameter("numTrees"));
