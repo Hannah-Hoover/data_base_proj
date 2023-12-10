@@ -87,12 +87,12 @@ public class quoteDAO {
 		         
 		        while (quoteset.next()) {
 		        	System.out.print("122");
-			    int quoteID = quoteset.getInt("quoteID");
-			    int contractorID = quoteset.getInt("contractorID");
+		        	int quoteID = quoteset.getInt("quoteID");
+		        	int contractorID = quoteset.getInt("contractorID");
 		            int clientID = quoteset.getInt("clientID");
 		            double price = quoteset.getDouble("price");
 		            String startTime = quoteset.getString("startTime");
-			    String endTime = quoteset.getString("endTime");
+		            String endTime = quoteset.getString("endTime");
 		            String status = quoteset.getString("status");
 	
 		             
@@ -188,24 +188,24 @@ public class quoteDAO {
 		    	
 		    }
 
-	/*
-		    public List<quotes> getQuotesByClientID(int clientID) throws SQLException {
+	
+		    public List<quote> getQuotesByClientID(int clientID) throws SQLException {
 		    	System.out.println("\n \n quoteDAO.getQuote() is called.");
-		        List<quotes> listQuotes = new ArrayList<quotes>();        
+		        List<quote> listQuote = new ArrayList<quote>();        
 		        String sql = "SELECT * FROM Quotes where clientID = "+clientID;      
 		        connect_func();      
 		        PreparedStatement statement = connect.prepareStatement(sql);
 		        ResultSet rs = statement.executeQuery(sql);
-		        quotes quote=null;
+		        quote quote=null;
 		        while (rs.next()) {
-		            quote = new quotes(rs.getDouble("price"),rs.getString("timeFrame"),rs.getString("status"), rs.getInt("requestID"), rs.getInt("clientID"), rs.getString("note"));
+		            quote = new quote(rs.getInt("contractorID"), rs.getInt("clientID"), rs.getDouble("price"), rs.getString("startTime"),rs.getString("endTime"),rs.getString("status"));
 		            quote.setQuoteID(rs.getInt("quoteID"));
-		            listQuotes.add(quote);
+		            listQuote.add(quote);
 		        }
 		        disconnect();        
-		        return listQuotes;
+		        return listQuote;
 			}
-	*/
+	
 		    public boolean delete(int quoteID) throws SQLException {
 		        String sql = "DELETE FROM Quote WHERE quoteID = ?";        
 		        connect_func();
