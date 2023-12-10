@@ -210,7 +210,7 @@ public class ControlServlet extends HttpServlet {
 	   		if (password.equals(confirm)) {
    	 			if (!userDAO.checkEmail(email)) {
    	 				System.out.println("Registration Successful! Added to database");
-   	 				user users = new user(email,password, firstName, lastName, password, address, creditcard, phone);
+   	 				user users = new user(email,password, firstName, lastName, role, address, creditcard, phone);
    	 				userDAO.insert(users);
    	 				response.sendRedirect("login.jsp"); 
    	 			}
