@@ -290,7 +290,7 @@ public class ControlServlet extends HttpServlet {
 			    	        session.setAttribute("username",  email);
 			    	        rootPage(request,response, "");
 		    		 }
-		   
+		    	 }
 		    	 else if(userDAO.isValid(email,password)) {
 		    		 if (role.equals("client")) {
 		    			 currentUser = email;
@@ -302,16 +302,15 @@ public class ControlServlet extends HttpServlet {
 			   			 System.out.println("Login Successful! Redirecting");
 			   			 request.getRequestDispatcher("activitypage.jsp").forward(request, response);
 					     }
-			    	 }
-			     }   		 
+			    	 }  		 
 		    	 else {
 		    	        request.setAttribute("loginStr", "Login Failed: Please check your credentials.");
 		    	        request.getRequestDispatcher("login.jsp").forward(request, response);
 		    	 }
-		    	 }
+		    	 
 		    	
 	 
-	    	
+		   }
 	          
 	    private void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	String email = request.getParameter("email");
