@@ -309,8 +309,7 @@ public class ControlServlet extends HttpServlet {
             //String photodata2 = request.getParameter("photodata2");
             //String photodata3 = request.getParameter("photodata3");
             //String note = request.getParameter("note");
-	    	
-	    	quote quote = new quote();
+	 
 	    	int ctid = 0;
 	    	int clid = 0;
 	    	double p = 0;
@@ -318,8 +317,9 @@ public class ControlServlet extends HttpServlet {
 	    	String ed = "0";
 	    	String stat = "0";
 	    	
-	    	quote quotes = new quote(ctid, clid, p, st, ed, stat);
+	    	quote quote = new quote(ctid, clid, p, st, ed, stat);
 	    	int quoteID = quote.getQuoteID();
+	    	System.out.print(quoteID);
 	    	
             int numTrees = Integer.parseInt(request.getParameter("numTrees"));
             
