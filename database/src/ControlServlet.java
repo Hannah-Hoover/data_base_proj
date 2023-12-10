@@ -321,12 +321,12 @@ public class ControlServlet extends HttpServlet {
                 String location = request.getParameter("location" + i);
                 String height = request.getParameter("height" + i);
                 String proximity = request.getParameter("proximity" + i);
-                String diameter = request.getParameter("sizeDiameter" + i);
+                String sizeDiameter = request.getParameter("sizeDiameter" + i);
                 String photodata1 = request.getParameter("photodata1" + i);
                 String photodata2 = request.getParameter("photodata2" + i);
                 String photodata3 = request.getParameter("photodata3" + i);
 
-                tree tree = new tree(quoteID,location, height, proximity, diameter, photodata1, photodata2, photodata3);
+                tree tree = new tree(quoteID,location, height, proximity, sizeDiameter, photodata1, photodata2, photodata3);
                 treeDAO.insertTree(tree);            	
             	
             }

@@ -117,7 +117,7 @@ public class treeDAO {
 		    
 		    public void insertTree(tree tree) throws SQLException {
 		    	connect_func();         
-				String sql = "insert into Tree(quoteID, location, height, proximity, diameter, photo1, photo2, photo3) values (?, ?, ?, ?, ?, ?, ?, ?)";
+				String sql = "insert into Tree(quoteID, location, height, proximity, sizeDiameter, photo1, photo2, photo3) values (?, ?, ?, ?, ?, ?, ?, ?)";
 				preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 
 			    		preparedStatement.setInt(1, tree.getQuoteID());
@@ -134,7 +134,7 @@ public class treeDAO {
 		    
 		    public boolean update(tree tree) throws SQLException {
 		    	System.out.println("\n \n update in treeDAO.");
-		        String sql = "update Tree set TreeID=?, QuoteID=?, Location=?, Height=?, Proximity=?, Diameter=?, Photo1=? Photo2 = ?, Photo3=?";
+		        String sql = "update Tree set TreeID=?, QuoteID=?, Location=?, Height=?, Proximity=?, SizeDiameter=?, Photo1=? Photo2 = ?, Photo3=?";
 		        connect_func();
 		     			preparedStatement.setInt(1, tree.getQuoteID());
 			    		preparedStatement.setString(2, tree.getLocation());
