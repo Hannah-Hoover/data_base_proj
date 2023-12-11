@@ -151,6 +151,7 @@ public class ControlServlet extends HttpServlet {
 		    	 String email = request.getParameter("email");
 		    	 String password = request.getParameter("password");
 		    	 String role = request.getParameter("role");
+		    	
 		    	 
 		    	 
 		    	 if(email.equals("root") && password.equals("pass1234")){
@@ -164,6 +165,8 @@ public class ControlServlet extends HttpServlet {
 		    	 else if(userDAO.isValid(email,password)) {
 		    		 if (role.equals("client")) {
 		    			 currentUser = email;
+		    			 user user = userDAO.getUser(email);
+		    			 request.getSession().setAttribute("clientID", user.getUserID());
 		    			 System.out.println("Login Successful! Redirecting");
 		    			 request.getRequestDispatcher("clientactivitypage.jsp").forward(request, response);
 		    		 }
@@ -312,6 +315,7 @@ public class ControlServlet extends HttpServlet {
 	    	
 	    	Integer clientID = (Integer)request.getSession().getAttribute("clientID");
             System.out.println("client id is "+clientID);
+            request.setAttribute("request", request);
             
 	    	int ctid = 11;
 	    	//int clid = 10;
