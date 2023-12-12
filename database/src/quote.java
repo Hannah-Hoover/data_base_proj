@@ -21,9 +21,9 @@ public class quote{
 
     public quote(int contractorID, int clientID, double price, String startTime, String endTime, String status)
     {
-	this.contractorID = contractorID;
+		this.contractorID = contractorID;
     	this.clientID = clientID;
-	this.price = price;
+    	this.price = price;
     	this.startTime = startTime;
     	this.endTime = endTime;
     	this.status= status;

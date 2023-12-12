@@ -164,15 +164,17 @@ public class quoteDAO {
 		    
 		    public boolean update(quote quotes) throws SQLException {
 		    	System.out.println("\n \n update in quoteDAO.");
-		        String sql = "update Quote set QuoteID=?, ContractorID=?, ClientID=?, Price=?, StartTime=?, EndTime=? Status = ?";
+		        String sql = "update Quote set Price=?, StartTime=?, EndTime=?, Status = ? where QuoteID = ?";
 		        connect_func();
-		        	    preparedStatement.setInt(1, quotes.getContractorID());
-			    		preparedStatement.setInt(2, quotes.getClientID());
-			    		preparedStatement.setDouble(3, quotes.getPrice());
-			    		preparedStatement.setString(4, quotes.getStartTime());
-			    		preparedStatement.setString(5, quotes.getEndTime());
-			    		preparedStatement.setString(6, quotes.getStatus());
-			    		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+		    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+		        	   	//preparedStatement.setInt(1, quotes.getContractorID());
+			    		//preparedStatement.setInt(2, quotes.getClientID());
+			    		preparedStatement.setDouble(1, quotes.getPrice());
+			    		preparedStatement.setString(2, quotes.getStartTime());
+			    		preparedStatement.setString(3, quotes.getEndTime());
+			    		preparedStatement.setString(4, quotes.getStatus());
+			    		preparedStatement.setInt(5, quotes.getQuoteID());
+			 
 		        boolean rowUpdated = preparedStatement.executeUpdate() > 0;
 		        preparedStatement.close();
 //		        disconnect();

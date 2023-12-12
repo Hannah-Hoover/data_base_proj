@@ -9,7 +9,7 @@
 <meta charset="ISO-8859-1">
 <title>Contractor Activity page</title>
 </head>
-<input type="hidden" name="quoteID" value="${res.quoteID}" />
+<input type= name="quoteID" value="${res.quoteID}" />
 <center><h1>Welcome David! You have been successfully logged in</h1> </center>
 	<body>
 	 <center>
@@ -17,10 +17,11 @@
 		 <a href="contractorquote.jsp">Create quote</a><br><br> 
 		  <a href="listquote">List Quotes</a><br><br> 
 		
-            
+            <c:out value="{res.price}"/>
 		     <table border="1" cellpadding="5">
             <caption><h2>List of Quotes</h2></caption>
             <tr>
+            	<th>quoteID</th>
             	<th>contractorID</th>
             	<th>clientID</th>
 				<th>Price</th>
@@ -34,6 +35,7 @@
             </tr>
             <c:forEach var="quote" items="${listQuote}">
                 <tr style="text-align:center">
+                	<td><c:out value="${quote.quoteID}" /></td>
                 	<td><c:out value="${quote.contractorID}" /></td>
                 	<td><c:out value="${quote.clientID}" /></td>
                     <td><c:out value="${quote.price}" /></td>
@@ -43,7 +45,7 @@
            
            <td>
                 <c:if test="${quote.status eq 'pending'}">
-                    <a href="ContractorResponse.jsp">Respond</a>
+                    <a href="contractorresponse?quoteID=${quote.quoteID}">Respond</a>
                 </c:if>
            </td>
                

@@ -9,32 +9,39 @@
 </head>
 <body>
 <div align="center">
-		<form action="updateQuote" method="post">
+		<form action="updatequote" method="post">
 			<table border="1" cellpadding="5">
+<<<<<<< Updated upstream
 			<input type="hidden" name="quoteID" value="${res.quoteID}" />
 			
+=======
+			<input type="hidden" name="quoteID"  value="${res.quoteID}" />
+			<input type="hidden" name="contractorID"  value="${res.contractorID}" />
+			<input type="hidden" name="clientID"  value="${res.clientID}" />
+>>>>>>> Stashed changes
                 <tr>
+                <c:out value="{res.price}"/>
                     <th>Price:</th>
                     <td colspan="3">
-                        <input type="text" name="price" size="45" placeholder="Price" ${res.editable?"":"enabled"} required value="${res.price }">
+                        <input type="text" name="price" size="45" placeholder="Price" required value="${res.price }">
                     </td>
                 </tr>
                  <tr>
                     <th>Start Time:</th>
                     <td colspan="3">
-                        <input type="text" name="startTime" size="45" placeholder="Start Time" ${res.editable?"":"enabled"} required value="${res.startTime }">
+                        <input type="text" name="startTime" size="45" placeholder="Start Time" required value="${res.startTime }">
                     </td>
                 </tr>
                  <tr>
                     <th>End Time:</th>
                     <td colspan="3">
-                        <input type="text" name="endTime" size="45" placeholder="End Time" ${res.editable?"":"enabled"} required value="${res.endTime }">
+                        <input type="text" name="endTime" size="45" placeholder="End Time"required value="${res.endTime }">
                     </td>
                 </tr>
                  <tr>
                     <th>Status:</th>
                     <td colspan="3">
-                        <input type="text" name="status" size="45" placeholder="Status" ${res.editable?"":"enabled"} required value="${res.status }">
+                        <input type="text" name="status" size="45" placeholder="Status" required value="${res.status }">
                     </td>
                 </tr>
                  <!--   <tr>

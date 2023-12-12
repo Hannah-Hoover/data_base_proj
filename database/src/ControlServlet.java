@@ -101,6 +101,7 @@ public class ControlServlet extends HttpServlet {
          		newQuote(request, response);
          		break;
          		
+         		/*
          	 case "/updatequotestatus":
         		 System.out.println("Client quitting quote");
         		 UpdateQuoteStatus(request, response);
@@ -110,7 +111,7 @@ public class ControlServlet extends HttpServlet {
          		System.out.println("Contractor quitting quote");
          		UpdateQuoteContractor(request, response);
          		break;
-        	 
+        	 *//*
         	 case "/clientupdate":
         		 System.out.println("The action is: clientupdate");
         		 updateQuote(request, response);
@@ -124,6 +125,8 @@ public class ControlServlet extends HttpServlet {
                  System.out.println("The action is: clientrepsonse");
              	 clientResponse(request, response);
                  break;
+                 */
+                 
         	 case "/contractorresponse":
                  System.out.println("The action is: contractorrepsonse");
              	 contractorResponse(request, response);
@@ -135,19 +138,19 @@ public class ControlServlet extends HttpServlet {
                  break;
                  
                  
-        	
-        		/*
+        	/*
          		
          	case "/request":
          		System.out.println("The action is: request");
          		request(request, response);
          		break;
+         		*/
         	 
         	 case "/listrequests":
         		 System.out.println("The action is: listRequest");
         		 listRequest(request, response);
         		 break;
-        		 */
+        		 
         	}
 	  
       
@@ -234,7 +237,6 @@ public class ControlServlet extends HttpServlet {
 	    
 	    private void contractorPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
 	    	System.out.println("contractor view");
-	    	request.setAttribute("listRequest", requestDAO.listAllRequests());
 	    	request.setAttribute("listQuote", quoteDAO.listAllQuote());
 	    	request.getRequestDispatcher("activitypage.jsp").forward(request, response);
 	    }
@@ -280,6 +282,7 @@ public class ControlServlet extends HttpServlet {
 	        System.out.println("listQuote finished: 111111111111111111111111111111111111");
 	    }
 	    
+	    /*
 	    private void updateQuote(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
 	        System.out.println("updateQuote started: 000000000000000000000000000");
@@ -288,16 +291,41 @@ public class ControlServlet extends HttpServlet {
 	        int quoteID=Integer.parseInt(request.getParameter("quoteID"));
 	      //System.out.println("name:" + name + ", address: "+address + ", status:" + status);
 	        
-	        quote quote = quoteDAO.getQuote(quoteID);//new quote(contractorID, clientID, price, startTime, endTime, status);
+	        quote quotes = quoteDAO.getQuote(quoteID);//new quote(contractorID, clientID, price, startTime, endTime, status);
 	        System.out.print("after quote");
-	        quoteDAO.update(quote);
+	        quoteDAO.update(quotes);
 	        System.out.println("Ask the browser to call the list action next automatically");
-	        clientPage(request, response, "");
+	        contractorPage(request, response, "");
+	        //clientPage(request, response, "");
+	        //.out.println(price);
 	     
 	        System.out.println("updateQuotes finished: 1111111111111111111111111111111");
 	    }
 	    
-	 
+	 */
+	    /*
+	    private void updateQuote(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("updateQuotecontractor started: 000000000000000000000000000");
+	       
+	        // get the id of the people we want to delete from the parameter
+	        int id = Integer.parseInt(request.getParameter("quoteID"));
+	        String status = request.getParameter("status");
+	        System.out.println(id);
+	        System.out.println(status);
+	        //People people = new People(id);
+	        // delete this people
+	        quote quotes = quoteDAO.getQuote(id);
+	        quotes.setStatus(status);
+	        quoteDAO.update(quotes);
+	        System.out.println("Ask the browser to call the list action next automatically");
+	        
+	        // instead rediret to another jsp, we redirect to another action, simulating that the user click a list link or button, benefit: save one click from the user    
+	        contractorPage(request, response, "");
+	
+	        
+	        System.out.println("updateQuotecontractor finished: 1111111111111111111111111111111");
+	    }*/
 	    
 	    private void newQuote(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
 		  	int requestID=Integer.parseInt(request.getParameter("id"));
@@ -307,11 +335,11 @@ public class ControlServlet extends HttpServlet {
 			        dispatcher.forward(request, response);
 					
 				}
-	    
+	    /*
 	    // to present an update form to update an  existing Student
 	    private void UpdateQuoteStatus(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
-	        System.out.println("deleteclientQuote started: 000000000000000000000000000");
+	        System.out.println("updateQuote started: 000000000000000000000000000");
 
 	        // get the id of the people we want to delete from the parameter
 	        int id = Integer.parseInt(request.getParameter("id"));
@@ -327,40 +355,23 @@ public class ControlServlet extends HttpServlet {
 	        System.out.println("Ask the browser to call the list action next automatically");
 	        
 	        // instead rediret to another jsp, we redirect to another action, simulating that the user click a list link or button, benefit: save one click from the user    
-	        clientPage(request, response, "");
+	        contractorPage(request, response, "");
+	        //clientPage(request, response, "");
 	        
 	        System.out.println("deletePeople finished: 1111111111111111111111111111111");
 	    } 
 	    
+	    */
 	    
-	    private void UpdateQuoteContractor(HttpServletRequest request, HttpServletResponse response)
-	            throws SQLException, IOException, ServletException {
-	        System.out.println("updateQuotecontractor started: 000000000000000000000000000");
-	       
-	        // get the id of the people we want to delete from the parameter
-	        int id = Integer.parseInt(request.getParameter("id"));
-	        String status = request.getParameter("status");
-	        //People people = new People(id);
-	        // delete this people
-	        quote quotes = quoteDAO.getQuote(id);
-	        quotes.setStatus(status);
-	        quoteDAO.update(quotes);
-	        System.out.println("Ask the browser to call the list action next automatically");
-	        
-	        // instead rediret to another jsp, we redirect to another action, simulating that the user click a list link or button, benefit: save one click from the user    
-	        contractorPage(request, response, "");
-	        
-	        System.out.println("deletePeople finished: 1111111111111111111111111111111");
-	    }
+	  
 	    
-	   
-	    
-	    private void contractorUpdateQuotes(HttpServletRequest request, HttpServletResponse response)
+	    private void updateQuote(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
 	        System.out.println("contractorUpdateQuote started: 000000000000000000000000000");
 	        
-	        int contractorID=Integer.parseInt(request.getParameter("contractorID"));
-	        int clientID=Integer.parseInt(request.getParameter("clientID"));
+	        int quoteID=Integer.parseInt(request.getParameter("quoteID"));
+	        //int contractorID=Integer.parseInt(request.getParameter("contractorID"));
+	        //int clientID=Integer.parseInt(request.getParameter("clientID"));
 	        double price = Double.parseDouble(request.getParameter("price"));
 	        String startTime = request.getParameter("startTime");
 	        String endTime = request.getParameter("endTime");
@@ -368,7 +379,7 @@ public class ControlServlet extends HttpServlet {
 	
 	      //System.out.println("name:" + name + ", address: "+address + ", status:" + status);
 	        
-	        quote quote = quoteDAO.getQuote(clientID);//new quote(contractorID, clientID, price, startTime, endTime, status);
+	        quote quote = quoteDAO.getQuote(quoteID);//new quote(contractorID, clientID, price, startTime, endTime, status);
 	        quote.setPrice(price);
 	        quote.setStartTime(startTime);
 	        quote.setEndTime(endTime);
@@ -381,7 +392,7 @@ public class ControlServlet extends HttpServlet {
 	     
 	        System.out.println("contractorUpdateQuote finished: 1111111111111111111111111111111");
 	    }
-	   
+	  
 	    /*
 	    private void listUserQuote(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
@@ -403,9 +414,9 @@ public class ControlServlet extends HttpServlet {
 	        dispatcher.forward(request, response);
 			
 	    }
-	    
+	   
 	    private void contractorResponse(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
-	    	int quoteID=Integer.parseInt(request.getParameter("id"));
+	    	int quoteID=Integer.parseInt(request.getParameter("quoteID"));
 			quote res = quoteDAO.getQuote(quoteID);
 			request.setAttribute("res", res);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("ContractorResponse.jsp");       
@@ -481,14 +492,14 @@ public class ControlServlet extends HttpServlet {
             request requests = new request(clientID, location, height, proximity, sizeDiameter, photodata1, photodata2, photodata3, note);
             System.out.println(requests.toString());
             requestDAO.insert(requests);
-            */
+            
             
         	System.out.println("Request Successful! Added to database");
         	response.sendRedirect("out.jsp");
             //request.setAttribute("treeCount", treeCount);
             //request.getRequestDispatcher("clientquote.jsp").forward(request, response);
              }
-        
+        */
   
 		    
 		    private void listRequest(HttpServletRequest request, HttpServletResponse response)
@@ -501,6 +512,10 @@ public class ControlServlet extends HttpServlet {
 		        dispatcher.forward(request, response);
 		     
 		        System.out.println("listRequest finished: 111111111111111111111111111111111111");
+<<<<<<< Updated upstream
 		    }    
+=======
+		    }
+>>>>>>> Stashed changes
 
 }
