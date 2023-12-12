@@ -9,7 +9,7 @@
 </head>
 <body>
 <div align="center">
-		<form action="contractorupdate" method="post">
+		<form action="updateQuote" method="post">
 			<table border="1" cellpadding="5">
 			<input type="hidden" name="quoteID" value="${res.quoteID}" />
                 <tr>
@@ -19,9 +19,15 @@
                     </td>
                 </tr>
                  <tr>
-                    <th>TimeFrame:</th>
+                    <th>Start Time:</th>
                     <td colspan="3">
-                        <input type="text" name="timeFrame" size="45" placeholder="Timeframe" ${res.editable?"":"disabled"} required value="${res.timeFrame }">
+                        <input type="text" name="startTime" size="45" placeholder="Start Time" ${res.editable?"":"disabled"} required value="${res.startTime }">
+                    </td>
+                </tr>
+                 <tr>
+                    <th>End Time:</th>
+                    <td colspan="3">
+                        <input type="text" name="endTime" size="45" placeholder="End Time" ${res.editable?"":"disabled"} required value="${res.endTime }">
                     </td>
                 </tr>
                  <tr>
@@ -31,28 +37,15 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Previous Note:</th>
-                    <td colspan="2"><c:out value="${res.note}"/></td>
-				</tr>
-                <tr>
-                    <th>Note:</th>
-                    <td>
-                        <input type="text" name="note" size="45" placeholder="note" required ${res.editable?"":"disabled"}>
-                    </td>
                     <td align="center" colspan="5">
-                    	<c:if test="${res.editable }">
-							<input type="submit" value="Submit response"/>
-						</c:if>
-						<c:if test="${res.editable eq false }">
-							<a href="contractorpage">Back to Requests</a>
-						</c:if>
+						<input type="submit" value="updateQuote"/>
 					</td>
 				</tr>
             </table>
             <hr>
+                <a href="activitypage.jsp" target="_self">Contractor dashboard<br></a>
+                <a href="login.jsp"target ="_self" > logout</a><br><br> 
         </form>
-         <a href="activitypage.jsp" target="_self">Contractor dashboard</a>
-         <a href="login.jsp"target ="_self" > logout</a><br><br> 
 </div>
 </body>
 </html>
