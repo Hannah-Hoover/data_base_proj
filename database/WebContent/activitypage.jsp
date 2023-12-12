@@ -27,6 +27,7 @@
                 <th>startTime</th>
                 <th>endTime</th>
                 <th>status</th>
+                <th>Actions</th>
             
                 
 
@@ -40,6 +41,11 @@
                     <td><c:out value="${quote.endTime}" /></td>
                     <td><c:out value="${quote.status}" /></td>
            
+           <td>
+                <c:if test="${quote.status eq 'pending'}">
+                    <a href="ContractorResponse.jsp">Respond</a>
+                </c:if>
+           </td>
                
                 </tr>
             </c:forEach>
