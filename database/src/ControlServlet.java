@@ -28,6 +28,7 @@ public class ControlServlet extends HttpServlet {
 	    private clientDAO clientDAO = new clientDAO();
 	    private contractorDAO contractorDAO = new contractorDAO();
 	    private requestDAO requestDAO = new requestDAO();
+	    private QuotesMessagesDAO QuotesMessagesDAO = new QuotesMessagesDAO();
 	    private String currentUser;
 	    private HttpSession session=null;
 	    String sessionID;
@@ -136,7 +137,7 @@ public class ControlServlet extends HttpServlet {
                  System.out.println("The action is: list");
                  listUser(request, response);           	
                  break;
-        	 case "quoteMessage":
+        	 case "/quoteMessage":
         		 System.out.println("The action is: quoteMessge");
                  quoteMessage(request, response);
                  
@@ -424,6 +425,7 @@ public class ControlServlet extends HttpServlet {
 	        dispatcher.forward(request, response);
 			
 		} 
+	  
 	    
 		private void listUser(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
@@ -519,7 +521,13 @@ public class ControlServlet extends HttpServlet {
 		    }    
 
 		    private void quoteMessage(HttpServletRequest request, HttpServletResponse response)
-		            throws SQLException, IOException, ServletException {
+		            throws SQLException, IOException, ServletException{ 
+				
+				int quotemsgID=Integer.parseInt(request.getParameter("quotemsgID"));
+				QuotesMessages qmsg = QuotesMessagesDAO.getQuotesMessages(quotemsgID);
+				request.setAttribute("qmsg", qmsg);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("ContractorResponse.jsp");       
+		        dispatcher.forward(request, response);
 		    	
 		     
 		    }  
