@@ -136,7 +136,9 @@ public class ControlServlet extends HttpServlet {
                  System.out.println("The action is: list");
                  listUser(request, response);           	
                  break;
-                 
+        	 case "quoteMessage":
+        		 System.out.println("The action is: quoteMessge");
+                 quoteMessage(request, response);
                  
         	/*
          		
@@ -514,7 +516,9 @@ public class ControlServlet extends HttpServlet {
 
 		    }    
 
-		   
-
-
+		    private void quoteMessage(HttpServletRequest request, HttpServletResponse response)
+		            throws SQLException, IOException, ServletException {
+		    	
+		     
+		    }  
 }
