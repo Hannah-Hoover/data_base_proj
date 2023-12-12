@@ -47,9 +47,9 @@
             </table>
             <hr>
         </form>
-        		<form action="quoteMessage" method="post">
+        	<form action="quoteMessage" method="post">
         		<input type="hidden" name="quoteID"  value="${res.quoteID}" />
-        		<input type="hidden" name="quoteID"  value="${res.userID}" />
+        		<input type="hidden" name="userID"  value="${res.userID}" />
                  <tr>
                     <th>Message:</th>
                     <td colspan="3">
