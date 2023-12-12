@@ -11,14 +11,11 @@
 <div align="center">
 		<form action="updatequote" method="post">
 			<table border="1" cellpadding="5">
-<<<<<<< Updated upstream
-			<input type="hidden" name="quoteID" value="${res.quoteID}" />
-			
-=======
+
 			<input type="hidden" name="quoteID"  value="${res.quoteID}" />
 			<input type="hidden" name="contractorID"  value="${res.contractorID}" />
 			<input type="hidden" name="clientID"  value="${res.clientID}" />
->>>>>>> Stashed changes
+
                 <tr>
                 <c:out value="{res.price}"/>
                     <th>Price:</th>
