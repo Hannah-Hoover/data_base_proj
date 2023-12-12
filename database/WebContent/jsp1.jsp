@@ -69,7 +69,7 @@
     </script>
 </head>
 <body>
-    <form action="jsp1.jsp" method="post">
+    <form action="request" method="post">
         <h2>Quote Request Form</h2>
 
         <label for="numTrees">Number of Trees:</label>

@@ -90,9 +90,9 @@ public class treeDAO {
                 int treeID = treeset.getInt("treeID");
 			    int quoteID = treeset.getInt("quoteID");
 			    String location = treeset.getString("location");
-		        double height = treeset.getDouble("height");
-		        double proximity = treeset.getDouble("proximity");
-		        double diameter = treeset.getDouble("diameter");
+		        String height = treeset.getString("height");
+		        String proximity = treeset.getString("proximity");
+		        String diameter = treeset.getString("sizeDiameter");
 			    String photo1 = treeset.getString("photo1");
 		        String photo2 = treeset.getString("photo2");
                 String photo3 = treeset.getString("photo3");
@@ -117,14 +117,14 @@ public class treeDAO {
 		    
 		    public void insertTree(tree tree) throws SQLException {
 		    	connect_func();         
-				String sql = "insert into Tree(quoteID, location, height, proximity, diameter, photo1, photo2, photo3) values (?, ?, ?, ?, ?, ?, ?, ?)";
+				String sql = "insert into Tree(quoteID, location, height, proximity, sizeDiameter, photo1, photo2, photo3) values (?, ?, ?, ?, ?, ?, ?, ?)";
 				preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 
 			    		preparedStatement.setInt(1, tree.getQuoteID());
 			    		preparedStatement.setString(2, tree.getLocation());
-			    		preparedStatement.setDouble(3, tree.getHeight());
-			    		preparedStatement.setDouble(4, tree.getProximity());
-			    		preparedStatement.setDouble(5, tree.getDiameter());
+			    		preparedStatement.setString(3, tree.getHeight());
+			    		preparedStatement.setString(4, tree.getProximity());
+			    		preparedStatement.setString(5, tree.getDiameter());
 			    		preparedStatement.setString(6, tree.getPhoto1());		
               preparedStatement.setString(7, tree.getPhoto2());	
               preparedStatement.setString(8, tree.getPhoto3());	
@@ -134,13 +134,13 @@ public class treeDAO {
 		    
 		    public boolean update(tree tree) throws SQLException {
 		    	System.out.println("\n \n update in treeDAO.");
-		        String sql = "update Tree set TreeID=?, QuoteID=?, Location=?, Height=?, Proximity=?, Diameter=?, Photo1=? Photo2 = ?, Photo3=?";
+		        String sql = "update Tree set TreeID=?, QuoteID=?, Location=?, Height=?, Proximity=?, SizeDiameter=?, Photo1=? Photo2 = ?, Photo3=?";
 		        connect_func();
 		     			preparedStatement.setInt(1, tree.getQuoteID());
 			    		preparedStatement.setString(2, tree.getLocation());
-			    		preparedStatement.setDouble(3, tree.getHeight());
-			    		preparedStatement.setDouble(4, tree.getProximity());
-			    		preparedStatement.setDouble(5, tree.getDiameter());
+			    		preparedStatement.setString(3, tree.getHeight());
+			    		preparedStatement.setString(4, tree.getProximity());
+			    		preparedStatement.setString(5, tree.getDiameter());
 			    		preparedStatement.setString(6, tree.getPhoto1());		
               preparedStatement.setString(7, tree.getPhoto2());	
               preparedStatement.setString(8, tree.getPhoto3());
@@ -158,7 +158,7 @@ public class treeDAO {
 		        ResultSet rs = statement.executeQuery(sql);
 		        tree tree=null;
 		        if (rs.next()) {
-		            tree = new tree(rs.getInt("quoteID"), rs.getString("location"), rs.getDouble("height"), rs.getDouble("proximity"),rs.getDouble("diameter"),rs.getString("photo1"),rs.getString("photo2"),rs.getString("photo3"));
+		            tree = new tree(rs.getInt("quoteID"), rs.getString("location"), rs.getString("height"), rs.getString("proximity"),rs.getString("sizeDiameter"),rs.getString("photo1"),rs.getString("photo2"),rs.getString("photo3"));
 		            tree.setTreeID(rs.getInt("treeID"));
 		        }
 		        disconnect();        

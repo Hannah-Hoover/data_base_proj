@@ -15,66 +15,38 @@
 	 <center>
 		 <a href="login.jsp"target ="_self" > logout</a><br><br>
 		 <a href="contractorquote.jsp">Create quote</a><br><br> 
-		  <a href="listquotes">List Quotes</a><br><br> 
-		  <a href="listrequests">List Quote Requests</a><br><br>
+		  <a href="listquote">List Quotes</a><br><br> 
+		
             
 		     <table border="1" cellpadding="5">
             <caption><h2>List of Quotes</h2></caption>
             <tr>
-            	<th>ID</th>
+            	<th>contractorID</th>
+            	<th>clientID</th>
 				<th>Price</th>
-                <th>TimeFrame</th>
-                <th>Status</th>
-                <th>Latest Note</th>
-                <th>Options</th>
+                <th>startTime</th>
+                <th>endTime</th>
+                <th>status</th>
+                <th>Actions</th>
+            
                 
 
             </tr>
-            <c:forEach var="quotes" items="${listQuotes}">
+            <c:forEach var="quote" items="${listQuote}">
                 <tr style="text-align:center">
-                	<td><c:out value="${quotes.clientID}" /></td>
-                    <td><c:out value="${quotes.price}" /></td>
-                    <td><c:out value="${quotes.timeFrame}" /></td>
-                    <td><c:out value="${quotes.status}" /></td>
-                    <td><c:out value="${quotes.note }"/></td>
-                     <td>
-                     <c:if test="${quotes.editable}">
-		               	 	<a href="contractorresponse?id=${quotes.quoteID}""target ="_self" > Respond</a><br/>  
-		                	<a href="updatequotecontractor?id=${quotes.quoteID}&status=quit" target="_self"> Quit</a>
-		                </c:if>
-               		</td>
-                </tr>
-            </c:forEach>
-            
-                   <table border="1" cellpadding="5">
-            <caption><h2>List of Quote Requests</h2></caption>
-            <tr>
-				<th>Id</th>
-                <th>Location</th>
-                <th>Height</th>
-                <th>Proximity</th>
-                <th>SizeDiameter</th>
-                <th>Photodata1</th>
-                <th>Photodata2</th>
-                <th>Photodata3</th>
-                <th>Note</th>
-
-            </tr>
-            <c:forEach var="requests" items="${listRequest}">
-                <tr style="text-align:center">
-                    <td><c:out value="${requests.location}" /></td>
-                    <td><c:out value="${requests.height}" /></td>
-                    <td><c:out value= "${requests.proximity}" /></td>
-                    <td><c:out value="${requests.sizeDiameter}" /></td>
-                    <td><c:out value="${requests.photodata1}" /></td>
-                    <td><c:out value="${requests.photodata2}"/></td>
-                     <td><c:out value="${requests.photodata3}"/></td>
-                    <td><c:out value="${requests.note}" /></td>
-                     <td>
-                        <a href="newquote?id=<c:out value='${requests.requestID}' />">Quote</a>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="delete?id=<c:out value='${people.id}' />">Deny</a>                     
-                    </td>
+                	<td><c:out value="${quote.contractorID}" /></td>
+                	<td><c:out value="${quote.clientID}" /></td>
+                    <td><c:out value="${quote.price}" /></td>
+                    <td><c:out value="${quote.startTime}" /></td>
+                    <td><c:out value="${quote.endTime}" /></td>
+                    <td><c:out value="${quote.status}" /></td>
+           
+           <td>
+                <c:if test="${quote.status eq 'pending'}">
+                    <a href="ContractorResponse.jsp">Respond</a>
+                </c:if>
+           </td>
+               
                 </tr>
             </c:forEach>
 		 </center>
