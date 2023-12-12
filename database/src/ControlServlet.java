@@ -437,6 +437,8 @@ public class ControlServlet extends HttpServlet {
 	        System.out.println("listPeople finished: 111111111111111111111111111111111111");
 	    }
 		
+		/*
+		
 	    private void request(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	System.out.println("in request");
             //String location = request.getParameter("location");
@@ -512,10 +514,10 @@ public class ControlServlet extends HttpServlet {
 		        dispatcher.forward(request, response);
 		     
 		        System.out.println("listRequest finished: 111111111111111111111111111111111111");
-<<<<<<< Updated upstream
+
 		    }    
-=======
-		    }
->>>>>>> Stashed changes
+
+		   
+
 
 }
