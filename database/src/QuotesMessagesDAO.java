@@ -115,9 +115,9 @@ public class QuotesMessagesDAO {
 		        }
 		    }
 		    
-		    public QuotesMessages insert(QuotesMessages quotesmessages) throws SQLException {
+		    public boolean insert(QuotesMessages quotesmessages) throws SQLException {
 		    	connect_func("root","pass1234");         
-				String sql = "insert into QuotesMessages(userID, quoteID, msgtime, price, schedulestart, scheduleend, status, note) values (?, ?, ?, ?, ?, ?, ?, ?)";
+		    	String sql = "insert into QuotesMessages(userID, quoteID, msgtime, price, schedulestart, scheduleend, status, note) values (?, ?, ?, ?, ?, ?, ?, ?)";
 				preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 					preparedStatement.setInt(2, quotesmessages.getUserID());
 					preparedStatement.setInt(3, quotesmessages.getQuoteID());
@@ -127,13 +127,10 @@ public class QuotesMessagesDAO {
 					preparedStatement.setString(7, quotesmessages.getScheduleend());
 					preparedStatement.setString(8, quotesmessages.getStatus());
 					preparedStatement.setString(9, quotesmessages.getNote());				
-					String sql1= "SELECT max(quotemsgID) as quotemsgID FROM QuotesMessages";  
-		    		ResultSet rs = preparedStatement.executeQuery(sql1);
-		    		if (rs.next()) {
-		    		quotesmessages.setQuoteID(rs.getInt("quotemsgID"));
-		    		}
-		    		preparedStatement.close();
-		    		return quotesmessages;
+					
+					boolean rowInserted = preparedStatement.executeUpdate()>0;
+					preparedStatement.close();
+					return rowInserted;
 		    }
 		    public boolean delete(String email) throws SQLException {
 		        String sql = "DELETE FROM QuotesMessages WHERE email = ?";        
