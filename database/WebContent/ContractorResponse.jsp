@@ -12,6 +12,7 @@
 		<form action="updateQuote" method="post">
 			<table border="1" cellpadding="5">
 			<input type="hidden" name="quoteID" value="${res.quoteID}" />
+			
                 <tr>
                     <th>Price:</th>
                     <td colspan="3">
@@ -36,6 +37,12 @@
                         <input type="text" name="status" size="45" placeholder="Status" ${res.editable?"":"enabled"} required value="${res.status }">
                     </td>
                 </tr>
+                 <!--   <tr>
+                    <th>Message:</th>
+                    <td colspan="3">
+                        <input type="text" name="status" size="45" placeholder="Status" ${res.editable?"":"enabled"} required value="${res.status }">
+                    </td>
+                </tr> -->
                 <tr>
                     <td align="center" colspan="5">
 						<input type="submit" value="updateQuote"/>

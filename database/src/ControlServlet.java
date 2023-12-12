@@ -225,48 +225,6 @@ public class ControlServlet extends HttpServlet {
    	 			}
    	 		}
 	    }
-	   	 	
-	   	 	/*if(role.equals("client")) {
-	   	 		if (password.equals(confirm)) {
-	   	 			if (!clientDAO.checkClientEmail(email)) {
-	   	 				System.out.println("Registration Successful! Added to database");
-	   	 				client clients = new client(email,firstName, lastName, password, address, creditcard, phone);
-	   	 				clientDAO.insertClient(clients);
-	   	 				response.sendRedirect("login.jsp"); 
-	   	 			}
-	   	 			else {
-	   	 				System.out.println("Username taken, please enter new username");
-		   	 			request.setAttribute("errorOne","Registration failed: Username taken, please enter a new username.");
-		   	 			request.getRequestDispatcher("register.jsp").forward(request, response);
-	   	 			}
-	   	 		}
-	   	 		else {
-	   	 		System.out.println("Password and Password Confirmation do not match");
-	   	 		request.setAttribute("errorTwo","Registration failed: Password and Password Confirmation do not match.");
-	   	 		request.getRequestDispatcher("register.jsp").forward(request, response);
-	   	 		} 
-	   	 	}else if(role.equals("contractor")) {
-	   	 		if (password.equals(confirm)) {
-	   	 			if (!contractorDAO.checkContractorEmail(email)) {
-	   	 				System.out.println("Registration Successful! Added to database");
-	   	 				contractor contractors = new contractor(email,firstName, lastName, password) ;
-	   	 				contractorDAO.insertContractor(contractors);
-	   	 				response.sendRedirect("login.jsp"); 
-	   	 			}
-	   	 			else {
-	   	 				System.out.println("Username taken, please enter new username");
-		   	 			request.setAttribute("errorOne","Registration failed: Username taken, please enter a new username.");
-		   	 			request.getRequestDispatcher("register.jsp").forward(request, response);
-	   	 			}
-	   	 		}
-	   	 		else {
-	   	 		System.out.println("Password and Password Confirmation do not match");
-	   	 		request.setAttribute("errorTwo","Registration failed: Password and Password Confirmation do not match.");
-	   	 		request.getRequestDispatcher("register.jsp").forward(request, response);
-	   	 		} 
-	   	 	}
-	   	 	
-	    }  */
 	    
 	    private void rootPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
 	    	System.out.println("root view");
@@ -300,11 +258,7 @@ public class ControlServlet extends HttpServlet {
        
             
             session = request.getSession();
-	      //  session.setAttribute("clientID");
-            //sessionID = request.getParameter("clientID");
-       
-            //request.getAttribute("clientID")
-         // String name= (String)session.getAttribute("clientID");
+
             
             quote quote = new quote(Integer.parseInt(contractorID), Integer.parseInt(clientID), Double.parseDouble(price), startTime, endTime, status);
             quoteDAO.insertQuote(quote);
@@ -471,12 +425,7 @@ public class ControlServlet extends HttpServlet {
 	     
 	        System.out.println("listPeople finished: 111111111111111111111111111111111111");
 	    }
-	    
-	  
-	 
-	    
-	   
-	/*
+		
 	    private void request(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	System.out.println("in request");
             //String location = request.getParameter("location");
@@ -552,7 +501,6 @@ public class ControlServlet extends HttpServlet {
 		        dispatcher.forward(request, response);
 		     
 		        System.out.println("listRequest finished: 111111111111111111111111111111111111");
-		    }
-		   */    
+		    }    
 
 }
