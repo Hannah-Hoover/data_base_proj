@@ -188,6 +188,8 @@ public class ControlServlet extends HttpServlet {
 		    		else if (role.equals("contractor")) {
 			    		 currentUser = email;
 			   			 System.out.println("Login Successful! Redirecting");
+			   			 user user = userDAO.getUser(email);
+		    			 request.getSession().setAttribute("clientID", user.getUserID());
 			   			 request.getRequestDispatcher("activitypage.jsp").forward(request, response);
 					     }
 			    	 }  		 

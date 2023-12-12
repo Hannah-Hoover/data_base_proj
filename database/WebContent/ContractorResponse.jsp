@@ -48,12 +48,11 @@
             <hr>
         </form>
         	<form action="quoteMessage" method="post">
-        		<input type="hidden" name="quoteID"  value="${res.quoteID}" />
-        		<input type="hidden" name="userID"  value="${res.userID}" />
+        	
                  <tr>
-                    <th>Message:</th>
+                    <th>Note:</th>
                     <td colspan="3">
-                        <input type="text" name="note" size="45" placeholder="message" value="role" onfocus="this.value=''">
+                        <input type="text" name="note" size="45" placeholder="Note" value="note" onfocus="this.value=''">
                     </td>
                 </tr>
                 <tr>
