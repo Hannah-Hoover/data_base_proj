@@ -53,7 +53,7 @@
                  <tr>
                     <th>Message:</th>
                     <td colspan="3">
-                        <input type="text" name="note" size="45" placeholder="message" ${res.editable?"":"enabled"} required value="${res.note}">
+                        <input type="text" name="note" size="45" placeholder="message" value="role" onfocus="this.value=''">
                     </td>
                 </tr>
                 <tr>
