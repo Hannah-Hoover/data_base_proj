@@ -361,10 +361,7 @@ public class ControlServlet extends HttpServlet {
 	        System.out.println("deletePeople finished: 1111111111111111111111111111111");
 	    } 
 	    
-	    */
-	    
-	  
-	    
+	    */   
 	    private void updateQuote(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
 	        System.out.println("contractorUpdateQuote started: 000000000000000000000000000");

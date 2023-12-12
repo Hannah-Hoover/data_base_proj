@@ -17,7 +17,6 @@
 		 <a href="contractorquote.jsp">Create quote</a><br><br> 
 		  <a href="listquote">List Quotes</a><br><br> 
 		
-            <c:out value="{res.price}"/>
 		     <table border="1" cellpadding="5">
             <caption><h2>List of Quotes</h2></caption>
             <tr>

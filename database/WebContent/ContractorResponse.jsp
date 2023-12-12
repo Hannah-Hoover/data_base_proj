@@ -11,13 +11,11 @@
 <div align="center">
 		<form action="updatequote" method="post">
 			<table border="1" cellpadding="5">
-
 			<input type="hidden" name="quoteID"  value="${res.quoteID}" />
 			<input type="hidden" name="contractorID"  value="${res.contractorID}" />
 			<input type="hidden" name="clientID"  value="${res.clientID}" />
 
                 <tr>
-                <c:out value="{res.price}"/>
                     <th>Price:</th>
                     <td colspan="3">
                         <input type="text" name="price" size="45" placeholder="Price" required value="${res.price }">
@@ -41,12 +39,6 @@
                         <input type="text" name="status" size="45" placeholder="Status" required value="${res.status }">
                     </td>
                 </tr>
-                 <!--   <tr>
-                    <th>Message:</th>
-                    <td colspan="3">
-                        <input type="text" name="status" size="45" placeholder="Status" ${res.editable?"":"enabled"} required value="${res.status }">
-                    </td>
-                </tr> -->
                 <tr>
                     <td align="center" colspan="5">
 						<input type="submit" value="updateQuote"/>
@@ -54,9 +46,24 @@
 				</tr>
             </table>
             <hr>
-                <a href="activitypage.jsp" target="_self">Contractor dashboard<br></a>
-                <a href="login.jsp"target ="_self" > logout</a><br><br> 
         </form>
+        		<form action="quoteMessage" method="post">
+        		<input type="hidden" name="quoteID"  value="${res.quoteID}" />
+        		<input type="hidden" name="quoteID"  value="${res.userID}" />
+                 <tr>
+                    <th>Message:</th>
+                    <td colspan="3">
+                        <input type="text" name="note" size="45" placeholder="message" ${res.editable?"":"enabled"} required value="${res.note}">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="5">
+						<input type="submit" value="quoteMessage"/>
+					</td>
+				</tr>
+        </form>
+          <a href="activitypage.jsp" target="_self">Contractor dashboard<br></a>
+                <a href="login.jsp"target ="_self" > logout</a><br><br> 
 </div>
 </body>
 </html>
