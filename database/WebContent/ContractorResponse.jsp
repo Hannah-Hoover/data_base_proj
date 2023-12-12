@@ -53,7 +53,7 @@
                  <tr>
                     <th>Message:</th>
                     <td colspan="3">
-                        <input type="text" name="note" size="45" placeholder="message" value="role" onfocus="this.value=''">
+                        <input type="text" name="note" size="45" placeholder="message" value="note" onfocus="this.value=''">
                     </td>
                 </tr>
                 <tr>
