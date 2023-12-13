@@ -9,50 +9,65 @@
 </head>
 <body>
 <div align="center">
-		<form action="contractorupdate" method="post">
+		<form action="updatequote" method="post">
 			<table border="1" cellpadding="5">
-			<input type="hidden" name="quoteID" value="${res.quoteID}" />
+			<input type="hidden" name="quoteID"  value="${res.quoteID}" />
+			<input type="hidden" name="contractorID"  value="${res.contractorID}" />
+			<input type="hidden" name="clientID"  value="${res.clientID}" />
+
                 <tr>
                     <th>Price:</th>
                     <td colspan="3">
-                        <input type="text" name="price" size="45" placeholder="Price" ${res.editable?"":"disabled"} required value="${res.price }">
+                        <input type="text" name="price" size="45" placeholder="Price" required value="${res.price }">
                     </td>
                 </tr>
                  <tr>
-                    <th>TimeFrame:</th>
+                    <th>Start Time:</th>
                     <td colspan="3">
-                        <input type="text" name="timeFrame" size="45" placeholder="Timeframe" ${res.editable?"":"disabled"} required value="${res.timeFrame }">
+                        <input type="text" name="startTime" size="45" placeholder="Start Time" required value="${res.startTime }">
+                    </td>
+                </tr>
+                 <tr>
+                    <th>End Time:</th>
+                    <td colspan="3">
+                        <input type="text" name="endTime" size="45" placeholder="End Time"required value="${res.endTime }">
                     </td>
                 </tr>
                  <tr>
                     <th>Status:</th>
                     <td colspan="3">
-                        <input type="text" name="status" size="45" placeholder="Status" ${res.editable?"":"disabled"} required value="${res.status }">
+                        <input type="text" name="status" size="45" placeholder="Status" required value="${res.status }">
                     </td>
                 </tr>
                 <tr>
-                    <th>Previous Note:</th>
-                    <td colspan="2"><c:out value="${res.note}"/></td>
-				</tr>
-                <tr>
-                    <th>Note:</th>
-                    <td>
-                        <input type="text" name="note" size="45" placeholder="note" required ${res.editable?"":"disabled"}>
-                    </td>
                     <td align="center" colspan="5">
-                    	<c:if test="${res.editable }">
-							<input type="submit" value="Submit response"/>
-						</c:if>
-						<c:if test="${res.editable eq false }">
-							<a href="contractorpage">Back to Requests</a>
-						</c:if>
+						<input type="submit" value="updateQuote"/>
 					</td>
 				</tr>
             </table>
             <hr>
         </form>
-         <a href="activitypage.jsp" target="_self">Contractor dashboard</a>
-         <a href="login.jsp"target ="_self" > logout</a><br><br> 
+        
+        	<form action="quoteMessage" method="post">
+
+        		<input type="hidden" name="quoteID"  value="${res.quoteID}" />
+        		<input type="hidden" name="userID"  value="${res.clientID}" />
+
+                 <tr>
+                    <th>Note:</th>
+                    <td colspan="3">
+
+                        <input type="text" name="note" size="45" placeholder="Message">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="5">
+						<input type="submit" value="quoteMessage"/>
+					</td>
+				</tr>
+        </form>
+          <a href="activitypage.jsp" target="_self">Contractor dashboard<br></a>
+                <a href="login.jsp"target ="_self" > logout</a><br><br> 
 </div>
 </body>
 </html>

@@ -316,8 +316,8 @@ public class userDAO
 						    "contractorID INTEGER,"+
 						    "clientID INTEGER, "+
 						    "price DOUBLE, "+
-						    "schedulestart DATETIME,"+
-						    "scheduleend DATETIME,"+
+						    "startTime DATETIME,"+
+						    "endTime DATETIME,"+
 						    "status VARCHAR(20),"+
 						    "FOREIGN KEY (contractorID) REFERENCES User(userID),"+
 						    "FOREIGN KEY (clientID) REFERENCES User(userID)"+"); ",
@@ -403,7 +403,7 @@ String[] TUPLES = {"insert into User(email, password, firstName, lastName, role,
 							"('david@gmail.com', 'pass1234', 'David', 'Smith', 'contractor', '1983 dumfore street, Pontiac, MI 43292', '4444 4444 44444 4444', '818-800-8000');",
 	    			
 	    			
-			"INSERT INTO Quote (contractorID, clientID, price, schedulestart, scheduleend, status) " +
+			"INSERT INTO Quote (contractorID, clientID, price, startTime, endTime, status) " +
 			"VALUES " +
 							"('1','1','00.00', '0001-01-01', '0001-01-01','pending');",
  		  
@@ -427,9 +427,9 @@ String[] TUPLES = {"insert into User(email, password, firstName, lastName, role,
     		    	    
     	    
             
-	        "INSERT INTO QuotesMessages(userID, quoteID, msgtime, price, schedulestart, scheduleend)"+
+	        "INSERT INTO QuotesMessages(userID, quoteID, msgtime, price, schedulestart, scheduleend, note)"+
 	        "VALUES" + 
-	        			"('1', '1', '2023-11-27 02:28:11', '100.00','2024-10-12', '2024-10-22');",
+	        			"('1', '1', '2023-11-27 02:28:11', '100.00','2024-10-12', '2024-10-22', 'note');",
 	        			
 	        			
 	        			
