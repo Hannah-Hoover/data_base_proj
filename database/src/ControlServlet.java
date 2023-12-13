@@ -93,13 +93,17 @@ public class ControlServlet extends HttpServlet {
          		break;
          		
          	case "/listuserquote":
-         		System.out.println("The action is: listQuote");
+         		System.out.println("The action is: listUserQuote");
          		listUserQuotes(request, response);
          		break;
         		
          	case "/updatequote":
          		System.out.println("The action is: updateQuote");
          		updateQuote(request, response);
+         		break;
+         	case "/updatequoteclient":
+         		System.out.println("The action is: updateQuoteClient");
+         		updateQuoteClient(request, response);
          		break;
          		
          	case "/newquote":
@@ -117,21 +121,22 @@ public class ControlServlet extends HttpServlet {
          		System.out.println("Contractor quitting quote");
          		UpdateQuoteContractor(request, response);
          		break;
-        	 *//*
+        	 */
         	 case "/clientupdate":
         		 System.out.println("The action is: clientupdate");
         		 updateQuote(request, response);
         		 break;
+        		 /*
         	 case "/contractorupdate":
         		 System.out.println("The action is: contractorupdate");
         		 contractorUpdateQuotes(request, response);
         		 break;
-        		 
+        		 */
         	 case "/clientresponse":
                  System.out.println("The action is: clientrepsonse");
              	 clientResponse(request, response);
                  break;
-                 */
+                 
                  
         	 case "/contractorresponse":
                  System.out.println("The action is: contractorrepsonse");
@@ -145,7 +150,11 @@ public class ControlServlet extends HttpServlet {
         	 case "/quoteMessage":
         		 System.out.println("The action is: quoteMessge");
                  quoteMessage(request, response);
-                 
+                 break;
+        	 case "/quoteMessageClient":
+        		 System.out.println("The action is: quoteMessgeClient");
+                 quoteMessageClient(request, response);
+                 break;
         	
          	case "/request":
          		System.out.println("The action is: request");
@@ -289,8 +298,8 @@ public class ControlServlet extends HttpServlet {
 	            throws SQLException, IOException, ServletException {
 	        System.out.println("listUserQuote started: 00000000000000000000000000000000000");
 	        
-	        List<quote> listUserQuote = quoteDAO.listUserQuotes();
-	        request.setAttribute("listUserQuotes", listUserQuote);       
+	        List<quote> listQuote = quoteDAO.listAllQuote();
+	        request.setAttribute("listQuote", listQuote);     
 	        RequestDispatcher dispatcher = request.getRequestDispatcher("clientactivitypage.jsp");       
 	        dispatcher.forward(request, response);
 	     
@@ -404,13 +413,40 @@ public class ControlServlet extends HttpServlet {
 	     
 	        System.out.println("contractorUpdateQuote finished: 1111111111111111111111111111111");
 	    }
+	    
+	    private void updateQuoteClient(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("contractorUpdateQuote started: 000000000000000000000000000");
+	        
+	        int quoteID=Integer.parseInt(request.getParameter("quoteID"));
+	        //int contractorID=Integer.parseInt(request.getParameter("contractorID"));
+	        //int clientID=Integer.parseInt(request.getParameter("clientID"));
+	        double price = Double.parseDouble(request.getParameter("price"));
+	        String startTime = request.getParameter("startTime");
+	        String endTime = request.getParameter("endTime");
+	        String status = request.getParameter("status");
+	
+	      //System.out.println("name:" + name + ", address: "+address + ", status:" + status);
+	        
+	        quote quote = quoteDAO.getQuote(quoteID);//new quote(contractorID, clientID, price, startTime, endTime, status);
+	        quote.setPrice(price);
+	        quote.setStartTime(startTime);
+	        quote.setEndTime(endTime);
+	        quote.setStatus(status);
+	     
+	        System.out.print("after quote");
+	        quoteDAO.update(quote);
+	        clientPage(request, response, "");
+	     
+	        System.out.println("clientUpdateQuote finished: 1111111111111111111111111111111");
+	    }
 	  
 	    
 	   
 	    
 	    
 	    private void clientResponse(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
-	    	int quoteID=Integer.parseInt(request.getParameter("id"));
+	    	int quoteID=Integer.parseInt(request.getParameter("quoteID"));
 			quote res = quoteDAO.getQuote(quoteID);
 			request.setAttribute("res", res);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("ClientResponse.jsp");       
@@ -451,12 +487,12 @@ public class ControlServlet extends HttpServlet {
             System.out.println("client id is "+clientID);
             request.setAttribute("request", request);
             
-	    	int ctid = 11;
+	    	int ctid = 1;
 	    	//int clid = 10;
 	    	double p = 0.0;
 	    	String st = "2001-10-10 22:22:22";
 	    	String ed = "2001-11-11 22:21:20";
-	    	String stat = "0";
+	    	String stat = "pending";
 	    	
 	    	quote quote = new quote(ctid, clientID, p, st, ed, stat);
 	    	quote = quoteDAO.insertQuote(quote);
@@ -523,17 +559,48 @@ public class ControlServlet extends HttpServlet {
 	           String schend= "12:12:12";
 	           
 	     
-	           System.out.println("client1");
+	    
 	           QuotesMessages quotemessage = new QuotesMessages(userID, quoteID, msgt, p, schstart, schend, note);
 	           QuotesMessagesDAO.insert(quotemessage);
 	           RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
 		       dispatcher.forward(request, response);
-	           System.out.println("client2");
-	          // System.out.println(x);
-		       System.out.println("client3");
+
 		    
 		    }
-	            	
+		    private void quoteMessageClient(HttpServletRequest request, HttpServletResponse response)
+		            throws SQLException, IOException, ServletException{ 
+		    	System.out.println("in quotemessagesclient");
+		    	
+		    	//may need to add response code here
+		
+	        
+	            int userID = (Integer)request.getSession().getAttribute("clientID");
+	            
+	            int quoteID=Integer.parseInt(request.getParameter("quoteID"));
+	            String msgtime = request.getParameter("msgtime");
+	            String price = request.getParameter("price");
+	            
+	        	String schedulestart = request.getParameter("schedulestart");
+	            String scheduleend = request.getParameter("scheduleend");
+	          
+	            String note = request.getParameter("note");
+		    
+	            //request.setAttribute("request", request);
+	            
+	           String msgt= "12:12:12";
+	           double p= 10.00;
+	           String schstart= "11:11:11";
+	           String schend= "12:12:12";
+	           
+	     
+	    
+	           QuotesMessages quotemessage = new QuotesMessages(userID, quoteID, msgt, p, schstart, schend, note);
+	           QuotesMessagesDAO.insert(quotemessage);
+	           RequestDispatcher dispatcher = request.getRequestDispatcher("clientactivitypage.jsp");       
+		       dispatcher.forward(request, response);
+
+		    
+		    }
 		     
 		     
 }

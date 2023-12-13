@@ -111,7 +111,7 @@ public class quoteDAO {
 		    public List<quote> listUserQuotes() throws SQLException {
 		    	System.out.print("In the userlist function");
 		        List<quote> listUserQuotes = new ArrayList<quote>();        
-		        String sql = "SELECT * FROM Quotes= ";      
+		        String sql = "SELECT * FROM Quote";      
 		        connect_func();   
 		        statement = (Statement) connect.createStatement();
 		        ResultSet quoteset = statement.executeQuery(sql);
