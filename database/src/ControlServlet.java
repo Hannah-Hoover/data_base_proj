@@ -91,6 +91,11 @@ public class ControlServlet extends HttpServlet {
          		System.out.println("The action is: listQuote");
          		listQuote(request, response);
          		break;
+         		
+         	case "/listuserquote":
+         		System.out.println("The action is: listQuote");
+         		listUserQuotes(request, response);
+         		break;
         		
          	case "/updatequote":
          		System.out.println("The action is: updateQuote");
@@ -141,20 +146,13 @@ public class ControlServlet extends HttpServlet {
         		 System.out.println("The action is: quoteMessge");
                  quoteMessage(request, response);
                  
-        	/*
-         		
+        	
          	case "/request":
          		System.out.println("The action is: request");
          		request(request, response);
          		break;
-         		*/
-        	 
-        	 /*case "/listrequests":
-        		 System.out.println("The action is: listRequest");
-        		 listRequest(request, response);
-        		 break;
-        		 
-        	}*/
+         		
+       
 	  
       
         	}}
@@ -287,6 +285,18 @@ public class ControlServlet extends HttpServlet {
 	        System.out.println("listQuote finished: 111111111111111111111111111111111111");
 	    }
 	    
+	    private void listUserQuotes(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("listUserQuote started: 00000000000000000000000000000000000");
+	        
+	        List<quote> listUserQuote = quoteDAO.listUserQuotes();
+	        request.setAttribute("listUserQuotes", listUserQuote);       
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("clientactivitypage.jsp");       
+	        dispatcher.forward(request, response);
+	     
+	        System.out.println("listUserQuote finished: 111111111111111111111111111111111111");
+	    }
+	    
 	    /*
 	    private void updateQuote(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
@@ -395,18 +405,9 @@ public class ControlServlet extends HttpServlet {
 	        System.out.println("contractorUpdateQuote finished: 1111111111111111111111111111111");
 	    }
 	  
-	    /*
-	    private void listUserQuote(HttpServletRequest request, HttpServletResponse response)
-	            throws SQLException, IOException, ServletException {
-	        System.out.println("listUserQuote started: 00000000000000000000000000000000000");
-	        	        List<quote> listUserQuote = quoteDAO.listUserQuote();
-	        request.setAttribute("listUserQuotes", listUserQuote);       
-	        RequestDispatcher dispatcher = request.getRequestDispatcher("clientactivitypage.jsp");       
-	        dispatcher.forward(request, response);
-	     
-	        System.out.println("listUserQuote finished: 111111111111111111111111111111111111");
-	    }
-	    */
+	    
+	   
+	    
 	    
 	    private void clientResponse(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
 	    	int quoteID=Integer.parseInt(request.getParameter("id"));
@@ -472,9 +473,9 @@ public class ControlServlet extends HttpServlet {
                 String height = request.getParameter("height" + i);
                 String proximity = request.getParameter("proximity" + i);
                 String sizeDiameter = request.getParameter("sizeDiameter" + i);
-                String photodata1 = request.getParameter("photodata1" + i);
-                String photodata2 = request.getParameter("photodata2" + i);
-                String photodata3 = request.getParameter("photodata3" + i);
+                String photodata1 = request.getParameter("photo1" + i);
+                String photodata2 = request.getParameter("photo2" + i);
+                String photodata3 = request.getParameter("photo3" + i);
             
 
                 tree tree = new tree(quoteID, location, height, proximity, sizeDiameter, photodata1, photodata2, photodata3);
@@ -530,7 +531,7 @@ public class ControlServlet extends HttpServlet {
 	           System.out.println("client2");
 	          // System.out.println(x);
 		       System.out.println("client3");
-
+		    
 		    }
 	            	
 		     

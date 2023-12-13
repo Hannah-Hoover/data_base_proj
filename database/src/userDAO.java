@@ -342,9 +342,9 @@ public class userDAO
 							"height VARCHAR(20), " +
 							"proximity VARCHAR(20), " +
 							"sizeDiameter VARCHAR(20), " +
-							"photodata1 BLOB, " +
-							"photodata2 BLOB, " +
-							"photodata3 BLOB, " +
+							"photo1 BLOB, " +
+							"photo2 BLOB, " +
+							"photo3 BLOB, " +
 							"FOREIGN KEY (quoteID) REFERENCES Quote(quoteID)"+ "); ",
 							
 							
@@ -413,7 +413,7 @@ String[] TUPLES = {"insert into User(email, password, firstName, lastName, role,
         		    	    
         		    	    
         		    	    
-    	    "INSERT INTO Tree (quoteID, location, height, proximity, sizeDiameter, photodata1,  photodata2, photodata3)"+
+    	    "INSERT INTO Tree (quoteID, location, height, proximity, sizeDiameter, photo1,  photo2, photo3)"+
   		  	"VALUES " +
   		  				"('1', 'backyard-east', '2.0 meters','.5 meters', '60 millimeters', '0x000000', '0x000000', '0x000000');",
   		  				

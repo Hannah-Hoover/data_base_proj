@@ -16,32 +16,38 @@
 	 	<table border="1" cellpadding="5">
 	 	<input type="hidden" name="clientID" value="${req.clientID}" />
 	 	<input type="hidden" name="quoteID" value="${res.quoteID}" />
+	 	<a href="listquote">List Quotes</a><br><br> 
 	 	
 	 
 		<caption><h2>List of Quotes</h2></caption>
             <tr>
-            	<th>ID</th>
+            	<th>quoteID</th>
+            	<th>contractorID</th>
+            	<th>clientID</th>
 				<th>Price</th>
-                <th>TimeFrame</th>
-                <th>Status</th>
-                <th>Latest Note</th>
-                <th>Options</th>
+                <th>startTime</th>
+                <th>endTime</th>
+                <th>status</th>
+                <th>Actions</th>
+            
                 
 			
             </tr>
-            <c:forEach var="quotes" items="${listQuotes}">
-            <c:if test="${quotes.clientID eq clientID}">
+            <c:forEach var="quotes" items="${listQuote}">
+            <c:if test="${quote.clientID eq clientID}">
                 <tr style="text-align:center">
-                	<td><c:out value="${quotes.quoteID}" /></td>
-                    <td><c:out value="${quotes.price}" /></td>
-                    <td><c:out value="${quotes.timeFrame}" /></td>
-                    <td><c:out value="${quotes.status}" /></td>
-                    <td><c:out value="${quotes.note }"/></td>
+                	<td><c:out value="${quote.quoteID}" /></td>
+                	<td><c:out value="${quote.contractorID}" /></td>
+                	<td><c:out value="${quote.clientID}" /></td>
+                    <td><c:out value="${quote.price}" /></td>
+                    <td><c:out value="${quote.startTime}" /></td>
+                    <td><c:out value="${quote.endTime}" /></td>
+                    <td><c:out value="${quote.status}" /></td>
                     <td>
-	                    <c:if test="${quotes.editable}">
-		               	 	<a href="clientresponse?id=${quotes.quoteID}""target ="_self" > Respond</a><br/>   
-		                	<a href="updatequotestatus?id=${quotes.quoteID}&status=agree" target ="_self" > Agree</a><br/>
-		                	<a href="updatequotestatus?id=${quotes.quoteID}&status=quit" target="_self"> Quit</a>
+	                    <c:if test="${quote.editable}">
+		               	 	<a href="clientresponse?id=${quote.quoteID}""target ="_self" > Respond</a><br/>   
+		                	<a href="updatequotestatus?id=${quote.quoteID}&status=agree" target ="_self" > Agree</a><br/>
+		                	<a href="updatequotestatus?id=${quote.quoteID}&status=quit" target="_self"> Quit</a>
 		                </c:if>
                		</td>
                 </tr>
