@@ -57,8 +57,7 @@
                     <th>Note:</th>
                     <td colspan="3">
 
-                        <input type="text" name="note" size="45" placeholder="message" value="note" onfocus="this.value=''">
-                        <input type="text" name="note" size="45" placeholder="message" ${qmsg.editable?"":"enabled"} required value="${qmsg.note}">
+                        <input type="text" name="note" size="45" placeholder="Message">
                     </td>
                 </tr>
                 <tr>

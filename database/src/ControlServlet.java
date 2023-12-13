@@ -149,15 +149,15 @@ public class ControlServlet extends HttpServlet {
          		break;
          		*/
         	 
-        	 case "/listrequests":
+        	 /*case "/listrequests":
         		 System.out.println("The action is: listRequest");
         		 listRequest(request, response);
         		 break;
         		 
-        	}
+        	}*/
 	  
       
-	    }
+        	}}
 	    catch(Exception ex) {
         	System.out.println(ex.getMessage());
 	    	}
@@ -325,7 +325,7 @@ public class ControlServlet extends HttpServlet {
 	        quoteDAO.update(quotes);
 	        System.out.println("Ask the browser to call the list action next automatically");
 	        
-	        // instead rediret to another jsp, we redirect to another action, simulating that the user click a list link or button, benefit: save one click from the user    
+	        // instead redirect to another jsp, we redirect to another action, simulating that the user click a list link or button, benefit: save one click from the user    
 	        contractorPage(request, response, "");
 	
 	        
@@ -421,6 +421,7 @@ public class ControlServlet extends HttpServlet {
 	    	int quoteID=Integer.parseInt(request.getParameter("quoteID"));
 			quote res = quoteDAO.getQuote(quoteID);
 			request.setAttribute("res", res);
+			
 			RequestDispatcher dispatcher = request.getRequestDispatcher("ContractorResponse.jsp");       
 	        dispatcher.forward(request, response);
 			
@@ -440,19 +441,11 @@ public class ControlServlet extends HttpServlet {
 	        System.out.println("listPeople finished: 111111111111111111111111111111111111");
 	    }
 		
-		/*
+		
 		
 	    private void request(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	System.out.println("in request");
-            //String location = request.getParameter("location");
-            //String height = request.getParameter("height");
-            //String proximity = request.getParameter("proximity");
-            //String sizeDiameter = request.getParameter("sizeDiameter");
-        	//String photodata1 = request.getParameter("photodata1");
-            //String photodata2 = request.getParameter("photodata2");
-            //String photodata3 = request.getParameter("photodata3");
-            //String note = request.getParameter("note");
-	    	
+            
 	    	Integer clientID = (Integer)request.getSession().getAttribute("clientID");
             System.out.println("client id is "+clientID);
             request.setAttribute("request", request);
@@ -482,31 +475,14 @@ public class ControlServlet extends HttpServlet {
                 String photodata1 = request.getParameter("photodata1" + i);
                 String photodata2 = request.getParameter("photodata2" + i);
                 String photodata3 = request.getParameter("photodata3" + i);
+            
 
                 tree tree = new tree(quoteID, location, height, proximity, sizeDiameter, photodata1, photodata2, photodata3);
-                treeDAO.insertTree(tree);            	
-            	
+                treeDAO.insertTree(tree);    
             }
-            
-            //Integer requestID = (Integer)request.getSession().getAttribute("requestID");
-           // session.setAttribute("clientID", client.getID());
-           // Integer clientID = (Integer)request.getSession().getAttribute("clientID");
-           //System.out.println("client id is "+clientID);
-            
-          /*  
-            request requests = new request(clientID, location, height, proximity, sizeDiameter, photodata1, photodata2, photodata3, note);
-            System.out.println(requests.toString());
-            requestDAO.insert(requests);
-            
-            
-        	System.out.println("Request Successful! Added to database");
-        	response.sendRedirect("out.jsp");
-            //request.setAttribute("treeCount", treeCount);
-            //request.getRequestDispatcher("clientquote.jsp").forward(request, response);
-             }
-        */
-  
-		    
+	    }
+	   
+		    /*
 		    private void listRequest(HttpServletRequest request, HttpServletResponse response)
 		            throws SQLException, IOException, ServletException {
 		        System.out.println("listRequest started: 00000000000000000000000000000000000");
@@ -518,17 +494,45 @@ public class ControlServlet extends HttpServlet {
 		     
 		        System.out.println("listRequest finished: 111111111111111111111111111111111111");
 
-		    }    
+		    }    */
 
 		    private void quoteMessage(HttpServletRequest request, HttpServletResponse response)
 		            throws SQLException, IOException, ServletException{ 
-				
-				int quotemsgID=Integer.parseInt(request.getParameter("quotemsgID"));
-				QuotesMessages qmsg = QuotesMessagesDAO.getQuotesMessages(quotemsgID);
-				request.setAttribute("qmsg", qmsg);
-				RequestDispatcher dispatcher = request.getRequestDispatcher("ContractorResponse.jsp");       
-		        dispatcher.forward(request, response);
+		    	System.out.println("in quotemessages");
 		    	
+		    	//may need to add response code here
+		
+	        
+	            int userID = (Integer)request.getSession().getAttribute("clientID");
+	            
+	            int quoteID=Integer.parseInt(request.getParameter("quoteID"));
+	            String msgtime = request.getParameter("msgtime");
+	            String price = request.getParameter("price");
+	            
+	        	String schedulestart = request.getParameter("schedulestart");
+	            String scheduleend = request.getParameter("scheduleend");
+	          
+	            String note = request.getParameter("note");
+		    
+	            //request.setAttribute("request", request);
+	            
+	           String msgt= "12:12:12";
+	           double p= 10.00;
+	           String schstart= "11:11:11";
+	           String schend= "12:12:12";
+	           
+	     
+	           System.out.println("client1");
+	           QuotesMessages quotemessage = new QuotesMessages(userID, quoteID, msgt, p, schstart, schend, note);
+	           QuotesMessagesDAO.insert(quotemessage);
+	           RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
+		       dispatcher.forward(request, response);
+	           System.out.println("client2");
+	          // System.out.println(x);
+		       System.out.println("client3");
+
+		    }
+	            	
 		     
-		    }  
+		     
 }

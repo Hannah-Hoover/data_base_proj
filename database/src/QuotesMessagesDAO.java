@@ -97,7 +97,7 @@ public class QuotesMessagesDAO {
 		            String note = resultSet.getString("note");
 	
 		             
-		            QuotesMessages quotesmessages = new QuotesMessages(userID, quoteID, msgtime, price, schedulestart, scheduleend, status, note);
+		            QuotesMessages quotesmessages = new QuotesMessages(userID, quoteID, msgtime, price, schedulestart, scheduleend, note);
 		            quotesmessages.setQuotemsgID(resultSet.getInt("quotemsgID"));
 		            listQuotesMessages.add(quotesmessages);
 		        }
@@ -116,17 +116,18 @@ public class QuotesMessagesDAO {
 		    }
 		    
 		    public boolean insert(QuotesMessages quotesmessages) throws SQLException {
-		    	connect_func("root","pass1234");         
-		    	String sql = "insert into QuotesMessages(userID, quoteID, msgtime, price, schedulestart, scheduleend, status, note) values (?, ?, ?, ?, ?, ?, ?, ?)";
+		    	System.out.println("DAO");
+		    	connect_func();  
+		    	System.out.println("DAO2");
+		    	String sql = "insert into QuotesMessages(userID, quoteID, msgtime, price, schedulestart, scheduleend, note) values (?, ?, ?, ?, ?, ?, ?)";
 				preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-					preparedStatement.setInt(2, quotesmessages.getUserID());
-					preparedStatement.setInt(3, quotesmessages.getQuoteID());
-					preparedStatement.setString(4, quotesmessages.getMsgtime());
-					preparedStatement.setDouble(5, quotesmessages.getPrice());
-					preparedStatement.setString(6, quotesmessages.getSchedulestart());
-					preparedStatement.setString(7, quotesmessages.getScheduleend());
-					preparedStatement.setString(8, quotesmessages.getStatus());
-					preparedStatement.setString(9, quotesmessages.getNote());				
+					preparedStatement.setInt(1, quotesmessages.getUserID());
+					preparedStatement.setInt(2, quotesmessages.getQuoteID());
+					preparedStatement.setString(3, quotesmessages.getMsgtime());
+					preparedStatement.setDouble(4, quotesmessages.getPrice());
+					preparedStatement.setString(5, quotesmessages.getSchedulestart());
+					preparedStatement.setString(6, quotesmessages.getScheduleend());
+					preparedStatement.setString(7, quotesmessages.getNote());				
 					
 					boolean rowInserted = preparedStatement.executeUpdate()>0;
 					preparedStatement.close();
@@ -144,7 +145,7 @@ public class QuotesMessagesDAO {
 		        return rowDeleted;     
 		    }
 		    public boolean update(QuotesMessages quotesmessages) throws SQLException {
-		        String sql = "update QuotesMessages set quotemsgID= ?, userID= ?, quoteID= ?, msgtime=?, price=?, schedulesttart=?, scheduleend=?, status=?, note=?, where email = ?";
+		        String sql = "update QuotesMessages set quotemsgID= ?, userID= ?, quoteID= ?, msgtime=?, price=?, schedulesttart=?, scheduleend=?, note=?, where email = ?";
 		        connect_func();
 		        
 		        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
@@ -155,8 +156,7 @@ public class QuotesMessagesDAO {
 				preparedStatement.setDouble(5, quotesmessages.getPrice());
 				preparedStatement.setString(6, quotesmessages.getSchedulestart());
 				preparedStatement.setString(7, quotesmessages.getScheduleend());	
-				preparedStatement.setString(8, quotesmessages.getStatus());
-				preparedStatement.setString(9, quotesmessages.getNote());			
+				preparedStatement.setString(8, quotesmessages.getNote());			
 			
 		         
 		        boolean rowUpdated = preparedStatement.executeUpdate() > 0;
@@ -164,15 +164,15 @@ public class QuotesMessagesDAO {
 		        return rowUpdated;     
 		    }
 		    
-		    public QuotesMessages getQuotesMessages(int QuotemsgID)  throws SQLException{
-		        String sql = "SELECT * FROM QuotesMessages where QuotemsgID = "+QuotemsgID;      
+		    public QuotesMessages getQuotesMessages(int quoteID)  throws SQLException{
+		        String sql = "SELECT * FROM QuotesMessages where quoteID = "+quoteID;      
 		        connect_func();      
 		        PreparedStatement statement = connect.prepareStatement(sql);
 		        ResultSet rs = statement.executeQuery(sql);
 		        QuotesMessages quotesMessage=null;
 		        if (rs.next()) {
-		        	quotesMessage = new QuotesMessages(rs.getInt("userID"), rs.getInt("quoteID"), rs.getString("msgtime"),rs.getDouble("price"),rs.getString("schedulestart"), rs.getString("scheduleend"), rs.getString("status"), rs.getString("note"));
-		        	quotesMessage.setQuotemsgID(rs.getInt("QuotemsgID"));
+		        	quotesMessage = new QuotesMessages(rs.getInt("userID"), rs.getInt("quoteID"), rs.getString("msgtime"),rs.getDouble("price"),rs.getString("schedulestart"), rs.getString("scheduleend"), rs.getString("note"));
+		        	quotesMessage.setQuoteID(rs.getInt("QuotemsgID"));
 		        }
 		        disconnect();        
 		        return quotesMessage;
