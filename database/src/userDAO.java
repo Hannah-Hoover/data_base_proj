@@ -392,6 +392,7 @@ public class userDAO
 String[] TUPLES = {"insert into User(email, password, firstName, lastName, role, address, creditCard, phone)"+
 			"values ('root', 'pass1234', 'default', 'default', 'admin', 'default', '0000 0000 0000 0000', '000-000-0000')," +
 							"('breanna@gmail.com', 'breanna1234', 'Breanna', 'Walts', 'client', '1923 briggs street, Warren, MI 49502', '2222 2223 2224 2225', '517-724-0192'),"+
+							"('david@gmail.com', 'pass1234', 'David', 'Smith', 'contractor', '1983 dumfore street, Pontiac, MI 43292', '4444 4444 44444 4444', '818-800-8000'),"+
 							"('logan@gmail.com', 'logan1234', 'Logan', 'Baker', 'client', '6413 greene sqaure, Troy, MI 48915', '3332 3333 3334 3335', '248-970-1137'), "+
 							"('calire@gmail.com', 'claire1234', 'Claire', 'Fields', 'client', '1342 prime road, Detroit, MI 49203', '4442 4443 4444 4445', '586-431-3801'),"+
 							"('alexa@gmail.com', 'alexa1234', 'Alexa', 'Ferguson', 'client', '3951 kohler street, Rochester, MI 48323', '5552 5553 5554 5555', '248-115-4328'), "+
@@ -399,8 +400,7 @@ String[] TUPLES = {"insert into User(email, password, firstName, lastName, role,
 							"('craig@gmail.com', 'craig1234', 'Craig', 'mcdaniel', 'client', '1233 tribune road, Flint, MI 43202', '7772 7773 7774 7775', '818-904-6122'),"+
 							"('anna@gmail.com', 'anna1234', 'Anna', 'Hector', 'client', '1593 liberty circle, Commerce, MI 48312', '8882 8883 8884 8885', '248-144-2830'), "+
 							"('justin@gmail.com', 'justin1234', 'Justin', 'Novil', 'client', '1963 peace road, Woxom, MI 48320', '9992 9993 9994 9995', '248-108-3349'),"+
-							"('marie@gmail.com', 'marie1234', 'Marie', 'palmer', 'client', '1123 croten road, Dearborn, MI 433202', '2222 1113 1114 1115', '808-998-1274'),"+
-							"('david@gmail.com', 'pass1234', 'David', 'Smith', 'contractor', '1983 dumfore street, Pontiac, MI 43292', '4444 4444 44444 4444', '818-800-8000');",
+							"('marie@gmail.com', 'marie1234', 'Marie', 'palmer', 'client', '1123 croten road, Dearborn, MI 433202', '2222 1113 1114 1115', '808-998-1274');",
 	    			
 	    			
 			"INSERT INTO Quote (contractorID, clientID, price, startTime, endTime, status) " +

@@ -630,7 +630,7 @@ public class ControlServlet extends HttpServlet {
             System.out.println("client id is "+clientID);
             request.setAttribute("request", request);
             
-	    	int ctid = 1;
+	    	int ctid = 2;
 	    	//int clid = 10;
 	    	double p = 0.0;
 	    	String st = "2001-10-10 22:22:22";
