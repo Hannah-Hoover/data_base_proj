@@ -880,7 +880,7 @@ public class ControlServlet extends HttpServlet {
 		    PreparedStatement statement = connect.prepareStatement(sql);
 		    ResultSet resultSet = statement.executeQuery();
 
-		    List<BigClient> bigClients = new ArrayList<>(); // Assuming BigClient is a class to hold client information
+		    List<BigClient> bigClients = new ArrayList<>(); 
 
 		    while (resultSet.next()) {
 		        int clientID = resultSet.getInt("clientID");
@@ -907,16 +907,14 @@ public class ControlServlet extends HttpServlet {
 			    PreparedStatement statement = connect.prepareStatement(sql);
 			    ResultSet resultSet = statement.executeQuery();
 
-			    List<Integer> clientIDs = new ArrayList<>();
+			    List<EasyClient> easyClients = new ArrayList<>();
 			    while (resultSet.next()) {
-			        int clientID = resultSet.getInt("clientID");
-			        clientIDs.add(clientID);
+			    	 int clientID = resultSet.getInt("clientID");
+				       EasyClient easyClient = new EasyClient(clientID);
+			        easyClients.add(easyClient);
 			    }
 
-			    request.setAttribute("listEasy", clientIDs); // Set the list of client IDs in the request scope
-
-			    RequestDispatcher dispatcher = request.getRequestDispatcher("admin.jsp");
-			    dispatcher.forward(request, response);
+			    request.setAttribute("listEasy", easyClients);
 			}
 			
 			private void listSingle(HttpServletRequest request, HttpServletResponse response)
@@ -935,23 +933,20 @@ public class ControlServlet extends HttpServlet {
 			    PreparedStatement statement = connect.prepareStatement(sql);
 			    ResultSet resultSet = statement.executeQuery();
 
-			    List<Integer> listSingle = new ArrayList<>();
-
+			    List<OneTree> oneTrees = new ArrayList<>();
 			    while (resultSet.next()) {
-			        int quoteID = resultSet.getInt("quoteID");
-			        listSingle.add(quoteID);
+			    	 int treeID = resultSet.getInt("treeID");
+				       OneTree oneTree = new OneTree(treeID);
+			        oneTrees.add(oneTree);
 			    }
 
-			    request.setAttribute("listSingle", listSingle);
-
-			    RequestDispatcher dispatcher = request.getRequestDispatcher("admin.jsp");
-			    dispatcher.forward(request, response);
+			    request.setAttribute("listSingle", oneTrees);
 			}
 			
 			private void listProspective(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
 				
-				String sql = "SELECT DISTINCT U.email AS client_email " +
+				String sql = "SELECT DISTINCT U.userID AS clientID " +
 		                  "FROM User U " +
 		                  "JOIN Quote Q ON U.userID = Q.clientID " +
 		                  "LEFT JOIN OrderInfo OI ON Q.quoteID = OI.quoteID " +
@@ -961,56 +956,39 @@ public class ControlServlet extends HttpServlet {
 				PreparedStatement statement = connect.prepareStatement(sql);
 			    ResultSet resultSet = statement.executeQuery();
 
-			    List<Integer> listProspective = new ArrayList<>();
-
+			    List<Prospective> props = new ArrayList<>();
 			    while (resultSet.next()) {
-			        int clientID = resultSet.getInt("clientID");
-			        listProspective.add(clientID);
+			    	 int clientID = resultSet.getInt("clientID");
+				       Prospective prop = new Prospective(clientID);
+			        props.add(prop);
 			    }
 
-			    request.setAttribute("listProspective", listProspective);
-
-			    RequestDispatcher dispatcher = request.getRequestDispatcher("admin.jsp");
-			    dispatcher.forward(request, response);
+			    request.setAttribute("listProspective", props);
 			}
 			
 			private void listHighest(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
-				String sql = "WITH RankedTrees AS (" +
-			             "    SELECT " +
-			             "        Quote.clientID, " +
-			             "        Tree.treeID, " +
-			             "        Tree.height, " +
-			             "        DENSE_RANK() OVER (PARTITION BY Quote.clientID ORDER BY Tree.height DESC) AS height_rank " +
-			             "    FROM " +
-			             "        Quote " +
-			             "        JOIN Tree ON Quote.quoteID = Tree.quoteID " +
-			             ") " +
-			             "SELECT " +
-			             "    clientID, " +
-			             "    treeID, " +
-			             "    height " +
-			             "FROM " +
-			             "    RankedTrees " +
-			             "WHERE " +
-			             "    height_rank = 1;";
+				String sql = "SELECT T.location, T.height " +
+		                  "FROM Tree T " +
+		                  "JOIN Quote Q ON T.quoteID = Q.quoteID " +
+		                  "JOIN OrderInfo OI ON Q.quoteID = OI.quoteID " +
+		                  "WHERE OI.status = 'complete' " +
+		                  "ORDER BY CAST(REPLACE(T.height, ' meters', '') AS DECIMAL) DESC " +
+		                  "LIMIT 1;";
 				
 				PreparedStatement statement = connect.prepareStatement(sql);
 			    ResultSet resultSet = statement.executeQuery();
 
-			    List<Integer> listHighest = new ArrayList<>();
-
+			    List<Highest> highests = new ArrayList<>();
 			    while (resultSet.next()) {
-			        int treeID = resultSet.getInt("treeID");
-			        listHighest.add(treeID);
+			    	 int treeID = resultSet.getInt("treeID");
+				       Highest highest = new Highest(treeID);
+			        highests.add(highest);
 			    }
 
-			    request.setAttribute("listHighest", listHighest);
-
-			    RequestDispatcher dispatcher = request.getRequestDispatcher("admin.jsp");
-			    dispatcher.forward(request, response);
+			    request.setAttribute("listHighest", highests);
 			}
-			
+						
 			private void listOverdue(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
 			    System.out.println("listQuote started: 00000000000000000000000000000000000");
@@ -1022,29 +1000,53 @@ public class ControlServlet extends HttpServlet {
 			 
 			    System.out.println("listQuote finished: 111111111111111111111111111111111111");
 			}
-			
 			private void listBad(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
 			    System.out.println("listQuote started: 00000000000000000000000000000000000");
 			    
-			    List<quote> listQuote = quoteDAO.listAllQuote();
-			    request.setAttribute("listQuote", listQuote);       
-			    RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
-			    dispatcher.forward(request, response);
-			 
-			    System.out.println("listQuote finished: 111111111111111111111111111111111111");
+			    String sql = "SELECT DISTINCT U.userID " +
+		                  "FROM User U " +
+		                  "LEFT JOIN Bill B ON U.userID = B.orderID " +
+		                  "WHERE U.role = 'client' " +
+		                  "AND (B.accepted IS NULL OR B.accepted + INTERVAL 1 WEEK < B.current) " +
+		                  "AND B.billID IS NULL";
+			    
+			    PreparedStatement statement = connect.prepareStatement(sql);
+			    ResultSet resultSet = statement.executeQuery();
+
+			    List<Bad> bads = new ArrayList<>();
+			    while (resultSet.next()) {
+			    	 int clientID = resultSet.getInt("clientID");
+				       Bad bad = new Bad(clientID);
+			        bads.add(bad);
+			    }
+
+			    request.setAttribute("listProspective", bads);
+
 			}
 			
 			private void listGood(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
 			    System.out.println("listQuote started: 00000000000000000000000000000000000");
+			    String sql = "SSELECT DISTINCT U.userID AS clientID  " +
+		                  "FROM User U " +
+		                  "JOIN Bill B ON U.userID = B.orderID " +
+		                  "WHERE U.role = 'client' " +
+		                  "AND B.accepted IS NOT NULL " +
+		                  "AND B.accepted + INTERVAL 24 HOUR > B.current";
 			    
-			    List<quote> listQuote = quoteDAO.listAllQuote();
-			    request.setAttribute("listQuote", listQuote);       
-			    RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
-			    dispatcher.forward(request, response);
-			 
-			    System.out.println("listQuote finished: 111111111111111111111111111111111111");
+			    PreparedStatement statement = connect.prepareStatement(sql);
+			    ResultSet resultSet = statement.executeQuery();
+
+			    List<Good> goods = new ArrayList<>();
+			    while (resultSet.next()) {
+			    	 int clientID = resultSet.getInt("clientID");
+				       Good good = new Good(clientID);
+			        goods.add(good);
+			    }
+
+			    request.setAttribute("listProspective", goods);
+
 			}
 			
 			private void listStats(HttpServletRequest request, HttpServletResponse response)
