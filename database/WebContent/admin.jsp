@@ -28,7 +28,7 @@
             <tr>
             	<th>Client</th>
             </tr>
-            <c:forEach var="big" items="${listbig}">
+            <c:forEach var="big" items="${listBig}">
                 <tr style="text-align:center">
                 	<td><c:out value="${big.clientID}" /></td>
                 </tr>
@@ -48,24 +48,24 @@
       </table>
 
       
-       <table border="1" cellpadding="5">
-            <caption><h2>One Tree Clients</h2></caption>
-            <tr>
-            	<th>Client</th>
-            </tr>
-            <c:forEach var="single" items="${listsingle}">
-                <tr style="text-align:center">
-                	<td><c:out value="${single.clientID}" /></td>
-                </tr>
-            </c:forEach>
-      </table>
+      <table border="1" cellpadding="5">
+    <caption><h2>One Tree Quotes</h2></caption>
+    <tr>
+        <th>One Tree Quotes</th>
+    </tr>
+    <c:forEach var="quoteID" items="${listSingle}">
+        <tr style="text-align:center">
+            <td><c:out value="${quoteID.quoteID}" /></td>
+        </tr>
+    </c:forEach>
+</table>
 
        <table border="1" cellpadding="5">
             <caption><h2>Prospective Clients</h2></caption>
             <tr>
             	<th>Client</th>
             </tr>
-            <c:forEach var="pro" items="${listprospective}">
+            <c:forEach var="pro" items="${listProspective}">
                 <tr style="text-align:center">
                 	<td><c:out value="${pro.clientID}" /></td>
                 </tr>

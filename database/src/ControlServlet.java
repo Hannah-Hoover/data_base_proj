@@ -18,6 +18,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Timestamp;
 
 
@@ -202,6 +203,48 @@ public class ControlServlet extends HttpServlet {
          		System.out.println("The action is: listuserbills");
          		listuserBills(request, response);
          		break;
+         		
+         		
+         		
+         		
+         		
+         	case "/listbig":
+         		System.out.println("The action is: listbig");
+         		listBig(request, response);
+         		break;
+         	case "/listeasy":
+         		System.out.println("The action is: listeasy");
+         		listEasy(request, response);
+         		break;
+          	case "/listsingle":
+         		System.out.println("The action is: listsingle");
+         		listSingle(request, response);
+         		break;
+         	case "/listprospective":
+         		System.out.println("The action is: listprospective");
+         		listProspective(request, response);
+         		break;
+         	case "/listhighest":
+         		System.out.println("The action is: listhighest");
+         		listHighest(request, response);
+         		break;
+         	case "/listoverdue":
+         		System.out.println("The action is: listoverdue");
+         		listOverdue(request, response);
+         		break;
+         	case "/listbad":
+         		System.out.println("The action is: listbad");
+         		listBad(request, response);
+         		break;
+        	case "/listgood":
+         		System.out.println("The action is: listgood");
+         		listGood(request, response);
+         		break;
+        	case "/liststats":
+         		System.out.println("The action is: liststats");
+         		listStats(request, response);
+         		break;
+         				
 	  
       
         	}}
@@ -283,8 +326,8 @@ public class ControlServlet extends HttpServlet {
 	    
 	    private void rootPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
 	    	System.out.println("root view");
-			request.setAttribute("listUser", userDAO.listAllUsers());
-	    	request.getRequestDispatcher("rootView.jsp").forward(request, response);
+			//request.setAttribute("listUser", userDAO.listAllUsers());
+	    	request.getRequestDispatcher("admin.jsp").forward(request, response);
 	    }
 	    
 	    private void contractorPage(HttpServletRequest request, HttpServletResponse response, String view) throws ServletException, IOException, SQLException{
@@ -542,7 +585,7 @@ public class ControlServlet extends HttpServlet {
 		        dispatcher.forward(request, response);
 		     
 		        System.out.println("listOrders finished: 111111111111111111111111111111111111");
-		    }
+		}
 		 private void listBills(HttpServletRequest request, HttpServletResponse response)
 		            throws SQLException, IOException, ServletException {
 		        System.out.println("listOrders started: 00000000000000000000000000000000000");
@@ -553,7 +596,7 @@ public class ControlServlet extends HttpServlet {
 		        dispatcher.forward(request, response);
 		     
 		        System.out.println("listOrders finished: 111111111111111111111111111111111111");
-		    }
+		}
 		 
 		 private void listuserBills(HttpServletRequest request, HttpServletResponse response)
 		            throws SQLException, IOException, ServletException {
@@ -565,7 +608,7 @@ public class ControlServlet extends HttpServlet {
 		        dispatcher.forward(request, response);
 		     
 		        System.out.println("listOrders finished: 111111111111111111111111111111111111");
-		    }
+		 }
 		 /*
 		 private void listUserBills(HttpServletRequest request, HttpServletResponse response)
 		            throws SQLException, IOException, ServletException {
@@ -620,7 +663,7 @@ public class ControlServlet extends HttpServlet {
  		        dispatcher.forward(request, response);
             }
 	    }
-		    private void quoteMessage(HttpServletRequest request, HttpServletResponse response)
+		 private void quoteMessage(HttpServletRequest request, HttpServletResponse response)
 		            throws SQLException, IOException, ServletException{ 
 		    	System.out.println("in quotemessages");
 		    	
@@ -691,74 +734,298 @@ public class ControlServlet extends HttpServlet {
 
 		    
 		    }
-private void billMessage(HttpServletRequest request, HttpServletResponse response)
-        throws SQLException, IOException, ServletException{ 
-	System.out.println("in billsmessages");
-	
-	//may need to add response code here
+			private void billMessage(HttpServletRequest request, HttpServletResponse response)
+			        throws SQLException, IOException, ServletException{ 
+				System.out.println("in billsmessages");
+				
+				//may need to add response code here
+			
+			
+			    //int userID = (Integer)request.getSession().getAttribute("clientID");
+			    
+			    int billID=Integer.parseInt(request.getParameter("billID"));
+			    Integer userID = (Integer)request.getSession().getAttribute("clientID");
+			    
+			    String msgtime = request.getParameter("msgtime");
+			    String price = request.getParameter("price");
+			    
+				String schedulestart = request.getParameter("schedulestart");
+			    String scheduleend = request.getParameter("scheduleend");
+			  
+			    String note = request.getParameter("note");
+			    
+			    //request.setAttribute("request", request);
+			    
+			   String msgt= "12:12:12";
+			   double p= 10.00;
+			   String schstart= "11:11:11";
+			   String schend= "12:12:12";
+			   
+			
+			
+			   BillsMessages billmessage = new BillsMessages(userID, billID, p, schstart, schend, note);
+			   BillsMessagesDAO.insert(billmessage);
+			   RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
+			   dispatcher.forward(request, response);
+			
+			
+			}
+		private void billMessageClient(HttpServletRequest request, HttpServletResponse response)
+		        throws SQLException, IOException, ServletException{ 
+			System.out.println("in billsmessages");
+			
+			//may need to add response code here
+		
+		
+		    //int userID = (Integer)request.getSession().getAttribute("clientID");
+		    
+		    int billID=Integer.parseInt(request.getParameter("billID"));
+		    Integer userID = (Integer)request.getSession().getAttribute("clientID");
+		    
+		    String msgtime = request.getParameter("msgtime");
+		    String price = request.getParameter("price");
+		    
+			String schedulestart = request.getParameter("schedulestart");
+		    String scheduleend = request.getParameter("scheduleend");
+		  
+		    String note = request.getParameter("note");
+		    
+		    //request.setAttribute("request", request);
+		    
+		   String msgt= "12:12:12";
+		   double p= 10.00;
+		   String schstart= "11:11:11";
+		   String schend= "12:12:12";
+		   
+		
+		
+		   BillsMessages billmessage = new BillsMessages(userID, billID, p, schstart, schend, note);
+		   BillsMessagesDAO.insert(billmessage);
+		   RequestDispatcher dispatcher = request.getRequestDispatcher("clientactivitypage.jsp");       
+		   dispatcher.forward(request, response);
+		} 
+		private Connection connect = null;
+		private Statement statement = null;
+		private PreparedStatement preparedStatement = null;
+		private ResultSet resultSet = null;
+		
+		/** 
+		 * @see HttpServlet#HttpServlet()
+	     */
+	    protected void connect_func() throws SQLException {
+	    	//uses default connection to the database
+	        if (connect == null || connect.isClosed()) {
+	            try {
+	                Class.forName("com.mysql.cj.jdbc.Driver");
+	            } catch (ClassNotFoundException e) {
+	                throw new SQLException(e);
+	            }
+	          connect = (Connection) DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/testdb?&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false&user=john&password=pass1234");
+	            System.out.println(connect);
+	        }
+	    }
+	    
+	    public boolean database_login(String email, String password) throws SQLException{
+	    	try {
+	    		connect_func("root","pass1234");
+	    		String sql = "select * from User where email = ?";
+	    		preparedStatement = connect.prepareStatement(sql);
+	    		preparedStatement.setString(1, email);
+	    		ResultSet rs = preparedStatement.executeQuery();
+	    		return rs.next();
+	    	}
+	    	catch(SQLException e) {
+	    		System.out.println("failed login");
+	    		return false;
+	    	}
+	    }
+		//connect to the database 
+	    public void connect_func(String username, String password) throws SQLException {
+	        if (connect == null || connect.isClosed()) {
+	            try {
+	                Class.forName("com.mysql.cj.jdbc.Driver");
+	            } catch (ClassNotFoundException e) {
+	                throw new SQLException(e);
+	            }
+	            connect = (Connection) DriverManager
+	  			      .getConnection("jdbc:mysql://127.0.0.1:3306/userdb?"
+	  			          + "useSSL=false&user=" + username + "&password=" + password);
+	            System.out.println(connect);
+	        }
+	    }
+	    
+			
+			private void listBig(HttpServletRequest request, HttpServletResponse response)
+			        throws SQLException, IOException, ServletException {
+			    System.out.println("listQuote started: 00000000000000000000000000000000000");
+			    
+			    connect_func();
+			    
+			    String sql = "SELECT u.userID AS clientID, u.firstName AS clientFirstName, " +
+			            "       u.lastName AS clientLastName, COUNT(t.treeID) AS numberOfTreesCut " +
+			            "FROM User u JOIN Quote q ON u.userID = q.clientID " +
+			            "JOIN Tree t ON q.quoteID = t.quoteID " +
+			            "WHERE u.role = 'Client' " +
+			            "GROUP BY u.userID, u.firstName, u.lastName " +
+			            "HAVING COUNT(t.treeID) = (" +
+			            "   SELECT COUNT(t2.treeID) " +
+			            "   FROM Tree t2 JOIN Quote q2 ON t2.quoteID = q2.quoteID " +
+			            "   WHERE q2.clientID = u.userID " +
+			            "   GROUP BY q2.clientID " +
+			            "   ORDER BY COUNT(t2.treeID) DESC " +
+			            "   LIMIT 1" +
+			            ") " +
+			            "ORDER BY numberOfTreesCut DESC";
+
+			    PreparedStatement statement = connect.prepareStatement(sql);
+			    ResultSet resultSet = statement.executeQuery();
+			    
+			    List<BigClient> bigClients = new ArrayList<>(); // Assuming BigClient is a class to hold client information
+			    
+			    while (resultSet.next()) {
+			        int clientID = resultSet.getInt("clientID");
+			        BigClient bigClient = new BigClient(clientID);
+			        bigClients.add(bigClient);
+			    }
+			    
+			    request.setAttribute("listBig", bigClients); // Set the list of big clients in the request scope
+
+			    RequestDispatcher dispatcher = request.getRequestDispatcher("admin.jsp");
+			    dispatcher.forward(request, response);
+
+			}
+			
+			private void listEasy(HttpServletRequest request, HttpServletResponse response)
+			        throws SQLException, IOException, ServletException {
+			    System.out.println("listQuote started: 00000000000000000000000000000000000");
+			    
+			    List<quote> listQuote = quoteDAO.listAllQuote();
+			    request.setAttribute("listQuote", listQuote);       
+			    RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
+			    dispatcher.forward(request, response);
+			 
+			    System.out.println("listQuote finished: 111111111111111111111111111111111111");
+			}
+			
+			private void listSingle(HttpServletRequest request, HttpServletResponse response)
+			        throws SQLException, IOException, ServletException {
+			    System.out.println("Listing Agreed Quotes with One Tree");
+
+			    connect_func();
+
+			    String sql = "SELECT q.quoteID " +
+			            "FROM Quote q " +
+			            "WHERE q.status = 'Agreed' " +
+			            "AND q.quoteID IN (" +
+			            "   SELECT quoteID FROM Tree GROUP BY quoteID HAVING COUNT(*) = 1" +
+			            ")";
+
+			    PreparedStatement statement = connect.prepareStatement(sql);
+			    ResultSet resultSet = statement.executeQuery();
+
+			    List<Integer> listSingle = new ArrayList<>();
+
+			    while (resultSet.next()) {
+			        int quoteID = resultSet.getInt("quoteID");
+			        listSingle.add(quoteID);
+			    }
+
+			    request.setAttribute("listSingle", listSingle);
+
+			    RequestDispatcher dispatcher = request.getRequestDispatcher("admin.jsp");
+			    dispatcher.forward(request, response);
+			}
+			
+			private void listProspective(HttpServletRequest request, HttpServletResponse response)
+			        throws SQLException, IOException, ServletException {
+				 System.out.println("Prosepective");
+
+				    connect_func();
+
+				    String sql = "SELECT u.userID, u.firstName, u.lastName " +
+				            "FROM User u " +
+				            "JOIN Quote q ON u.userID = q.clientID " +
+				            "LEFT JOIN OrderInfo o ON q.quoteID = o.quoteID " +
+				            "WHERE o.quoteID IS NULL";
+
+				    PreparedStatement statement = connect.prepareStatement(sql);
+				    ResultSet resultSet = statement.executeQuery();
+
+				    List<client> listProspective = new ArrayList<>();
+
+				    while (resultSet.next()) {
+				        int userID = resultSet.getInt("userID");
+
+				        client client = new client(userID);
+				        listProspective.add(client);
+				    }
+
+				    request.setAttribute("listProspective", listProspective);
+
+				    RequestDispatcher dispatcher = request.getRequestDispatcher("admin.jsp");
+				    dispatcher.forward(request, response);
+			}
+			
+			private void listHighest(HttpServletRequest request, HttpServletResponse response)
+			        throws SQLException, IOException, ServletException {
+			    System.out.println("listQuote started: 00000000000000000000000000000000000");
+			    
+			    List<quote> listQuote = quoteDAO.listAllQuote();
+			    request.setAttribute("listQuote", listQuote);       
+			    RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
+			    dispatcher.forward(request, response);
+			 
+			    System.out.println("listQuote finished: 111111111111111111111111111111111111");
+			}
+			
+			private void listOverdue(HttpServletRequest request, HttpServletResponse response)
+			        throws SQLException, IOException, ServletException {
+			    System.out.println("listQuote started: 00000000000000000000000000000000000");
+			    
+			    List<quote> listQuote = quoteDAO.listAllQuote();
+			    request.setAttribute("listQuote", listQuote);       
+			    RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
+			    dispatcher.forward(request, response);
+			 
+			    System.out.println("listQuote finished: 111111111111111111111111111111111111");
+			}
+			
+			private void listBad(HttpServletRequest request, HttpServletResponse response)
+			        throws SQLException, IOException, ServletException {
+			    System.out.println("listQuote started: 00000000000000000000000000000000000");
+			    
+			    List<quote> listQuote = quoteDAO.listAllQuote();
+			    request.setAttribute("listQuote", listQuote);       
+			    RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
+			    dispatcher.forward(request, response);
+			 
+			    System.out.println("listQuote finished: 111111111111111111111111111111111111");
+			}
+			
+			private void listGood(HttpServletRequest request, HttpServletResponse response)
+			        throws SQLException, IOException, ServletException {
+			    System.out.println("listQuote started: 00000000000000000000000000000000000");
+			    
+			    List<quote> listQuote = quoteDAO.listAllQuote();
+			    request.setAttribute("listQuote", listQuote);       
+			    RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
+			    dispatcher.forward(request, response);
+			 
+			    System.out.println("listQuote finished: 111111111111111111111111111111111111");
+			}
+			
+			private void listStats(HttpServletRequest request, HttpServletResponse response)
+			        throws SQLException, IOException, ServletException {
+			    System.out.println("listQuote started: 00000000000000000000000000000000000");
+			    
+			    List<quote> listQuote = quoteDAO.listAllQuote();
+			    request.setAttribute("listQuote", listQuote);       
+			    RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
+			    dispatcher.forward(request, response);
+			 
+			    System.out.println("listQuote finished: 111111111111111111111111111111111111");
+			}
 
 
-    //int userID = (Integer)request.getSession().getAttribute("clientID");
-    
-    int billID=Integer.parseInt(request.getParameter("billID"));
-    Integer userID = (Integer)request.getSession().getAttribute("clientID");
-    
-    String msgtime = request.getParameter("msgtime");
-    String price = request.getParameter("price");
-    
-	String schedulestart = request.getParameter("schedulestart");
-    String scheduleend = request.getParameter("scheduleend");
-  
-    String note = request.getParameter("note");
-    
-    //request.setAttribute("request", request);
-    
-   String msgt= "12:12:12";
-   double p= 10.00;
-   String schstart= "11:11:11";
-   String schend= "12:12:12";
-   
 
-
-   BillsMessages billmessage = new BillsMessages(userID, billID, p, schstart, schend, note);
-   BillsMessagesDAO.insert(billmessage);
-   RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
-   dispatcher.forward(request, response);
-
-
-}
-private void billMessageClient(HttpServletRequest request, HttpServletResponse response)
-        throws SQLException, IOException, ServletException{ 
-	System.out.println("in billsmessages");
-	
-	//may need to add response code here
-
-
-    //int userID = (Integer)request.getSession().getAttribute("clientID");
-    
-    int billID=Integer.parseInt(request.getParameter("billID"));
-    Integer userID = (Integer)request.getSession().getAttribute("clientID");
-    
-    String msgtime = request.getParameter("msgtime");
-    String price = request.getParameter("price");
-    
-	String schedulestart = request.getParameter("schedulestart");
-    String scheduleend = request.getParameter("scheduleend");
-  
-    String note = request.getParameter("note");
-    
-    //request.setAttribute("request", request);
-    
-   String msgt= "12:12:12";
-   double p= 10.00;
-   String schstart= "11:11:11";
-   String schend= "12:12:12";
-   
-
-
-   BillsMessages billmessage = new BillsMessages(userID, billID, p, schstart, schend, note);
-   BillsMessagesDAO.insert(billmessage);
-   RequestDispatcher dispatcher = request.getRequestDispatcher("clientactivitypage.jsp");       
-   dispatcher.forward(request, response);
-} 
 }
