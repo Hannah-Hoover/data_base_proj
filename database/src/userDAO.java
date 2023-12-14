@@ -403,30 +403,50 @@ String[] TUPLES = {"insert into User(email, password, firstName, lastName, role,
 							"('marie@gmail.com', 'marie1234', 'Marie', 'palmer', 'client', '1123 croten road, Dearborn, MI 433202', '2222 1113 1114 1115', '808-998-1274');",
 	    			
 	    			
-			"INSERT INTO Quote (contractorID, clientID, price, startTime, endTime, status) " +
-			"VALUES " +
-							"('1','1','00.00', '0001-01-01', '0001-01-01','pending');",
+							"INSERT INTO Quote (contractorID, clientID, price, startTime, endTime, status) " +
+									"VALUES " +
+									"('2','2','120.00', '2023-01-15', '2023-01-20','pending')," +
+									"('2','3','150.00', '2023-02-10', '2023-02-15','accepted')," +
+									"('2','4','200.00', '2023-03-05', '2023-03-10','pending')," +
+									"('2','5','180.00', '2023-04-20', '2023-04-25','accepted')," +
+									"('2','6','250.00', '2023-05-15', '2023-05-20','pending')," +
+									"('2','7','180.00', '2023-06-10', '2023-06-15','accepted')," +
+									"('2','8','300.00', '2023-07-05', '2023-07-10','pending');",
  		  
+		
 			"INSERT INTO OrderInfo (quoteID, price, schedulestart, scheduleend, status) " +
 			"VALUES " +
-        		    	    "('1', '100.00' , '2023-11-02', '2023-12-02', 'complete'),"+
-        		    	    "('2', '110.00' , '2024-11-02', '2024-12-02', 'incomplete');",
-        		    	    
-        		    	    
-        		    	    
-    	    "INSERT INTO Tree (quoteID, location, height, proximity, sizeDiameter, photo1,  photo2, photo3)"+
-  		  	"VALUES " +
-  		  				"('1', 'backyard-east', '2.0 meters','.5 meters', '60 millimeters', '0x000000', '0x000000', '0x000000');",
-  		  				
-  		  				
+			"('3', '130.00' , '2023-12-05', '2023-12-15', 'complete')," +
+			"('4', '90.00' , '2024-01-10', '2024-01-20', 'incomplete')," +
+			"('5', '200.00' , '2024-02-15', '2024-02-25', 'complete')," +
+			"('6', '150.00' , '2024-03-20', '2024-03-30', 'incomplete')," +
+			"('7', '180.00' , '2024-04-25', '2024-05-05', 'complete')," +
+			"('8', '220.00' , '2024-05-30', '2024-06-10', 'incomplete')," +
+			"('9', '250.00' , '2024-06-15', '2024-06-25', 'complete');",
+		    	    
+   
+			"INSERT INTO Tree (quoteID, location, height, proximity, sizeDiameter, photo1, photo2, photo3) " +
+			"VALUES " +
+			"('1', 'backyard-east', '2.0 meters', '0.5 meters', '60 millimeters', '0x000000', '0x000000', '0x000000')," +
+			"('2', 'front-yard-west', '1.5 meters', '0.3 meters', '40 millimeters', '0x111111', '0x111111', '0x111111')," +
+			"('3', 'side-yard-north', '1.8 meters', '0.4 meters', '50 millimeters', '0x222222', '0x222222', '0x222222')," +
+			"('4', 'backyard-south', '1.2 meters', '0.2 meters', '30 millimeters', '0x333333', '0x333333', '0x333333')," +
+			"('5', 'front-yard-east', '2.2 meters', '0.5 meters', '70 millimeters', '0x444444', '0x444444', '0x444444')," +
+			"('6', 'side-yard-west', '1.6 meters', '0.3 meters', '45 millimeters', '0x555555', '0x555555', '0x555555')," +
+			"('7', 'backyard-north', '1.9 meters', '0.4 meters', '55 millimeters', '0x666666', '0x666666', '0x666666');",
+	
+			
 			"INSERT INTO Bill (orderID, current, accepted, price, discount, balance, status) " +
 			"VALUES " +
-    		    	    "('1','2023-11-27 02:28:11','2023-11-29 02:28:11', '100.00', '10.00', '90.00', 'pending');",
+			"('1', '2023-11-27 02:28:11', '2023-11-29 02:28:11', '100.00', '10.00', '90.00', 'pending')," +
+			"('2', '2023-12-02 03:15:45', '2023-12-05 04:20:30', '120.00', '15.00', '105.00', 'complete')," +
+			"('3', '2024-01-10 01:30:20', '2024-01-12 02:45:10', '80.00', '8.00', '72.00', 'pending')," +
+			"('4', '2024-02-18 05:12:30', '2024-02-20 06:30:45', '150.00', '20.00', '130.00', 'complete')," +
+			"('5', '2024-03-25 02:45:15', '2024-03-27 03:55:30', '200.00', '25.00', '175.00', 'pending');",
+	    
     		    	    
     		    	    
-    		    	    
-    		    	    
-    	    
+    	 
             
 	        "INSERT INTO QuotesMessages(userID, quoteID, msgtime, price, schedulestart, scheduleend, note)"+
 	        "VALUES" + 
