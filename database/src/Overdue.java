@@ -1,16 +1,16 @@
 public class Overdue {
-    private int billID;
+    private int clientID;
     
     
-    public Overdue(int billID) {
-        this.billID = billID;
+    public Overdue(int clientID) {
+        this.clientID = clientID;
        
     }
     public int getClientID() {
-        return billID;
+        return clientID;
     }
 
-    public void setClientID(int billID) {
-        this.billID = billID;
+    public void setClientID(int clientID) {
+        this.clientID = clientID;
     }
 }

@@ -1052,7 +1052,7 @@ public class ControlServlet extends HttpServlet {
 			        goods.add(good);
 			    }
 
-			    request.setAttribute("listProspective", goods);
+			    request.setAttribute("listGood", goods);
 
 			}
 			
