@@ -92,7 +92,7 @@
             </tr>
             <c:forEach var="over" items="${listOverdue}">
                 <tr style="text-align:center">
-                	<td><c:out value="${over.clientID}" /></td>
+                	<td><c:out value="${over.bill ID}" /></td>
                 </tr>
             </c:forEach>
       </table>
@@ -131,9 +131,9 @@
               <th>Due</th>
               <th>Paid</th>
             </tr>
-            <c:forEach var="easy" items="${listBig}">
+            <c:forEach var="stats" items="${listStats}">
                 <tr style="text-align:center">
-                	<td><c:out value="${easy.clientID}" /></td>
+                	<td><c:out value="${stats.clientID}" /></td>
                 </tr>
             </c:forEach>
       </table>

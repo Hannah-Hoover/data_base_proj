@@ -908,6 +908,7 @@ public class ControlServlet extends HttpServlet {
 			    ResultSet resultSet = statement.executeQuery();
 
 			    List<EasyClient> easyClients = new ArrayList<>();
+			    
 			    while (resultSet.next()) {
 			    	 int clientID = resultSet.getInt("clientID");
 				       EasyClient easyClient = new EasyClient(clientID);
@@ -991,14 +992,20 @@ public class ControlServlet extends HttpServlet {
 						
 			private void listOverdue(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
-			    System.out.println("listQuote started: 00000000000000000000000000000000000");
+				 String sql = "SELECT * FROM Bill WHERE status <> 'paid' AND current + INTERVAL 1 WEEK < NOW()";
+				 
+				 PreparedStatement statement = connect.prepareStatement(sql);
+				    ResultSet resultSet = statement.executeQuery();
 			    
-			    List<quote> listQuote = quoteDAO.listAllQuote();
-			    request.setAttribute("listQuote", listQuote);       
-			    RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
-			    dispatcher.forward(request, response);
-			 
-			    System.out.println("listQuote finished: 111111111111111111111111111111111111");
+			     List<Overdue> overdues = new ArrayList<>();
+			        while (resultSet.next()) {
+			            int billID = resultSet.getInt("billID");
+			            Overdue overdue = new Overdue(billID);
+			            overdues.add(overdue);
+			        }
+
+			        request.setAttribute("listOverdue", overdues);
+
 			}
 			private void listBad(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
@@ -1028,7 +1035,7 @@ public class ControlServlet extends HttpServlet {
 			private void listGood(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
 			    System.out.println("listQuote started: 00000000000000000000000000000000000");
-			    String sql = "SSELECT DISTINCT U.userID AS clientID  " +
+			    String sql = "SELECT DISTINCT U.userID AS clientID  " +
 		                  "FROM User U " +
 		                  "JOIN Bill B ON U.userID = B.orderID " +
 		                  "WHERE U.role = 'client' " +
@@ -1051,14 +1058,31 @@ public class ControlServlet extends HttpServlet {
 			
 			private void listStats(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
-			    System.out.println("listQuote started: 00000000000000000000000000000000000");
-			    
-			    List<quote> listQuote = quoteDAO.listAllQuote();
-			    request.setAttribute("listQuote", listQuote);       
-			    RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
-			    dispatcher.forward(request, response);
-			 
-			    System.out.println("listQuote finished: 111111111111111111111111111111111111");
+				 String sql = "SELECT u.userID AS clientID, u.firstName, u.lastName, " +
+				            "COUNT(t.treeID) AS totalTrees, " +
+				            "SUM(b.price) AS totalDueAmount, " +
+				            "COALESCE(SUM(b.balance), 0) AS totalPaidAmount, " +
+				            "MIN(b.accepted) AS workCompletionDate " +
+				            "FROM User u " +
+				            "LEFT JOIN Quote q ON u.userID = q.clientID " +
+				            "LEFT JOIN Tree t ON q.quoteID = t.quoteID " +
+				            "LEFT JOIN OrderInfo o ON q.quoteID = o.quoteID " +
+				            "LEFT JOIN Bill b ON o.orderID = b.orderID " +
+				            "WHERE u.role = 'Client' " +
+				            "GROUP BY u.userID, u.firstName, u.lastName";
+
+				    PreparedStatement statement = connect.prepareStatement(sql);
+				    ResultSet resultSet = statement.executeQuery();
+
+				    List<Statistics> stats = new ArrayList<>();
+				    while (resultSet.next()) {
+				    	 int clientID = resultSet.getInt("clientID");
+					       Statistics stat = new Statistics(clientID);
+				        Statistics.add(stat);
+				    }
+
+				    request.setAttribute("listStats", stats);
+
 			}
 
 
