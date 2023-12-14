@@ -897,14 +897,29 @@ public class ControlServlet extends HttpServlet {
 			
 			private void listEasy(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
-			    System.out.println("listQuote started: 00000000000000000000000000000000000");
-			    
-			    List<quote> listQuote = quoteDAO.listAllQuote();
-			    request.setAttribute("listQuote", listQuote);       
-			    RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
+			    connect_func();
+
+			    String sql = "SELECT DISTINCT U.userID AS clientID " +
+			            "FROM User U " +
+			            "JOIN Quote Q ON U.userID = Q.clientID " +
+			            "JOIN QuotesMessages QM ON Q.quoteID = QM.quoteID " +
+			            "WHERE U.role = 'client' " +
+			            "AND QM.userID = U.userID " +
+			            "AND QM.msgtime IS NULL";
+
+			    PreparedStatement statement = connect.prepareStatement(sql);
+			    ResultSet resultSet = statement.executeQuery();
+
+			    List<Integer> clientIDs = new ArrayList<>();
+			    while (resultSet.next()) {
+			        int clientID = resultSet.getInt("clientID");
+			        clientIDs.add(clientID);
+			    }
+
+			    request.setAttribute("listEasy", clientIDs); // Set the list of client IDs in the request scope
+
+			    RequestDispatcher dispatcher = request.getRequestDispatcher("admin.jsp");
 			    dispatcher.forward(request, response);
-			 
-			    System.out.println("listQuote finished: 111111111111111111111111111111111111");
 			}
 			
 			private void listSingle(HttpServletRequest request, HttpServletResponse response)
@@ -938,44 +953,69 @@ public class ControlServlet extends HttpServlet {
 			
 			private void listProspective(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
-				 System.out.println("Prosepective");
+				
+				String sql = "SELECT DISTINCT U.email AS client_email " +
+		                  "FROM User U " +
+		                  "JOIN Quote Q ON U.userID = Q.clientID " +
+		                  "LEFT JOIN OrderInfo OI ON Q.quoteID = OI.quoteID " +
+		                  "WHERE Q.status IS NOT NULL " +
+		                  "AND OI.orderID IS NULL";
 
-				    connect_func();
+				PreparedStatement statement = connect.prepareStatement(sql);
+			    ResultSet resultSet = statement.executeQuery();
 
-				    String sql = "SELECT u.userID, u.firstName, u.lastName " +
-				            "FROM User u " +
-				            "JOIN Quote q ON u.userID = q.clientID " +
-				            "LEFT JOIN OrderInfo o ON q.quoteID = o.quoteID " +
-				            "WHERE o.quoteID IS NULL";
+			    List<Integer> listProspective = new ArrayList<>();
 
-				    PreparedStatement statement = connect.prepareStatement(sql);
-				    ResultSet resultSet = statement.executeQuery();
+			    while (resultSet.next()) {
+			        int clientID = resultSet.getInt("clientID");
+			        listProspective.add(clientID);
+			    }
 
-				    List<client> listProspective = new ArrayList<>();
+			    request.setAttribute("listProspective", listProspective);
 
-				    while (resultSet.next()) {
-				        int userID = resultSet.getInt("userID");
-
-				        client client = new client(userID);
-				        listProspective.add(client);
-				    }
-
-				    request.setAttribute("listProspective", listProspective);
-
-				    RequestDispatcher dispatcher = request.getRequestDispatcher("admin.jsp");
-				    dispatcher.forward(request, response);
+			    RequestDispatcher dispatcher = request.getRequestDispatcher("admin.jsp");
+			    dispatcher.forward(request, response);
 			}
 			
 			private void listHighest(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
-			    System.out.println("listQuote started: 00000000000000000000000000000000000");
-			    
-			    List<quote> listQuote = quoteDAO.listAllQuote();
-			    request.setAttribute("listQuote", listQuote);       
-			    RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
+				String sql = "WITH RankedTrees AS (" +
+		                  "    SELECT " +
+		                  "        Contractor.userID AS contractor_id, " +
+		                  "        Tree.treeID, " +
+		                  "        Tree.height, " +
+		                  "        DENSE_RANK() OVER (PARTITION BY Contractor.userID ORDER BY Tree.height DESC) AS height_rank " +
+		                  "    FROM " +
+		                  "        User Contractor " +
+		                  "        JOIN Quote ON Contractor.userID = Quote.contractorID " +
+		                  "        JOIN Tree ON Quote.quoteID = Tree.quoteID " +
+		                  ") " +
+		                  "SELECT " +
+		                  "    Contractor.email AS contractor_email, " +
+		                  "    Tree.treeID, " +
+		                  "    Tree.height " +
+		                  "FROM " +
+		                  "    RankedTrees " +
+		                  "    JOIN User Contractor ON RankedTrees.contractor_id = Contractor.userID " +
+		                  "    JOIN Tree ON RankedTrees.treeID = Tree.treeID " +
+		                  "WHERE " +
+		                  "    height_rank = 1";
+				
+				PreparedStatement statement = connect.prepareStatement(sql);
+			    ResultSet resultSet = statement.executeQuery();
+
+			    List<Integer> listHighest = new ArrayList<>();
+
+			    while (resultSet.next()) {
+			        int treeID = resultSet.getInt("treeID");
+			        listHighest.add(treeID);
+			    }
+
+			    request.setAttribute("listHighest", listHighest);
+
+			    RequestDispatcher dispatcher = request.getRequestDispatcher("admin.jsp");
 			    dispatcher.forward(request, response);
-			 
-			    System.out.println("listQuote finished: 111111111111111111111111111111111111");
+			}
 			}
 			
 			private void listOverdue(HttpServletRequest request, HttpServletResponse response)

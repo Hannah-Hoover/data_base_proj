@@ -40,7 +40,7 @@
             <tr>
             	<th>Client</th>
             </tr>
-            <c:forEach var="easy" items="${listeasy}">
+            <c:forEach var="easy" items="${listEasy}">
                 <tr style="text-align:center">
                 	<td><c:out value="${easy.clientID}" /></td>
                 </tr>
@@ -78,9 +78,9 @@
             <tr>
             	<th>Tree</th>
             </tr>
-            <c:forEach var="high" items="${listhighest}">
+            <c:forEach var="high" items="${listGighest}">
                 <tr style="text-align:center">
-                	<td><c:out value="${high.treeId}" /></td>
+                	<td><c:out value="${high.treeID}" /></td>
                 </tr>
             </c:forEach>
       </table>
@@ -90,7 +90,7 @@
             <tr>
             	<th>Client</th>
             </tr>
-            <c:forEach var="over" items="${listoverdue}">
+            <c:forEach var="over" items="${listOverdue}">
                 <tr style="text-align:center">
                 	<td><c:out value="${over.clientID}" /></td>
                 </tr>
@@ -102,7 +102,7 @@
             <tr>
             	<th>Client</th>
             </tr>
-            <c:forEach var="bad" items="${listbad}">
+            <c:forEach var="bad" items="${listBad}">
                 <tr style="text-align:center">
                 	<td><c:out value="${bad.clientID}" /></td>
                 </tr>
@@ -115,7 +115,7 @@
             <tr>
             	<th>Client</th>
             </tr>
-            <c:forEach var="good" items="${listgood}">
+            <c:forEach var="good" items="${listGood}">
                 <tr style="text-align:center">
                 	<td><c:out value="${good.clientID}" /></td>
                 </tr>
@@ -123,7 +123,7 @@
       </table>
 
  <table border="1" cellpadding="5">
-            <caption><h2>Easy Clients</h2></caption>
+            <caption><h2>Stats</h2></caption>
             <tr>
             	<th>Client</th>
               <th>Trees</th>
@@ -131,7 +131,7 @@
               <th>Due</th>
               <th>Paid</th>
             </tr>
-            <c:forEach var="easy" items="${listbig}">
+            <c:forEach var="easy" items="${listBig}">
                 <tr style="text-align:center">
                 	<td><c:out value="${easy.clientID}" /></td>
                 </tr>
