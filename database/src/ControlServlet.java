@@ -981,26 +981,23 @@ public class ControlServlet extends HttpServlet {
 			private void listHighest(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
 				String sql = "WITH RankedTrees AS (" +
-		                  "    SELECT " +
-		                  "        Contractor.userID AS contractor_id, " +
-		                  "        Tree.treeID, " +
-		                  "        Tree.height, " +
-		                  "        DENSE_RANK() OVER (PARTITION BY Contractor.userID ORDER BY Tree.height DESC) AS height_rank " +
-		                  "    FROM " +
-		                  "        User Contractor " +
-		                  "        JOIN Quote ON Contractor.userID = Quote.contractorID " +
-		                  "        JOIN Tree ON Quote.quoteID = Tree.quoteID " +
-		                  ") " +
-		                  "SELECT " +
-		                  "    Contractor.email AS contractor_email, " +
-		                  "    Tree.treeID, " +
-		                  "    Tree.height " +
-		                  "FROM " +
-		                  "    RankedTrees " +
-		                  "    JOIN User Contractor ON RankedTrees.contractor_id = Contractor.userID " +
-		                  "    JOIN Tree ON RankedTrees.treeID = Tree.treeID " +
-		                  "WHERE " +
-		                  "    height_rank = 1";
+			             "    SELECT " +
+			             "        Quote.clientID, " +
+			             "        Tree.treeID, " +
+			             "        Tree.height, " +
+			             "        DENSE_RANK() OVER (PARTITION BY Quote.clientID ORDER BY Tree.height DESC) AS height_rank " +
+			             "    FROM " +
+			             "        Quote " +
+			             "        JOIN Tree ON Quote.quoteID = Tree.quoteID " +
+			             ") " +
+			             "SELECT " +
+			             "    clientID, " +
+			             "    treeID, " +
+			             "    height " +
+			             "FROM " +
+			             "    RankedTrees " +
+			             "WHERE " +
+			             "    height_rank = 1;";
 				
 				PreparedStatement statement = connect.prepareStatement(sql);
 			    ResultSet resultSet = statement.executeQuery();
