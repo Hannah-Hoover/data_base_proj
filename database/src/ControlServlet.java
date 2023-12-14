@@ -855,45 +855,46 @@ public class ControlServlet extends HttpServlet {
 	    }
 	    
 			
-			private void listBig(HttpServletRequest request, HttpServletResponse response)
-			        throws SQLException, IOException, ServletException {
-			    System.out.println("listQuote started: 00000000000000000000000000000000000");
-			    
-			    connect_func();
-			    
-			    String sql = "SELECT u.userID AS clientID, u.firstName AS clientFirstName, " +
-			            "       u.lastName AS clientLastName, COUNT(t.treeID) AS numberOfTreesCut " +
-			            "FROM User u JOIN Quote q ON u.userID = q.clientID " +
-			            "JOIN Tree t ON q.quoteID = t.quoteID " +
-			            "WHERE u.role = 'Client' " +
-			            "GROUP BY u.userID, u.firstName, u.lastName " +
-			            "HAVING COUNT(t.treeID) = (" +
-			            "   SELECT COUNT(t2.treeID) " +
-			            "   FROM Tree t2 JOIN Quote q2 ON t2.quoteID = q2.quoteID " +
-			            "   WHERE q2.clientID = u.userID " +
-			            "   GROUP BY q2.clientID " +
-			            "   ORDER BY COUNT(t2.treeID) DESC " +
-			            "   LIMIT 1" +
-			            ") " +
-			            "ORDER BY numberOfTreesCut DESC";
+	    private void listBig(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("Listing Agreed Quotes with One Tree");
 
-			    PreparedStatement statement = connect.prepareStatement(sql);
-			    ResultSet resultSet = statement.executeQuery();
-			    
-			    List<BigClient> bigClients = new ArrayList<>(); // Assuming BigClient is a class to hold client information
-			    
-			    while (resultSet.next()) {
-			        int clientID = resultSet.getInt("clientID");
-			        BigClient bigClient = new BigClient(clientID);
-			        bigClients.add(bigClient);
-			    }
-			    
-			    request.setAttribute("listBig", bigClients); // Set the list of big clients in the request scope
+	        connect_func();
 
-			    RequestDispatcher dispatcher = request.getRequestDispatcher("admin.jsp");
-			    dispatcher.forward(request, response);
+	        String sql = "WITH RankedTrees AS (" +
+	                "    SELECT " +
+	                "        Quote.clientID, " +
+	                "        Tree.treeID, " +
+	                "        Tree.height, " +
+	                "        DENSE_RANK() OVER (PARTITION BY Quote.clientID ORDER BY Tree.height DESC) AS height_rank " +
+	                "    FROM " +
+	                "        Quote " +
+	                "        JOIN Tree ON Quote.quoteID = Tree.quoteID " +
+	                ") " +
+	                "SELECT " +
+	                "    Quote.clientID, " +
+	                "    Tree.treeID, " +
+	                "    Tree.height " +
+	                "FROM " +
+	                "    RankedTrees " +
+	                "    JOIN Quote ON RankedTrees.clientID = Quote.clientID AND height_rank = 1 " +
+	                "    JOIN Tree ON RankedTrees.treeID = Tree.treeID";
 
-			}
+	        PreparedStatement statement = connect.prepareStatement(sql);
+	        ResultSet resultSet = statement.executeQuery();
+
+	        List<Integer> listBig = new ArrayList<>();
+
+	        while (resultSet.next()) {
+	            int clientID = resultSet.getInt("clientID");
+	            listBig.add(clientID);
+	        }
+
+	        request.setAttribute("listBig", listBig);
+
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("admin.jsp");
+	        dispatcher.forward(request, response);
+	    }
 			
 			private void listEasy(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
