@@ -1017,7 +1017,6 @@ public class ControlServlet extends HttpServlet {
 			    RequestDispatcher dispatcher = request.getRequestDispatcher("admin.jsp");
 			    dispatcher.forward(request, response);
 			}
-			}
 			
 			private void listOverdue(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
