@@ -78,7 +78,7 @@
             <tr>
             	<th>Tree</th>
             </tr>
-            <c:forEach var="high" items="${listGighest}">
+            <c:forEach var="high" items="${listHighest}">
                 <tr style="text-align:center">
                 	<td><c:out value="${high.treeID}" /></td>
                 </tr>
