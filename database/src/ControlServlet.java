@@ -855,43 +855,42 @@ public class ControlServlet extends HttpServlet {
 	    }
 	    
 			
-	    private void listBig(HttpServletRequest request, HttpServletResponse response)
-	            throws SQLException, IOException, ServletException {
-	        System.out.println("Listing Clients with the Most Trees Cut");
+		private void listBig(HttpServletRequest request, HttpServletResponse response)
+		        throws SQLException, IOException, ServletException {
+		    System.out.println("listQuote started: 00000000000000000000000000000000000");
 
-	        connect_func();
+		    connect_func();
 
-	        String sql = "SELECT " +
-	                "    clientID, " +
-	                "    COUNT(Tree.treeID) AS numTreesCut " +
-	                "FROM " +
-	                "    Quote " +
-	                "    JOIN Tree ON Quote.quoteID = Tree.quoteID " +
-	                "    JOIN OrderInfo ON Quote.quoteID = OrderInfo.quoteID " +
-	                "WHERE " +
-	                "    Quote.status = 'Agreed' " +
-	                "    AND OrderInfo.status = 'complete' " +
-	                "GROUP BY " +
-	                "    clientID " +
-	                "ORDER BY " +
-	                "    numTreesCut DESC " +
-	                "LIMIT 1";
+		    String sql = "SELECT u.userID AS clientID, u.firstName AS clientFirstName, " +
+		            "       u.lastName AS clientLastName, COUNT(t.treeID) AS numberOfTreesCut " +
+		            "FROM User u JOIN Quote q ON u.userID = q.clientID " +
+		            "JOIN Tree t ON q.quoteID = t.quoteID " +
+		            "WHERE u.role = 'Client' " +
+		            "GROUP BY u.userID, u.firstName, u.lastName " +
+		            "HAVING COUNT(t.treeID) = (" +
+		            "   SELECT COUNT(t2.treeID) " +
+		            "   FROM Tree t2 JOIN Quote q2 ON t2.quoteID = q2.quoteID " +
+		            "   WHERE q2.clientID = u.userID " +
+		            "   GROUP BY q2.clientID " +
+		            "   ORDER BY COUNT(t2.treeID) DESC " +
+		            "   LIMIT 1" +
+		            ") " +
+		            "ORDER BY numberOfTreesCut DESC";
 
-	        PreparedStatement statement = connect.prepareStatement(sql);
-	        ResultSet resultSet = statement.executeQuery();
+		    PreparedStatement statement = connect.prepareStatement(sql);
+		    ResultSet resultSet = statement.executeQuery();
 
-	        List<Integer> listBig = new ArrayList<>();
+		    List<BigClient> bigClients = new ArrayList<>(); // Assuming BigClient is a class to hold client information
 
-	        while (resultSet.next()) {
-	            int clientID = resultSet.getInt("clientID");
-	            listBig.add(clientID);
-	        }
+		    while (resultSet.next()) {
+		        int clientID = resultSet.getInt("clientID");
+		        BigClient bigClient = new BigClient(clientID);
+		        bigClients.add(bigClient);
+		    }
 
-	        request.setAttribute("listBig", listBig);
+		    request.setAttribute("listBig", bigClients);
+		}
 
-	        RequestDispatcher dispatcher = request.getRequestDispatcher("admin.jsp");
-	        dispatcher.forward(request, response);
-	    }
 	
 			private void listEasy(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
