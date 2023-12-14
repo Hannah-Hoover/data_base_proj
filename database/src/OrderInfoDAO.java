@@ -86,13 +86,16 @@ public class OrderInfoDAO {
 		        ResultSet orderset = statement.executeQuery(sql);
 		         
 		        while (orderset.next()) {
-			    int orderID = orderset.getInt("orderID");
-			    int quoteID = orderset.getInt("quoteID");
-		        double price = orderset.getDouble("price");
-		        String schedulestart = orderset.getString("schedulestart");
-			    String scheduleend = orderset.getString("scheduleend");
+		        	System.out.print("122");
+		        	int orderID = orderset.getInt("orderID");
+		        	int quoteID = orderset.getInt("quoteID");
+		        	double price = orderset.getDouble("price");
+		        	String schedulestart = orderset.getString("schedulestart");
+		        	String scheduleend = orderset.getString("scheduleend");
+		        	String status = orderset.getString("status");
+			  
 	
-		            OrderInfo orders = new OrderInfo(orderID, quoteID, price, schedulestart, scheduleend);
+		            OrderInfo orders = new OrderInfo(orderID, quoteID, price, schedulestart, scheduleend, status);
 		            orders.setOrderID(orderset.getInt("orderID"));
 		            listOrders.add(orders);
 		        }
@@ -111,30 +114,33 @@ public class OrderInfoDAO {
 		        }
 		    }
 		    
-		    public void insert(OrderInfo orders) throws SQLException {
-		    	connect_func();         
-				String sql = "insert into OrderInfo(orderID, quoteID, price, schedulestart, scheudleend) values (?, ?, ?, ?, ?)";
+		   public void insert(OrderInfo orders) throws SQLException {
+		    	connect_func();   
+		    	System.out.println("Insert Order Info");
+				String sql = "insert into OrderInfo(quoteID, price, schedulestart, scheduleend, status) values (?, ?, ?, ?, ?)";
 				preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-
-			    		preparedStatement.setInt(1, orders.getOrderID());
-			    		preparedStatement.setInt(2, orders.getQuoteID());
-			    		preparedStatement.setDouble(3, orders.getPrice());
-			    		preparedStatement.setString(4, orders.getSchedulestart());
-			    		preparedStatement.setString(5, orders.getScheduleend());	
+			    		preparedStatement.setInt(1, orders.getQuoteID());
+			    		preparedStatement.setDouble(2, orders.getPrice());
+			    		preparedStatement.setString(3, orders.getSchedulestart());
+			    		preparedStatement.setString(4, orders.getScheduleend());
+			    		preparedStatement.setString(5, orders.getStatus());
 			    		preparedStatement.executeUpdate();
-			    		preparedStatement.close();
+			    		
+						preparedStatement.close();
+		
 		    }
 		    
 		    public boolean update(OrderInfo orders) throws SQLException {
 		    	System.out.println("\n \n update in OrderInfoDAO.");
-		        String sql = "update OrderInfo set OrderID=?, QuoteID=?, Price=?, Schedulesstart=?, Scheudleend=?";
+		        String sql = "update OrderInfo set Price=?, Schedulestart=?, Scheduleend=?, Status=? where OrderID = ?";
 		        connect_func();
-		        preparedStatement.setInt(1, orders.getOrderID());
-	    		preparedStatement.setInt(2, orders.getQuoteID());
-	    		preparedStatement.setDouble(3, orders.getPrice());
-	    		preparedStatement.setString(4, orders.getSchedulestart());
-	    		preparedStatement.setString(5, orders.getScheduleend());	
-			    		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+
+	    		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+	    		preparedStatement.setDouble(1, orders.getPrice());
+	    		preparedStatement.setString(2, orders.getSchedulestart());
+	    		preparedStatement.setString(3, orders.getScheduleend());	
+	      		preparedStatement.setString(4, orders.getStatus());
+	      		preparedStatement.setInt(5,  orders.getOrderID());
 		        boolean rowUpdated = preparedStatement.executeUpdate() > 0;
 		        preparedStatement.close();
 //		        disconnect();
@@ -148,14 +154,27 @@ public class OrderInfoDAO {
 		        ResultSet rs = statement.executeQuery(sql);
 		        OrderInfo order=null;
 		        if (rs.next()) {
-		            order = new OrderInfo(rs.getInt("orderID"), rs.getInt("quoteID"), rs.getDouble("price"), rs.getString("schedulestart"),rs.getString("scheudleend"));
+		            order = new OrderInfo(rs.getInt("orderID"), rs.getInt("quoteID"), rs.getDouble("price"), rs.getString("schedulestart"),rs.getString("scheduleend"), rs.getString("status"));
 		            order.setOrderID(rs.getInt("orderID"));
 		        }
 		        disconnect();        
 		        return order;
 		    	
 		    }
-
+		    public OrderInfo getOrderInfoByQuote(int quoteID)  throws SQLException{
+		        String sql = "SELECT * FROM OrderInfo where quoteID = "+quoteID;      
+		        connect_func();      
+		        PreparedStatement statement = connect.prepareStatement(sql);
+		        ResultSet rs = statement.executeQuery(sql);
+		        OrderInfo order=null;
+		        if (rs.next()) {
+		            order = new OrderInfo(rs.getInt("orderID"), rs.getInt("quoteID"), rs.getDouble("price"), rs.getString("schedulestart"),rs.getString("scheduleend"), rs.getString("status"));
+		            order.setOrderID(rs.getInt("orderID"));
+		        }
+		        disconnect();        
+		        return order;
+		    	
+		    }
 
 		    public boolean delete(int orderID) throws SQLException {
 		        String sql = "DELETE FROM OrderInfo WHERE orderID = ?";        

@@ -323,15 +323,17 @@ public class userDAO
 						    "FOREIGN KEY (clientID) REFERENCES User(userID)"+"); ",
 					
 					
-                   "drop table if exists OrderInfo; ",
-                   "CREATE TABLE if not exists OrderInfo( " + 
-                		   "orderID INT AUTO_INCREMENT PRIMARY KEY, "+
-                		   "quoteID INTEGER, "+
-                		   "price DOUBLE,"+
-                		   "schedulestart DATETIME,"+
-                		   "scheduleend DATETIME,"+
-                		   "FOREIGN KEY (quoteID) REFERENCES Quote(quoteID)" + ");  ",
-                		 
+                   "SET FOREIGN_KEY_CHECKS=0;",
+						    "drop table if exists OrderInfo; ",
+			                   "CREATE TABLE if not exists OrderInfo( " + 
+			                		   "orderID INT AUTO_INCREMENT PRIMARY KEY, "+
+			                		   "quoteID INTEGER, "+
+			                		   "price DOUBLE,"+
+			                		   "schedulestart DATETIME,"+
+			                		   "scheduleend DATETIME,"+
+			                		   "status VARCHAR(20),"+
+			                		   "FOREIGN KEY (quoteID) REFERENCES Quote(quoteID)" + ");  ",
+			       //"SET FOREIGN_KEY_CHECKS=1;",
                 		   
                 		   
                 	"drop table if exists Tree; ",
@@ -342,12 +344,12 @@ public class userDAO
 							"height VARCHAR(20), " +
 							"proximity VARCHAR(20), " +
 							"sizeDiameter VARCHAR(20), " +
-							"photodata1 BLOB, " +
-							"photodata2 BLOB, " +
-							"photodata3 BLOB, " +
+							"photo1 BLOB, " +
+							"photo2 BLOB, " +
+							"photo3 BLOB, " +
 							"FOREIGN KEY (quoteID) REFERENCES Quote(quoteID)"+ "); ",
 							
-							
+					"SET FOREIGN_KEY_CHECKS=0;",
 					"drop table if exists Bill; ",
 					"CREATE TABLE if not exists Bill( " +
 							"billID INT AUTO_INCREMENT PRIMARY KEY,"+
@@ -356,12 +358,10 @@ public class userDAO
 						    "discount DOUBLE, "+
 						    "balance DOUBLE, "+
 							"status VARCHAR(20),"+
+						    "current TIMESTAMP DEFAULT NULL,"+
+						    "accepted TIMESTAMP DEFAULT NULL,"+
 							"FOREIGN KEY (orderID) REFERENCES OrderInfo(orderID)"+"); ",
-							
-							
-			        
-				        	
-				        	
+						
 				        	
 				    "drop table if exists QuotesMessages; ",
     	  			"CREATE TABLE if not exists QuotesMessages("+
@@ -407,20 +407,21 @@ String[] TUPLES = {"insert into User(email, password, firstName, lastName, role,
 			"VALUES " +
 							"('1','1','00.00', '0001-01-01', '0001-01-01','pending');",
  		  
-			"INSERT INTO OrderInfo (quoteID, price, schedulestart, scheduleend) " +
+			"INSERT INTO OrderInfo (quoteID, price, schedulestart, scheduleend, status) " +
 			"VALUES " +
-        		    	    "('1', '100.00' , '2023-11-02', '2023-12-02');",
+        		    	    "('1', '100.00' , '2023-11-02', '2023-12-02', 'complete'),"+
+        		    	    "('2', '110.00' , '2024-11-02', '2024-12-02', 'incomplete');",
         		    	    
         		    	    
         		    	    
-    	    "INSERT INTO Tree (quoteID, location, height, proximity, sizeDiameter, photodata1,  photodata2, photodata3)"+
+    	    "INSERT INTO Tree (quoteID, location, height, proximity, sizeDiameter, photo1,  photo2, photo3)"+
   		  	"VALUES " +
   		  				"('1', 'backyard-east', '2.0 meters','.5 meters', '60 millimeters', '0x000000', '0x000000', '0x000000');",
   		  				
   		  				
-			"INSERT INTO Bill (orderID, price, discount, balance, status) " +
+			"INSERT INTO Bill (orderID, current, accepted, price, discount, balance, status) " +
 			"VALUES " +
-    		    	    "('1', '100.00', '10.00', '90.00', 'pending');",
+    		    	    "('1','2023-11-27 02:28:11','2023-11-29 02:28:11', '100.00', '10.00', '90.00', 'pending');",
     		    	    
     		    	    
     		    	    

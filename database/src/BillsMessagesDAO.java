@@ -115,16 +115,15 @@ public class BillsMessagesDAO {
 		    }
 		    
 		    public void insert(BillsMessages billsmessages) throws SQLException {
-		    	connect_func("root","pass1234");         
-				String sql = "insert into BillsMessages(billmsgID, userID, billID, price, schedulestart, scheduleend, note) values (?, ?, ?, ?, ?, ?, ?)";
+		    	connect_func();         
+				String sql = "insert into BillsMessages(userID, billID, price, schedulestart, scheduleend, note) values (?, ?, ?, ?, ?, ?)";
 				preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-					preparedStatement.setInt(1, billsmessages.getBillmsgID());
-					preparedStatement.setInt(2, billsmessages.getUserID());
-					preparedStatement.setInt(3, billsmessages.getBillID());
-					preparedStatement.setDouble(5, billsmessages.getPrice());
-					preparedStatement.setString(6, billsmessages.getSchedulestart());
-					preparedStatement.setString(7, billsmessages.getScheduleend());		
-					preparedStatement.setString(8, billsmessages.getNote());				
+					preparedStatement.setInt(1, billsmessages.getUserID());
+					preparedStatement.setInt(2, billsmessages.getBillID());
+					preparedStatement.setDouble(3, billsmessages.getPrice());
+					preparedStatement.setString(4, billsmessages.getSchedulestart());
+					preparedStatement.setString(5, billsmessages.getScheduleend());		
+					preparedStatement.setString(6, billsmessages.getNote());				
 
 				preparedStatement.executeUpdate();
 		        preparedStatement.close();

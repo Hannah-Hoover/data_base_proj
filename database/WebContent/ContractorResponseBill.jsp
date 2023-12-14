@@ -11,9 +11,7 @@
 <div align="center">
 		<form action="updatequote" method="post">
 			<table border="1" cellpadding="5">
-			<input type="hidden" name="quoteID"  value="${res.quoteID}" />
-			<input type="hidden" name="contractorID"  value="${res.contractorID}" />
-			<input type="hidden" name="clientID"  value="${res.clientID}" />
+			<input type="hidden" name="billID"  value="${bil.billID}" />
 
                 <tr>
                     <th>Price:</th>
@@ -49,10 +47,9 @@
         </form>
 
             
-        	<form action="quoteMessage" method="post">
+        	<form action="billMessage" method="post">
 
-        		<input type="hidden" name="quoteID"  value="${res.quoteID}" />
-        		<input type="hidden" name="userID"  value="${res.clientID}" />
+        		<input type="hidden" name="billID"  value="${bil.billID}" />
 
                  <tr>
                     <th>Note:</th>
@@ -63,7 +60,7 @@
                 </tr>
                 <tr>
                     <td align="center" colspan="5">
-						<input type="submit" value="quoteMessage"/>
+						<input type="submit" value="billeMessage"/>
 					</td>
 				</tr>
         </form>

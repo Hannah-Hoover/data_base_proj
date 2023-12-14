@@ -72,5 +72,8 @@ public class quote{
     public void setStatus(String status) {
         this.status = status;
     }
-
+    public boolean isEditable() {
+    	return !("quit".equalsIgnoreCase(status)||"agree".equalsIgnoreCase(status));
+    }
+ 
 }

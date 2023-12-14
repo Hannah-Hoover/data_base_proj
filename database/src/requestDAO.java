@@ -83,13 +83,13 @@ public class requestDAO {
 	            String height = treeCount.getString("height");
 	            String proximity = treeCount.getString("proximity");
 	            String sizeDiameter = treeCount.getString("sizeDiameter");
-	        	String photodata1= treeCount.getString("photodata1");
-	            String photodata2 = treeCount.getString("photodata2");
-	            String photodata3 = treeCount.getString("photodata3");
+	        	String photo1= treeCount.getString("photo1");
+	            String photo2 = treeCount.getString("photo2");
+	            String photo3 = treeCount.getString("photo3");
 	            String note= treeCount.getString("note");
 	           
 	            
-	            request request = new request(requestID,clientID, location,height,proximity,sizeDiameter,photodata1,photodata2,photodata3,note);
+	            request request = new request(requestID,clientID, location,height,proximity,sizeDiameter,photo1,photo2,photo3,note);
 	            listRequest.add(request);
 	            }
 	        treeCount.close();
@@ -106,7 +106,7 @@ public class requestDAO {
 	    
 	    public void insert(request requests) throws SQLException {
 	    	connect_func();         
-			String sql = "insert into Request(clientID,location,height,proximity,sizeDiameter,photodata1,photodata2,photodata3,note) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String sql = "insert into Request(clientID,location,height,proximity,sizeDiameter,photo1,photo2,photo3,note) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 				preparedStatement.setInt(1, requests.getClientID());
 				preparedStatement.setString(2, requests.getLocation());
@@ -192,7 +192,7 @@ public class requestDAO {
 	        ResultSet rs = statement.executeQuery(sql);
 	        request request=null;
 	        if (rs.next()) {
-	            request = new request(rs.getInt("requestID"), rs.getInt("clientID"),rs.getString("location"), rs.getString("height"), rs.getString("proximity"),rs.getString("sizeDiameter"),rs.getString("photodata1"),rs.getString("photodata2"),rs.getString("photodata3"),rs.getString("note"));
+	            request = new request(rs.getInt("requestID"), rs.getInt("clientID"),rs.getString("location"), rs.getString("height"), rs.getString("proximity"),rs.getString("sizeDiameter"),rs.getString("photo1"),rs.getString("photo2"),rs.getString("photo3"),rs.getString("note"));
 	        }
 	        disconnect();        
 	        return request;
