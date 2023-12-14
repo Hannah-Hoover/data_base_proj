@@ -857,28 +857,25 @@ public class ControlServlet extends HttpServlet {
 			
 	    private void listBig(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
-	        System.out.println("Listing Agreed Quotes with One Tree");
+	        System.out.println("Listing Clients with the Most Trees Cut");
 
 	        connect_func();
 
-	        String sql = "WITH RankedTrees AS (" +
-	                "    SELECT " +
-	                "        Quote.clientID, " +
-	                "        Tree.treeID, " +
-	                "        Tree.height, " +
-	                "        DENSE_RANK() OVER (PARTITION BY Quote.clientID ORDER BY Tree.height DESC) AS height_rank " +
-	                "    FROM " +
-	                "        Quote " +
-	                "        JOIN Tree ON Quote.quoteID = Tree.quoteID " +
-	                ") " +
-	                "SELECT " +
-	                "    Quote.clientID, " +
-	                "    Tree.treeID, " +
-	                "    Tree.height " +
+	        String sql = "SELECT " +
+	                "    clientID, " +
+	                "    COUNT(Tree.treeID) AS numTreesCut " +
 	                "FROM " +
-	                "    RankedTrees " +
-	                "    JOIN Quote ON RankedTrees.clientID = Quote.clientID AND height_rank = 1 " +
-	                "    JOIN Tree ON RankedTrees.treeID = Tree.treeID";
+	                "    Quote " +
+	                "    JOIN Tree ON Quote.quoteID = Tree.quoteID " +
+	                "    JOIN OrderInfo ON Quote.quoteID = OrderInfo.quoteID " +
+	                "WHERE " +
+	                "    Quote.status = 'Agreed' " +
+	                "    AND OrderInfo.status = 'complete' " +
+	                "GROUP BY " +
+	                "    clientID " +
+	                "ORDER BY " +
+	                "    numTreesCut DESC " +
+	                "LIMIT 1";
 
 	        PreparedStatement statement = connect.prepareStatement(sql);
 	        ResultSet resultSet = statement.executeQuery();
@@ -895,7 +892,7 @@ public class ControlServlet extends HttpServlet {
 	        RequestDispatcher dispatcher = request.getRequestDispatcher("admin.jsp");
 	        dispatcher.forward(request, response);
 	    }
-			
+	
 			private void listEasy(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
 			    connect_func();
