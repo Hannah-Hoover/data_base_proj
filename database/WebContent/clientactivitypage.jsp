@@ -16,6 +16,7 @@
 	 	<input type="hidden" name="clientID" value="${req.clientID}" />
 	 	<input type="hidden" name="quoteID" value="${res.quoteID}" />
 	 	<a href="listuserquote">List Quotes</a><br><br> 
+	 	<a href="listuserbills">List Bills</a><br><br>
 	 	
 	 	<% request.setAttribute("desiredID",request.getSession().getAttribute("clientID"));%>
 	 
@@ -54,7 +55,31 @@
             </c:if>
             
             </c:forEach>
-            
+            	        <table border="1" cellpadding="5">
+            <caption><h2>List of Bills</h2></caption>
+            <tr>
+                <th>orderID</th>
+                <th>Price</th>
+                <th>Discount</th>
+                <th>Balance</th>
+                <th>status</th>
+                <th>Actions</th>
+            </tr>
+            <c:forEach var="bill" items="${listBills}">
+                <tr style="text-align:center">
+                    <td><c:out value="${bill.orderID}" /></td>
+                    <td><c:out value="${bill.price}" /></td>
+                    <td><c:out value="${bill.discount}" /></td>
+                    <td><c:out value="${bill.balance}" /></td>
+                    <td><c:out value="${bill.status}" /></td>
+                    <td>
+                        <c:if test="${bill.status eq 'pending'}">
+                            <a href="contractorresponsebill?billID=${bill.billID}">Respond</a>
+                        </c:if>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
  
 	 	 <a href="clientquote.jsp"target ="_self" > Quote Request</a><br><br> 
 		 <a href="login.jsp"target ="_self" > logout</a><br><br> 

@@ -73,7 +73,7 @@ public class quote{
         this.status = status;
     }
     public boolean isEditable() {
-    	return !("closed".equalsIgnoreCase(status));
+    	return !("quit".equalsIgnoreCase(status)||"agree".equalsIgnoreCase(status));
     }
-
+ 
 }

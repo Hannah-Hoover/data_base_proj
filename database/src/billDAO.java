@@ -20,6 +20,7 @@
 	//import java.sql.Statement;
 	import java.util.ArrayList;
 	import java.util.List;
+	import java.sql.Timestamp;
 	/**
 	 * Servlet implementation class Connect
 	 */
@@ -78,7 +79,7 @@ public class billDAO {
 		    }
 		
 		    public List<bill> listAllBills() throws SQLException {
-		    	System.out.print("In the quotes list function");
+		    	System.out.print("In the bill list function");
 		        List<bill> listBills = new ArrayList<bill>();        
 		        String sql = "SELECT * FROM Bill";      
 		        connect_func();   
@@ -88,15 +89,17 @@ public class billDAO {
 		        while (billset.next()) {
 		        	  System.out.print("122");
                 int billID = billset.getInt("billID");
-			    int orderID = billset.getInt("quoteID");
+			    int orderID = billset.getInt("orderID");
+			    Timestamp current = billset.getTimestamp("current");
+			    Timestamp accepted = billset.getTimestamp("accepted");
                 double price = billset.getDouble("price");
                 double discount = billset.getDouble("discount");
                 double balance = billset.getDouble("balance");
                 String status = billset.getString("status");
 	
 		             
-		            bill bill = new bill(orderID, price, discount, balance, status);
-		            bill.setBillID(billset.getInt("bill"));
+		            bill bill = new bill(orderID,current,accepted, price, discount, balance, status);
+		            bill.setBillID(billset.getInt("billID"));
 		            listBills.add(bill);
 		        }
 		        
@@ -112,30 +115,55 @@ public class billDAO {
 		        }
 		    }
 		    
+		    
+		    public List<bill> getBillsByOrderID(int orderID) throws SQLException {
+		    	System.out.println("\n \n billDAO.getBillsByOrderID() is called.");
+		        List<bill> listBills = new ArrayList<bill>();        
+		        String sql = "SELECT * FROM Bill where orderID = "+orderID;      
+		        connect_func();      
+		        PreparedStatement statement = connect.prepareStatement(sql);
+		        ResultSet rs = statement.executeQuery(sql);
+		        bill bill=null;
+		        while (rs.next()) {
+		            bill = new bill(rs.getInt("billID"), rs.getTimestamp("current"), rs.getTimestamp("accepted"),rs.getDouble("price"), rs.getDouble("discount"), rs.getDouble("balance"),rs.getString("status"));
+		            bill.setOrderID(rs.getInt("orderID"));
+		            listBills.add(bill);
+		        }
+		        disconnect();        
+		        return listBills;
+			}
+		    
+		    
 		    public void insertBill(bill bill) throws SQLException {
 		    	connect_func();         
-				String sql = "insert into Bill(orderID, price, discount, balance, status) values (?, ?, ?, ?, ?)";
+				String sql = "insert into Bill(orderID, current, accepted, price, discount, balance, status) values (?, ?, ?, ?, ?, ?, ?)";
 				preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 
 			    		preparedStatement.setInt(1, bill.getOrderID());
-			    		preparedStatement.setDouble(2, bill.getPrice());
-			    		preparedStatement.setDouble(3, bill.getDiscount());
-			    		preparedStatement.setDouble(4, bill.getBalance());
-			    		preparedStatement.setString(5, bill.getStatus());
+			    		preparedStatement.setTimestamp(2, bill.getCurrent());
+			    		preparedStatement.setTimestamp(3, bill.getAccepted());
+			    		preparedStatement.setDouble(4, bill.getPrice());
+			    		preparedStatement.setDouble(5, bill.getDiscount());
+			    		preparedStatement.setDouble(6, bill.getBalance());
+			    		preparedStatement.setString(7, bill.getStatus());
 			    		preparedStatement.executeUpdate();
 			    		preparedStatement.close();
 		    }
 		    
 		    public boolean update(bill bill) throws SQLException {
 		    	System.out.println("\n \n update in billDAO.");
-		        String sql = "update Bill set BillID=?, OrderID=?, Price=?, Discount=?, Balance=?, Status=?";
+		        String sql = "update Bill set OrderID=?, Current=?, Accepted=?, Price=?, Discount=?, Balance=?, Status=? where BillID=?";
 		        connect_func();
+		        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 			    		preparedStatement.setInt(1, bill.getOrderID());
-			    		preparedStatement.setDouble(2, bill.getPrice());
-			    		preparedStatement.setDouble(3, bill.getDiscount());
-			    		preparedStatement.setDouble(4, bill.getBalance());
-			    		preparedStatement.setString(5, bill.getStatus());
-			    		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+			    		preparedStatement.setTimestamp(2, bill.getCurrent());
+			    		preparedStatement.setTimestamp(3, bill.getAccepted());
+			    		preparedStatement.setDouble(4, bill.getPrice());
+			    		preparedStatement.setDouble(5, bill.getDiscount());
+			    		preparedStatement.setDouble(6, bill.getBalance());
+			    		preparedStatement.setString(7, bill.getStatus());
+			    		preparedStatement.setInt(8, bill.getBillID());
+			    		
 		        boolean rowUpdated = preparedStatement.executeUpdate() > 0;
 		        preparedStatement.close();
 //		        disconnect();
@@ -149,7 +177,7 @@ public class billDAO {
 		        ResultSet rs = statement.executeQuery(sql);
 		        bill bill=null;
 		        if (rs.next()) {
-		            bill = new bill(rs.getInt("orderID"), rs.getDouble("price"), rs.getDouble("discount"), rs.getDouble("balance"),rs.getString("status"));
+		            bill = new bill(rs.getInt("orderID"), rs.getTimestamp("current"), rs.getTimestamp("accepted"), rs.getDouble("price"), rs.getDouble("discount"), rs.getDouble("balance"),rs.getString("status"));
 		            bill.setBillID(rs.getInt("billID"));
 		        }
 		        disconnect();        

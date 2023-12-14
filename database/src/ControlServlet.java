@@ -18,6 +18,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
+import java.sql.Timestamp;
 
 
 public class ControlServlet extends HttpServlet {
@@ -29,6 +30,9 @@ public class ControlServlet extends HttpServlet {
 	    private contractorDAO contractorDAO = new contractorDAO();
 	    private requestDAO requestDAO = new requestDAO();
 	    private QuotesMessagesDAO QuotesMessagesDAO = new QuotesMessagesDAO();
+	    private OrderInfoDAO OrderInfoDAO = new OrderInfoDAO();
+	    private billDAO billDAO = new billDAO();
+	    private BillsMessagesDAO BillsMessagesDAO = new BillsMessagesDAO();
 	    private String currentUser;
 	    private HttpSession session=null;
 	    String sessionID;
@@ -111,17 +115,24 @@ public class ControlServlet extends HttpServlet {
          		newQuote(request, response);
          		break;
          		
-         		/*
          	 case "/updatequotestatus":
         		 System.out.println("Client quitting quote");
-        		 UpdateQuoteStatus(request, response);
+        		 updateQuoteStatus(request, response);
         		 break;
         		 
          	case "/updatequotecontractor":
          		System.out.println("Contractor quitting quote");
-         		UpdateQuoteContractor(request, response);
+         		updateQuoteContractor(request, response);
          		break;
-        	 */
+         	case "/updateorderstatus":
+         		System.out.println("Contractor quitting quote");
+         		updateOrderStatus(request, response);
+         		break;
+         	case "/updatebillstatus":
+         		System.out.println("Contractor quitting quote");
+         		updateBillStatus(request, response);
+         		break;
+        	 
         	 case "/clientupdate":
         		 System.out.println("The action is: clientupdate");
         		 updateQuote(request, response);
@@ -142,6 +153,16 @@ public class ControlServlet extends HttpServlet {
                  System.out.println("The action is: contractorrepsonse");
              	 contractorResponse(request, response);
                  break;
+        	 case "/clientresponsebill":
+                 System.out.println("The action is: clientrepsonse");
+             	 clientResponseBill(request, response);
+                 break;
+                 
+                 
+        	 case "/contractorresponsebill":
+                 System.out.println("The action is: contractorrepsonse");
+             	 contractorResponseBill(request, response);
+                 break;
                  
         	 case "/listUser": 
                  System.out.println("The action is: list");
@@ -155,13 +176,32 @@ public class ControlServlet extends HttpServlet {
         		 System.out.println("The action is: quoteMessgeClient");
                  quoteMessageClient(request, response);
                  break;
-        	
+        	 case "/billMessage":
+        		 System.out.println("The action is: billMessge");
+                 billMessage(request, response);
+                 break;
+        	 case "/billMessageClient":
+        		 System.out.println("The action is: billMessgeClient");
+                 billMessageClient(request, response);
+                 break;
          	case "/request":
          		System.out.println("The action is: request");
          		request(request, response);
          		break;
          		
-       
+         	case "/listorders":
+         		System.out.println("The action is: listOrders");
+         		listOrders(request, response);
+         		break;
+         		
+         	case "/listbills":
+         		System.out.println("The action is: listbills");
+         		listBills(request, response);
+         		break;
+         	case "/listuserbills":
+         		System.out.println("The action is: listuserbills");
+         		listuserBills(request, response);
+         		break;
 	  
       
         	}}
@@ -305,51 +345,7 @@ public class ControlServlet extends HttpServlet {
 	     
 	        System.out.println("listUserQuote finished: 111111111111111111111111111111111111");
 	    }
-	    
-	    /*
-	    private void updateQuote(HttpServletRequest request, HttpServletResponse response)
-	            throws SQLException, IOException, ServletException {
-	        System.out.println("updateQuote started: 000000000000000000000000000");
-	     
-	       // String status = request.getParameter("status");
-	        int quoteID=Integer.parseInt(request.getParameter("quoteID"));
-	      //System.out.println("name:" + name + ", address: "+address + ", status:" + status);
-	        
-	        quote quotes = quoteDAO.getQuote(quoteID);//new quote(contractorID, clientID, price, startTime, endTime, status);
-	        System.out.print("after quote");
-	        quoteDAO.update(quotes);
-	        System.out.println("Ask the browser to call the list action next automatically");
-	        contractorPage(request, response, "");
-	        //clientPage(request, response, "");
-	        //.out.println(price);
-	     
-	        System.out.println("updateQuotes finished: 1111111111111111111111111111111");
-	    }
-	    
-	 */
-	    /*
-	    private void updateQuote(HttpServletRequest request, HttpServletResponse response)
-	            throws SQLException, IOException, ServletException {
-	        System.out.println("updateQuotecontractor started: 000000000000000000000000000");
-	       
-	        // get the id of the people we want to delete from the parameter
-	        int id = Integer.parseInt(request.getParameter("quoteID"));
-	        String status = request.getParameter("status");
-	        System.out.println(id);
-	        System.out.println(status);
-	        //People people = new People(id);
-	        // delete this people
-	        quote quotes = quoteDAO.getQuote(id);
-	        quotes.setStatus(status);
-	        quoteDAO.update(quotes);
-	        System.out.println("Ask the browser to call the list action next automatically");
-	        
-	        // instead redirect to another jsp, we redirect to another action, simulating that the user click a list link or button, benefit: save one click from the user    
-	        contractorPage(request, response, "");
-	
-	        
-	        System.out.println("updateQuotecontractor finished: 1111111111111111111111111111111");
-	    }*/
+
 	    
 	    private void newQuote(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
 		  	int requestID=Integer.parseInt(request.getParameter("id"));
@@ -359,40 +355,12 @@ public class ControlServlet extends HttpServlet {
 			        dispatcher.forward(request, response);
 					
 				}
-	    /*
-	    // to present an update form to update an  existing Student
-	    private void UpdateQuoteStatus(HttpServletRequest request, HttpServletResponse response)
-	            throws SQLException, IOException, ServletException {
-	        System.out.println("updateQuote started: 000000000000000000000000000");
-
-	        // get the id of the people we want to delete from the parameter
-	        int id = Integer.parseInt(request.getParameter("id"));
-	        String status = request.getParameter("status");
-	        //People people = new People(id);
-
-	        // delete this people
-	        quote quotes = quoteDAO.getQuote(id);
-	        quotes.setStatus(status);
-	        quoteDAO.update(quotes);
-	        //quotesDAO.delete(id);
-	        
-	        System.out.println("Ask the browser to call the list action next automatically");
-	        
-	        // instead rediret to another jsp, we redirect to another action, simulating that the user click a list link or button, benefit: save one click from the user    
-	        contractorPage(request, response, "");
-	        //clientPage(request, response, "");
-	        
-	        System.out.println("deletePeople finished: 1111111111111111111111111111111");
-	    } 
-	    
-	    */   
+ 
 	    private void updateQuote(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
 	        System.out.println("contractorUpdateQuote started: 000000000000000000000000000");
 	        
 	        int quoteID=Integer.parseInt(request.getParameter("quoteID"));
-	        //int contractorID=Integer.parseInt(request.getParameter("contractorID"));
-	        //int clientID=Integer.parseInt(request.getParameter("clientID"));
 	        double price = Double.parseDouble(request.getParameter("price"));
 	        String startTime = request.getParameter("startTime");
 	        String endTime = request.getParameter("endTime");
@@ -414,13 +382,91 @@ public class ControlServlet extends HttpServlet {
 	        System.out.println("contractorUpdateQuote finished: 1111111111111111111111111111111");
 	    }
 	    
+	    private void updateQuoteStatus(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("updateQuoteStatus started: 000000000000000000000000000");
+	        String status = request.getParameter("status");
+	        int quoteID = Integer.parseInt(request.getParameter("quoteID"));
+	        
+	        quote quote = quoteDAO.getQuote(quoteID);
+	        quote.setStatus(status);
+	        quoteDAO.update(quote);
+	        System.out.print("after quote1");
+	        //OrderInfo existing = OrderInfoDAO.getOrderInfoByQuote(quote.getQuoteID());
+	       
+	        if (status.equals("agree")){
+	        	System.out.print("after quote2");
+	        		String stat = "incomplete";
+	        		OrderInfo order = new OrderInfo(quote.getQuoteID(), quote.getPrice(), quote.getStartTime(), quote.getEndTime(), stat);
+	        		OrderInfoDAO.insert(order);
+	        		System.out.print("after quote3");
+	        }
+	        clientPage(request, response , "");        
+	        System.out.println("updateQuoteStatus finished: 000000000000000000000000000"); 
+	        
+	    }
+	    public void updateOrderStatus(HttpServletRequest request, HttpServletResponse response)
+	    		throws SQLException, IOException, ServletException{
+	    	System.out.println("updateQuoteStatus started: 000000000000000000000000000");
+	        String status = request.getParameter("status");
+	        int orderID = Integer.parseInt(request.getParameter("orderID"));
+	        OrderInfo order = OrderInfoDAO.getOrderInfo(orderID);
+	 
+	        
+	        order.setStatus(status);
+	        OrderInfoDAO.update(order);
+	        System.out.print("after quote1");
+	        //OrderInfo existing = OrderInfoDAO.getOrderInfoByQuote(quote.getQuoteID());
+	       
+	        if (status.equals("complete")){
+	        	System.out.print("after quote2");
+	        		String stat = "pending";
+	        		Timestamp current = new Timestamp(System.currentTimeMillis());
+	        		
+	        		bill bill = new bill(order.getOrderID(), current, null, order.getPrice(), 0, order.getPrice(), stat);
+	        		billDAO.insertBill(bill);
+	        		System.out.print("after quote3");
+	        }
+	        contractorPage(request, response , "");        
+	        System.out.println("updateQuoteStatus finished: 000000000000000000000000000"); 
+	    }
+	    public void updateBillStatus(HttpServletRequest request, HttpServletResponse response)
+	    		throws SQLException, IOException, ServletException{
+	    	
+	    	System.out.println("updatBillStatus started: 000000000000000000000000000");
+	    	
+	        String status = request.getParameter("status");
+	        int billID = Integer.parseInt(request.getParameter("billID"));
+	        bill bill = billDAO.getBill(billID);
+	        
+	        bill.setStatus(status);
+	        billDAO.update(bill);
+	        System.out.print("after quote1");
+	     
+	        contractorPage(request, response , "");        
+	        System.out.println("updateBillStatus finished: 000000000000000000000000000"); 
+	    }
+	    private void updateQuoteContractor(HttpServletRequest request, HttpServletResponse response)
+	            throws SQLException, IOException, ServletException {
+	        System.out.println("updateQuoteStatusContractor started: 000000000000000000000000000");
+	        
+	        String status = request.getParameter("status");
+	        int quoteID = Integer.parseInt(request.getParameter("quoteID"));
+	        quote quote = quoteDAO.getQuote(quoteID);
+	        System.out.println("after get");
+	        quote.setStatus(status);
+	        
+	        quoteDAO.update(quote);
+	        contractorPage(request, response , "");
+	        
+	        System.out.println("updateQuoteStatusContractor finished: 000000000000000000000000000"); 
+	        
+	    }
 	    private void updateQuoteClient(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
 	        System.out.println("contractorUpdateQuote started: 000000000000000000000000000");
 	        
 	        int quoteID=Integer.parseInt(request.getParameter("quoteID"));
-	        //int contractorID=Integer.parseInt(request.getParameter("contractorID"));
-	        //int clientID=Integer.parseInt(request.getParameter("clientID"));
 	        double price = Double.parseDouble(request.getParameter("price"));
 	        String startTime = request.getParameter("startTime");
 	        String endTime = request.getParameter("endTime");
@@ -440,11 +486,6 @@ public class ControlServlet extends HttpServlet {
 	     
 	        System.out.println("clientUpdateQuote finished: 1111111111111111111111111111111");
 	    }
-	  
-	    
-	   
-	    
-	    
 	    private void clientResponse(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
 	    	int quoteID=Integer.parseInt(request.getParameter("quoteID"));
 			quote res = quoteDAO.getQuote(quoteID);
@@ -452,6 +493,11 @@ public class ControlServlet extends HttpServlet {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("ClientResponse.jsp");       
 	        dispatcher.forward(request, response);
 			
+	    }
+	    private void clientResponseBill(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+	    	int billID=Integer.parseInt(request.getParameter("billID"));
+			bill bil = billDAO.getBill(billID);
+			request.setAttribute("bil", bil);
 	    }
 	   
 	    private void contractorResponse(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
@@ -463,7 +509,15 @@ public class ControlServlet extends HttpServlet {
 	        dispatcher.forward(request, response);
 			
 		} 
-	  
+	    private void contractorResponseBill(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+	    	int billID=Integer.parseInt(request.getParameter("billID"));
+			bill bil = billDAO.getBill(billID);
+			request.setAttribute("bil", bil);
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("ContractorResponseBill.jsp");       
+	        dispatcher.forward(request, response);
+			
+		} 
 	    
 		private void listUser(HttpServletRequest request, HttpServletResponse response)
 	            throws SQLException, IOException, ServletException {
@@ -478,7 +532,53 @@ public class ControlServlet extends HttpServlet {
 	        System.out.println("listPeople finished: 111111111111111111111111111111111111");
 	    }
 		
-		
+		 private void listOrders(HttpServletRequest request, HttpServletResponse response)
+		            throws SQLException, IOException, ServletException {
+		        System.out.println("listOrders started: 00000000000000000000000000000000000");
+		        
+		        List<OrderInfo> listOrders = OrderInfoDAO.listAllOrders();
+		        request.setAttribute("listOrders", listOrders);       
+		        RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
+		        dispatcher.forward(request, response);
+		     
+		        System.out.println("listOrders finished: 111111111111111111111111111111111111");
+		    }
+		 private void listBills(HttpServletRequest request, HttpServletResponse response)
+		            throws SQLException, IOException, ServletException {
+		        System.out.println("listOrders started: 00000000000000000000000000000000000");
+		        
+		        List<bill> listBills = billDAO.listAllBills();
+		        request.setAttribute("listBills", listBills);       
+		        RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
+		        dispatcher.forward(request, response);
+		     
+		        System.out.println("listOrders finished: 111111111111111111111111111111111111");
+		    }
+		 
+		 private void listuserBills(HttpServletRequest request, HttpServletResponse response)
+		            throws SQLException, IOException, ServletException {
+		        System.out.println("listOrders started: 00000000000000000000000000000000000");
+		        
+		        List<bill> listBills = billDAO.listAllBills();
+		        request.setAttribute("listBills", listBills);       
+		        RequestDispatcher dispatcher = request.getRequestDispatcher("clientactivitypage.jsp");       
+		        dispatcher.forward(request, response);
+		     
+		        System.out.println("listOrders finished: 111111111111111111111111111111111111");
+		    }
+		 /*
+		 private void listUserBills(HttpServletRequest request, HttpServletResponse response)
+		            throws SQLException, IOException, ServletException {
+		        System.out.println("listUserBills started: 00000000000000000000000000000000000");
+		        
+		        List<bill> listBills = billDAO.getBillsByOrderID();
+		        request.setAttribute("listBills", listBills);     
+		        RequestDispatcher dispatcher = request.getRequestDispatcher("clientactivitypage.jsp");       
+		        dispatcher.forward(request, response);
+		     
+		        System.out.println("listUserBills finished: 111111111111111111111111111111111111");
+		    }
+		*/
 		
 	    private void request(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 	    	System.out.println("in request");
@@ -515,24 +615,11 @@ public class ControlServlet extends HttpServlet {
             
 
                 tree tree = new tree(quoteID, location, height, proximity, sizeDiameter, photodata1, photodata2, photodata3);
-                treeDAO.insertTree(tree);    
+                treeDAO.insertTree(tree); 
+                RequestDispatcher dispatcher = request.getRequestDispatcher("clientactivitypage.jsp");       
+ 		        dispatcher.forward(request, response);
             }
 	    }
-	   
-		    /*
-		    private void listRequest(HttpServletRequest request, HttpServletResponse response)
-		            throws SQLException, IOException, ServletException {
-		        System.out.println("listRequest started: 00000000000000000000000000000000000");
-
-		        List<request> listRequest = requestDAO.listAllRequests();
-		        request.setAttribute("listRequest", listRequest);       
-		        RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
-		        dispatcher.forward(request, response);
-		     
-		        System.out.println("listRequest finished: 111111111111111111111111111111111111");
-
-		    }    */
-
 		    private void quoteMessage(HttpServletRequest request, HttpServletResponse response)
 		            throws SQLException, IOException, ServletException{ 
 		    	System.out.println("in quotemessages");
@@ -550,6 +637,9 @@ public class ControlServlet extends HttpServlet {
 	            String scheduleend = request.getParameter("scheduleend");
 	          
 	            String note = request.getParameter("note");
+	            
+	            
+	          
 		    
 	            //request.setAttribute("request", request);
 	            
@@ -601,6 +691,74 @@ public class ControlServlet extends HttpServlet {
 
 		    
 		    }
-		     
-		     
+private void billMessage(HttpServletRequest request, HttpServletResponse response)
+        throws SQLException, IOException, ServletException{ 
+	System.out.println("in billsmessages");
+	
+	//may need to add response code here
+
+
+    //int userID = (Integer)request.getSession().getAttribute("clientID");
+    
+    int billID=Integer.parseInt(request.getParameter("billID"));
+    Integer userID = (Integer)request.getSession().getAttribute("clientID");
+    
+    String msgtime = request.getParameter("msgtime");
+    String price = request.getParameter("price");
+    
+	String schedulestart = request.getParameter("schedulestart");
+    String scheduleend = request.getParameter("scheduleend");
+  
+    String note = request.getParameter("note");
+    
+    //request.setAttribute("request", request);
+    
+   String msgt= "12:12:12";
+   double p= 10.00;
+   String schstart= "11:11:11";
+   String schend= "12:12:12";
+   
+
+
+   BillsMessages billmessage = new BillsMessages(userID, billID, p, schstart, schend, note);
+   BillsMessagesDAO.insert(billmessage);
+   RequestDispatcher dispatcher = request.getRequestDispatcher("activitypage.jsp");       
+   dispatcher.forward(request, response);
+
+
+}
+private void billMessageClient(HttpServletRequest request, HttpServletResponse response)
+        throws SQLException, IOException, ServletException{ 
+	System.out.println("in billsmessages");
+	
+	//may need to add response code here
+
+
+    //int userID = (Integer)request.getSession().getAttribute("clientID");
+    
+    int billID=Integer.parseInt(request.getParameter("billID"));
+    Integer userID = (Integer)request.getSession().getAttribute("clientID");
+    
+    String msgtime = request.getParameter("msgtime");
+    String price = request.getParameter("price");
+    
+	String schedulestart = request.getParameter("schedulestart");
+    String scheduleend = request.getParameter("scheduleend");
+  
+    String note = request.getParameter("note");
+    
+    //request.setAttribute("request", request);
+    
+   String msgt= "12:12:12";
+   double p= 10.00;
+   String schstart= "11:11:11";
+   String schend= "12:12:12";
+   
+
+
+   BillsMessages billmessage = new BillsMessages(userID, billID, p, schstart, schend, note);
+   BillsMessagesDAO.insert(billmessage);
+   RequestDispatcher dispatcher = request.getRequestDispatcher("clientactivitypage.jsp");       
+   dispatcher.forward(request, response);
+} 
 }

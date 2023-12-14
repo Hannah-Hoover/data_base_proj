@@ -1,3 +1,4 @@
+import java.sql.Timestamp;
 public class bill{
   protected int billID;
   protected int orderID;
@@ -5,6 +6,8 @@ public class bill{
   protected double discount;
   protected double balance;
   protected String status;
+  protected Timestamp current;
+  protected Timestamp accepted;
 
     //constructors
     public bill() {
@@ -13,13 +16,15 @@ public class bill{
     public bill(int billID){
 	    this.billID = billID;
     }
-    public bill(int billID, int orderID, double price, double discount, double balance, String status){
-	    this(orderID, price, discount, balance, status);
+    public bill(int billID, int orderID, Timestamp current,Timestamp accepted, double price, double discount, double balance, String status){
+	    this(orderID, current,accepted, price, discount, balance, status);
     	this.billID = billID; 
     }
 
-    public bill(int orderID, double price, double discount, double balance, String status)
+    public bill(int orderID, Timestamp current, Timestamp accepted, double price, double discount, double balance, String status)
     {
+    	this.accepted = accepted;
+    	this.current = current;
 	    this.orderID = orderID;
     	this.price = price;
       this.discount = discount;
@@ -39,6 +44,18 @@ public class bill{
     }
     public void setOrderID(int orderID) {
         this.orderID = orderID;
+    }
+    public Timestamp getCurrent() {
+        return current;
+    }
+    public void setCurrent(Timestamp current) {
+        this.current = current;
+    }
+    public Timestamp getAccepted() {
+        return accepted;
+    }
+    public void setAccepted(Timestamp accepted) {
+        this.accepted = accepted;
     }
     public double getPrice() {
         return price;
