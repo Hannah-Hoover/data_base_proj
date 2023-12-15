@@ -1,5 +1,5 @@
 # Temp
-We both Eorked together on everything, 
+We both Worked on everything together.
 Any Servlet or JSP changes if time
 
 # data_base_proj
