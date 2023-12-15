@@ -53,19 +53,26 @@
 
         		<input type="hidden" name="quoteID"  value="${res.quoteID}" />
         		<input type="hidden" name="userID"  value="${res.clientID}" />
-
+				<table border="1" cellpadding="5">
                  <tr>
                     <th>Note:</th>
-                    <td colspan="3">
+                    <td>
                        
                         <input type="text" name="note" size="45" placeholder="Message">
                     </td>
                 </tr>
                 <tr>
-                    <td align="center" colspan="5">
+                    <td align="center" colspan="2">
 						<input type="submit" value="quoteMessage"/>
 					</td>
 				</tr>
+				<c:forEach var="msg" items="${res.messages}">
+					<tr>
+						<td colspan="2">${msg.note}</td>
+					</tr>
+				</c:forEach>
+			</table>
+				
         </form>
           <a href="activitypage.jsp" target="_self">Contractor dashboard<br></a>
                 <a href="login.jsp"target ="_self" > logout</a><br><br> 

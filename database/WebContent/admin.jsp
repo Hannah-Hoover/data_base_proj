@@ -22,30 +22,41 @@
       <a href="listbad">Bad Clients</a><br><br> 
       <a href="listgood">Good Clients</a><br><br> 
       <a href="liststats">Statistics</a><br><br>
-		
-		     <table border="1" cellpadding="5">
+      <c:if test="${listBig != null}">
+		 <table border="1" cellpadding="5">
             <caption><h2>Big Clients</h2></caption>
             <tr>
-            	<th>Client</th>
+            	<th>Client ID</th>
+            	<th>First Name</th>
+            	<th>Last Name</th>
             </tr>
             <c:forEach var="big" items="${listBig}">
                 <tr style="text-align:center">
-                	<td><c:out value="${big.clientID}" /></td>
+                	<td><c:out value="${big.userID}" /></td>
+                	<td><c:out value="${big.firstName }" /></td>
+                	<td><c:out value="${big.lastName }"/></td>
                 </tr>
             </c:forEach>
-      </table>
+          </table>
+      </c:if>
       
-      <table border="1" cellpadding="5">
+      <c:if test="${listEasy != null}">
+		 <table border="1" cellpadding="5">
             <caption><h2>Easy Clients</h2></caption>
             <tr>
-            	<th>Client</th>
+            	<th>Client ID</th>
+            	<th>First Name</th>
+            	<th>Last Name</th>
             </tr>
-            <c:forEach var="easy" items="${listEasy}">
+            <c:forEach var="user" items="${listEasy}">
                 <tr style="text-align:center">
-                	<td><c:out value="${easy.clientID}" /></td>
+                	<td><c:out value="${user.userID}" /></td>
+                	<td><c:out value="${user.firstName }" /></td>
+                	<td><c:out value="${user.lastName }"/></td>
                 </tr>
             </c:forEach>
-      </table>
+          </table>
+      </c:if>
 
       
       <table border="1" cellpadding="5">
@@ -63,11 +74,15 @@
        <table border="1" cellpadding="5">
             <caption><h2>Prospective Clients</h2></caption>
             <tr>
-            	<th>Client</th>
+            	<th>Client ID</th>
+            	<th>First Name</th>
+            	<th>Last Name</th>
             </tr>
-            <c:forEach var="pro" items="${listProspective}">
+            <c:forEach var="user" items="${listProspective}">
                 <tr style="text-align:center">
-                	<td><c:out value="${pro.clientID}" /></td>
+                	<td><c:out value="${user.userID}" /></td>
+                	<td><c:out value="${user.firstName }" /></td>
+                	<td><c:out value="${user.lastName }"/></td>
                 </tr>
             </c:forEach>
       </table>
@@ -86,13 +101,14 @@
       </table>
 
        <table border="1" cellpadding="5">
-            <caption><h2>Overdue Clients</h2></caption>
-            <tr>
-            	<th>Client</th>
-            </tr>
-            <c:forEach var="over" items="${listOverdue}">
+            <caption><h2>Overdue Bills</h2></caption>
+            <c:forEach var="bill" items="${listOverdue}">
                 <tr style="text-align:center">
-                	<td><c:out value="${over.bill ID}" /></td>
+                    <td><c:out value="${bill.orderID}" /></td>
+                    <td><c:out value="${bill.price}" /></td>
+                    <td><c:out value="${bill.discount}" /></td>
+                    <td><c:out value="${bill.balance}" /></td>
+                    <td><c:out value="${bill.status}" /></td>
                 </tr>
             </c:forEach>
       </table>
@@ -100,11 +116,15 @@
  <table border="1" cellpadding="5">
             <caption><h2>Bad Clients</h2></caption>
             <tr>
-            	<th>Client</th>
+            	<th>Client ID</th>
+            	<th>First Name</th>
+            	<th>Last Name</th>
             </tr>
-            <c:forEach var="bad" items="${listBad}">
+            <c:forEach var="user" items="${listBad}">
                 <tr style="text-align:center">
-                	<td><c:out value="${bad.clientID}" /></td>
+                	<td><c:out value="${user.userID}" /></td>
+                	<td><c:out value="${user.firstName }" /></td>
+                	<td><c:out value="${user.lastName }"/></td>
                 </tr>
             </c:forEach>
       </table>
@@ -113,11 +133,15 @@
  <table border="1" cellpadding="5">
             <caption><h2>Good Clients</h2></caption>
             <tr>
-            	<th>Client</th>
+            	<th>Client ID</th>
+            	<th>First Name</th>
+            	<th>Last Name</th>
             </tr>
-            <c:forEach var="good" items="${listGood}">
+            <c:forEach var="user" items="${listGood}">
                 <tr style="text-align:center">
-                	<td><c:out value="${good.clientID}" /></td>
+                	<td><c:out value="${user.userID}" /></td>
+                	<td><c:out value="${user.firstName }" /></td>
+                	<td><c:out value="${user.lastName }"/></td>
                 </tr>
             </c:forEach>
       </table>

@@ -1,3 +1,6 @@
+import java.sql.SQLException;
+import java.util.List;
+
 public class quote{
 	protected int quoteID;
 	protected int contractorID;
@@ -74,6 +77,9 @@ public class quote{
     }
     public boolean isEditable() {
     	return !("quit".equalsIgnoreCase(status)||"agree".equalsIgnoreCase(status));
+    }
+    public List<QuotesMessages> getMessages() throws SQLException{
+    	return new QuotesMessagesDAO().getQuotesMessages(this.quoteID);
     }
  
 }

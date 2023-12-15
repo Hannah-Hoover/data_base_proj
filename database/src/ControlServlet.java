@@ -240,9 +240,10 @@ public class ControlServlet extends HttpServlet {
          		System.out.println("The action is: listgood");
          		listGood(request, response);
          		break;
+         		
         	case "/liststats":
          		System.out.println("The action is: liststats");
-         		listStats(request, response);
+         	//	listStats(request, response);
          		break;
          				
 	  
@@ -601,8 +602,8 @@ public class ControlServlet extends HttpServlet {
 		 private void listuserBills(HttpServletRequest request, HttpServletResponse response)
 		            throws SQLException, IOException, ServletException {
 		        System.out.println("listOrders started: 00000000000000000000000000000000000");
-		        
-		        List<bill> listBills = billDAO.listAllBills();
+		        Integer clientId=(Integer)request.getSession().getAttribute("clientID");
+		        List<bill> listBills = billDAO.listBillsByClient(clientId);
 		        request.setAttribute("listBills", listBills);       
 		        RequestDispatcher dispatcher = request.getRequestDispatcher("clientactivitypage.jsp");       
 		        dispatcher.forward(request, response);
@@ -876,19 +877,23 @@ public class ControlServlet extends HttpServlet {
 		            "   LIMIT 1" +
 		            ") " +
 		            "ORDER BY numberOfTreesCut DESC";
+		    System.out.println(sql);
 
 		    PreparedStatement statement = connect.prepareStatement(sql);
 		    ResultSet resultSet = statement.executeQuery();
 
-		    List<BigClient> bigClients = new ArrayList<>(); 
+		    List<user> bigClients = new ArrayList<>(); 
 
 		    while (resultSet.next()) {
-		        int clientID = resultSet.getInt("clientID");
-		        BigClient bigClient = new BigClient(clientID);
-		        bigClients.add(bigClient);
+		        user user = new user();
+		        user.setUserID(resultSet.getInt("clientID"));
+		        user.setFirstName(resultSet.getString("clientFirstName"));
+		        user.setLastName(resultSet.getString("clientLastName"));
+		        bigClients.add(user);
 		    }
 
 		    request.setAttribute("listBig", bigClients);
+		    request.getRequestDispatcher("admin.jsp").forward(request, response);
 		}
 
 	
@@ -896,26 +901,28 @@ public class ControlServlet extends HttpServlet {
 			        throws SQLException, IOException, ServletException {
 			    connect_func();
 
-			    String sql = "SELECT DISTINCT U.userID AS clientID " +
-			            "FROM User U " +
-			            "JOIN Quote Q ON U.userID = Q.clientID " +
-			            "JOIN QuotesMessages QM ON Q.quoteID = QM.quoteID " +
-			            "WHERE U.role = 'client' " +
-			            "AND QM.userID = U.userID " +
-			            "AND QM.msgtime IS NULL";
+			    String sql = "SELECT DISTINCT U.* \n"
+			    		+ "FROM User U \n"
+			    		+ "left outer JOIN QuotesMessages QM on qm.userid=u.userid\n"
+			    		+ "inner JOIN Quote Q ON U.userID = Q.clientID  \n"
+			    		+ "WHERE U.role = 'client' AND QM.quotemsgid IS NULL and q.status='accepted'";
+			    System.out.println(sql);
 
 			    PreparedStatement statement = connect.prepareStatement(sql);
 			    ResultSet resultSet = statement.executeQuery();
 
-			    List<EasyClient> easyClients = new ArrayList<>();
+			    List<user> easyClients = new ArrayList<>();
 			    
 			    while (resultSet.next()) {
-			    	 int clientID = resultSet.getInt("clientID");
-				       EasyClient easyClient = new EasyClient(clientID);
-			        easyClients.add(easyClient);
+				       user user = new user();
+				       user.setUserID(resultSet.getInt("userID"));
+				       user.setFirstName(resultSet.getString("firstName"));
+				       user.setLastName(resultSet.getString("lastName"));
+			        easyClients.add(user);
 			    }
 
 			    request.setAttribute("listEasy", easyClients);
+			    request.getRequestDispatcher("admin.jsp").forward(request, response);
 			}
 			
 			private void listSingle(HttpServletRequest request, HttpServletResponse response)
@@ -924,138 +931,175 @@ public class ControlServlet extends HttpServlet {
 
 			    connect_func();
 
-			    String sql = "SELECT q.quoteID " +
-			            "FROM Quote q " +
-			            "WHERE q.status = 'Agreed' " +
-			            "AND q.quoteID IN (" +
-			            "   SELECT quoteID FROM Tree GROUP BY quoteID HAVING COUNT(*) = 1" +
-			            ")";
+			    String sql = "SELECT q.quoteid, count(*) \n"
+			    		+ "FROM Quote q\n"
+			    		+ "inner join tree on q.quoteid=tree.quoteid\n"
+			    		+ "WHERE q.status = 'accepted'\n"
+			    		+ "group by q.quoteid\n"
+			    		+ "having count(*)=1";
+			   System.out.println(sql);
 
 			    PreparedStatement statement = connect.prepareStatement(sql);
 			    ResultSet resultSet = statement.executeQuery();
 
-			    List<OneTree> oneTrees = new ArrayList<>();
+			    List<quote> oneTrees = new ArrayList<>();
 			    while (resultSet.next()) {
-			    	 int treeID = resultSet.getInt("treeID");
-				       OneTree oneTree = new OneTree(treeID);
-			        oneTrees.add(oneTree);
+			    	quote quote=new quote();
+			    	quote.setQuoteID(resultSet.getInt("quoteID"));
+			        oneTrees.add(quote);
 			    }
 
 			    request.setAttribute("listSingle", oneTrees);
+			    request.getRequestDispatcher("admin.jsp").forward(request, response);
 			}
 			
 			private void listProspective(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
 				
-				String sql = "SELECT DISTINCT U.userID AS clientID " +
+				connect_func();
+				String sql = "SELECT DISTINCT U.* " +
 		                  "FROM User U " +
 		                  "JOIN Quote Q ON U.userID = Q.clientID " +
 		                  "LEFT JOIN OrderInfo OI ON Q.quoteID = OI.quoteID " +
 		                  "WHERE Q.status IS NOT NULL " +
 		                  "AND OI.orderID IS NULL";
+				System.out.println(sql);
 
 				PreparedStatement statement = connect.prepareStatement(sql);
 			    ResultSet resultSet = statement.executeQuery();
 
-			    List<Prospective> props = new ArrayList<>();
+			    List<user> props = new ArrayList<>();
 			    while (resultSet.next()) {
-			    	 int clientID = resultSet.getInt("clientID");
-				       Prospective prop = new Prospective(clientID);
-			        props.add(prop);
+				       user user = new user();
+				       user.setUserID(resultSet.getInt("userID"));
+				       user.setFirstName(resultSet.getString("firstName"));
+				       user.setLastName(resultSet.getString("lastName"));
+			        props.add(user);
 			    }
 
 			    request.setAttribute("listProspective", props);
+			    request.getRequestDispatcher("admin.jsp").forward(request, response);
 			}
 			
 			private void listHighest(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
-				String sql = "SELECT T.location, T.height " +
+				connect_func();
+				String sql = "SELECT T.treeID " +
 		                  "FROM Tree T " +
 		                  "JOIN Quote Q ON T.quoteID = Q.quoteID " +
 		                  "JOIN OrderInfo OI ON Q.quoteID = OI.quoteID " +
 		                  "WHERE OI.status = 'complete' " +
 		                  "ORDER BY CAST(REPLACE(T.height, ' meters', '') AS DECIMAL) DESC " +
 		                  "LIMIT 1;";
+				System.out.println(sql);
 				
 				PreparedStatement statement = connect.prepareStatement(sql);
 			    ResultSet resultSet = statement.executeQuery();
 
-			    List<Highest> highests = new ArrayList<>();
+			    List<tree> highests = new ArrayList<>();
 			    while (resultSet.next()) {
 			    	 int treeID = resultSet.getInt("treeID");
-				       Highest highest = new Highest(treeID);
-			        highests.add(highest);
+			    	 tree tree = new tree();
+			    	 tree.setTreeID(resultSet.getInt("treeID"));
+			        highests.add(tree);
 			    }
 
 			    request.setAttribute("listHighest", highests);
+			    request.getRequestDispatcher("admin.jsp").forward(request, response);
 			}
 						
 			private void listOverdue(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
+				connect_func();
 				 String sql = "SELECT * FROM Bill WHERE status <> 'paid' AND current + INTERVAL 1 WEEK < NOW()";
 				 
 				 PreparedStatement statement = connect.prepareStatement(sql);
 				    ResultSet resultSet = statement.executeQuery();
 			    
-			     List<Overdue> overdues = new ArrayList<>();
+			     List<bill> overdues = new ArrayList<>();
 			        while (resultSet.next()) {
 			            int billID = resultSet.getInt("billID");
-			            Overdue overdue = new Overdue(billID);
-			            overdues.add(overdue);
+			            bill bill = new bill(billID);
+			            bill.setOrderID(resultSet.getInt("orderID"));
+			            bill.setBalance(resultSet.getDouble("balance"));
+			            bill.setPrice(resultSet.getDouble("price"));
+			            bill.setDiscount(resultSet.getDouble("discount"));
+			            bill.setStatus(resultSet.getString("status"));
+			            overdues.add(bill);
 			        }
 
 			        request.setAttribute("listOverdue", overdues);
+			        request.getRequestDispatcher("admin.jsp").forward(request, response);
 
 			}
 			private void listBad(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
+				connect_func();
 			    System.out.println("listQuote started: 00000000000000000000000000000000000");
 			    
-			    String sql = "SELECT DISTINCT U.userID " +
-		                  "FROM User U " +
-		                  "LEFT JOIN Bill B ON U.userID = B.orderID " +
-		                  "WHERE U.role = 'client' " +
-		                  "AND (B.accepted IS NULL OR B.accepted + INTERVAL 1 WEEK < B.current) " +
-		                  "AND B.billID IS NULL";
+			    String sql = "select distinct u.*\n"
+			    		+ "from user u\n"
+			    		+ "inner join quote q on u.userid=q.clientid\n"
+			    		+ "inner join orderinfo oi on q.quoteid=oi.quoteid\n"
+			    		+ "inner join bill b on oi.orderid=b.orderid\n"
+			    		+ "where exists(\n"
+			    		+ "select q1.clientid \n"
+			    		+ "from bill b1\n"
+			    		+ "inner join orderinfo oi1 on b1.orderid=oi.orderid\n"
+			    		+ "inner join quote q1 on oi1.quoteid=q.quoteid\n"
+			    		+ "where b1.status='pending' and b1.balance>0 and  b1.current + INTERVAL 1 WEEK < NOW()\n"
+			    		+ "and q1.clientid=u.userid)\n"
+			    		+ "";
+			    System.out.println(sql);
 			    
 			    PreparedStatement statement = connect.prepareStatement(sql);
 			    ResultSet resultSet = statement.executeQuery();
 
-			    List<Bad> bads = new ArrayList<>();
+			    List<user> bads = new ArrayList<>();
 			    while (resultSet.next()) {
-			    	 int clientID = resultSet.getInt("clientID");
-				       Bad bad = new Bad(clientID);
-			        bads.add(bad);
+				       user user = new user();
+				       user.setUserID(resultSet.getInt("userID"));
+				       user.setFirstName(resultSet.getString("firstName"));
+				       user.setLastName(resultSet.getString("lastName"));
+			        bads.add(user);
 			    }
 
-			    request.setAttribute("listProspective", bads);
+			    request.setAttribute("listBad", bads);
+			    request.getRequestDispatcher("admin.jsp").forward(request, response);
 
 			}
 			
 			private void listGood(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
+				connect_func();
 			    System.out.println("listQuote started: 00000000000000000000000000000000000");
-			    String sql = "SELECT DISTINCT U.userID AS clientID  " +
+			    String sql = "SELECT DISTINCT u.*  " +
 		                  "FROM User U " +
-		                  "JOIN Bill B ON U.userID = B.orderID " +
+		                  "JOIN quote q on u.userid=q.clientid "+
+		                  "JOIN orderinfo oi on q.quoteid=oi.quoteid "+
+		                  "JOIN Bill B ON oi.orderid = B.orderID " +
 		                  "WHERE U.role = 'client' " +
 		                  "AND B.accepted IS NOT NULL " +
-		                  "AND B.accepted + INTERVAL 24 HOUR > B.current";
+		                  "AND B.current + INTERVAL 24 HOUR > B.accepted";
+			    System.out.println(sql);
 			    
 			    PreparedStatement statement = connect.prepareStatement(sql);
 			    ResultSet resultSet = statement.executeQuery();
 
-			    List<Good> goods = new ArrayList<>();
+			    List<user> goods = new ArrayList<>();
 			    while (resultSet.next()) {
-			    	 int clientID = resultSet.getInt("clientID");
-				       Good good = new Good(clientID);
-			        goods.add(good);
+				       user user = new user();
+				       user.setUserID(resultSet.getInt("userID"));
+				       user.setFirstName(resultSet.getString("firstName"));
+				       user.setLastName(resultSet.getString("lastName"));
+			        goods.add(user);
 			    }
 
 			    request.setAttribute("listGood", goods);
+			    request.getRequestDispatcher("admin.jsp").forward(request, response);
 
 			}
-			
+			/*
 			private void listStats(HttpServletRequest request, HttpServletResponse response)
 			        throws SQLException, IOException, ServletException {
 				 String sql = "SELECT u.userID AS clientID, u.firstName, u.lastName, " +
@@ -1082,8 +1126,9 @@ public class ControlServlet extends HttpServlet {
 				    }
 
 				    request.setAttribute("listStats", stats);
+				    request.getRequestDispatcher("admin.jsp").forward(request, response);
 
-			}
+			}*/
 
 
 

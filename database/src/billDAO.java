@@ -108,6 +108,40 @@ public class billDAO {
 		    return listBills;
 		    }
 		   
+		    public List<bill> listBillsByClient(Integer clientId) throws SQLException {
+		    	System.out.print("In the bill list function");
+		        List<bill> listBills = new ArrayList<bill>();        
+		        String sql = "select b.* \n"
+		        		+ "from bill b\n"
+		        		+ "	inner join orderinfo oi on b.orderid=oi.orderid\n"
+		        		+ "    inner join quote q on oi.quoteid=q.quoteid\n"
+		        		+ "where q.clientid="+clientId;      
+		        connect_func();   
+		        statement = (Statement) connect.createStatement();
+		        ResultSet billset = statement.executeQuery(sql);
+		         
+		        while (billset.next()) {
+		        	  System.out.print("122");
+                int billID = billset.getInt("billID");
+			    int orderID = billset.getInt("orderID");
+			    Timestamp current = billset.getTimestamp("current");
+			    Timestamp accepted = billset.getTimestamp("accepted");
+                double price = billset.getDouble("price");
+                double discount = billset.getDouble("discount");
+                double balance = billset.getDouble("balance");
+                String status = billset.getString("status");
+	
+		             
+		            bill bill = new bill(orderID,current,accepted, price, discount, balance, status);
+		            bill.setBillID(billset.getInt("billID"));
+		            listBills.add(bill);
+		        }
+		        
+		    billset.close();
+		    disconnect();        
+		    return listBills;
+		    }
+		   
 		    
 		    protected void disconnect() throws SQLException {
 		        if (connect != null && !connect.isClosed()) {

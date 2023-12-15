@@ -5,11 +5,11 @@ public class Highest {
         this.treeID = treeID;
     }
 
-    public int getClientID() {
+    public int getTreeID() {
         return treeID;
     }
 
-    public void setClientID(int treeID) {
+    public void setTreeID(int treeID) {
         this.treeID = treeID;
     }
 }

@@ -164,18 +164,20 @@ public class QuotesMessagesDAO {
 		        return rowUpdated;     
 		    }
 		    
-		    public QuotesMessages getQuotesMessages(int quoteID)  throws SQLException{
-		        String sql = "SELECT * FROM QuotesMessages where quoteID = "+quoteID;      
+		    public List<QuotesMessages> getQuotesMessages(int quoteID)  throws SQLException{
+		        String sql = "SELECT * FROM QuotesMessages where quoteID = "+quoteID+" order by quoteID desc";      
 		        connect_func();      
 		        PreparedStatement statement = connect.prepareStatement(sql);
 		        ResultSet rs = statement.executeQuery(sql);
-		        QuotesMessages quotesMessage=null;
-		        if (rs.next()) {
+		        List<QuotesMessages> result=new ArrayList<>();
+		        while (rs.next()) {
+			        QuotesMessages quotesMessage=null;
 		        	quotesMessage = new QuotesMessages(rs.getInt("userID"), rs.getInt("quoteID"), rs.getString("msgtime"),rs.getDouble("price"),rs.getString("schedulestart"), rs.getString("scheduleend"), rs.getString("note"));
 		        	quotesMessage.setQuoteID(rs.getInt("QuotemsgID"));
+		        	result.add(quotesMessage);
 		        }
 		        disconnect();        
-		        return quotesMessage;
+		        return result;
 		    	
 		    }
 		    
