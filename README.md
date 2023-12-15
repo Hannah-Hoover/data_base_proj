@@ -1,12 +1,5 @@
 # Temp
-Morgan: 
-QuoteMessageDAO
-BillMessageDAO
-OrderInfoDAO
-
-Hannah:
-TreeDAO
-BillDAO
+We both Eorked together on everything, 
 Any Servlet or JSP changes if time
 
 # data_base_proj
@@ -59,3 +52,10 @@ Morgan:
 
 
 Time Working Together (in person or online) for part 2: 23 HOURS
+
+Pt3:
+We both worked on evertythin together
+
+Time Working Together In person: 30 hours
+
+Total project time: 72 hours
